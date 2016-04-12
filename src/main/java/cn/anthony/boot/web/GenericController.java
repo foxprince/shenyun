@@ -30,10 +30,13 @@ public abstract class GenericController<T> {
 
     abstract GenericService<T> getService();
 
-    String getFormView() {
-	return "redirect:list";
-    }
-
+    /**
+     * 在所有方法执行前执行，根据id构造实例
+     * 
+     * @param id
+     * @param m
+     * @return
+     */
     @ModelAttribute
     public T setUpForm(@RequestParam(value = "id", required = false) String id, Model m) {
 	if (id == null) {
@@ -55,12 +58,30 @@ public abstract class GenericController<T> {
 	return getFormView();
     }
 
+    /**
+     * 在列表页上方直接编辑form，适用于字段较少的对象
+     * 
+     * @param id
+     * @param m
+     * @param status
+     * @return
+     */
     @RequestMapping(value = "/editInList", method = RequestMethod.GET)
     public String editInList(@RequestParam String id, Model m, SessionStatus status) {
 	m.addAttribute(getService().findById(id));
 	return list(m);
     }
 
+    /**
+     * 添加或删除的提交操作
+     * 
+     * @param t
+     * @param redirectAttributes
+     * @param request
+     * @param result
+     * @return
+     * @throws EntityNotFound
+     */
     @RequestMapping(value = { "/add", "/edit" }, method = RequestMethod.POST)
     public String edit(@ModelAttribute T t, final RedirectAttributes redirectAttributes, HttpServletRequest request, BindingResult result)
 	    throws EntityNotFound {
@@ -73,6 +94,14 @@ public abstract class GenericController<T> {
 	}
     }
 
+    /**
+     * 用于添加/删除表单的ajax验证
+     * 
+     * @param t
+     * @param result
+     * @return
+     * @throws EntityNotFound
+     */
     @RequestMapping(value = { "/edit.json", "/add.json" }, method = RequestMethod.POST)
     public @ResponseBody ValidationResponse processFormAjaxJson(@ModelAttribute @Valid T t, BindingResult result) throws EntityNotFound {
 	validate(t, result);
@@ -91,32 +120,50 @@ public abstract class GenericController<T> {
 	return res;
     }
 
-    @RequestMapping(value = { "/" })
+    /**
+     * 适用于首页就是列表页
+     * 
+     * @param m
+     * @param status
+     * @return
+     */
+    @RequestMapping(value = { "/index" })
     public String index(Model m, SessionStatus status) {
 	status.setComplete();
-	return list(m);
+	return getIndexView();
     }
 
-    @RequestMapping(value = { "/index", "/list" })
+    @RequestMapping(value = { "/", "/list" })
     public String list(Model m) {
 	m.addAttribute("itemList", getService().findAll());
-	return getPageView();
+	return getListView();
     }
 
-    @RequestMapping(value = { "/", "/index", "/list" }, params = { "relateId" })
-    public String list(Model m, @RequestParam(required = false) Long... relateId) {
+    /**
+     * 根据关联id列出列表
+     * 
+     * @param m
+     * @param relateId
+     * @return
+     */
+    @RequestMapping(value = { "/", "/list" }, params = { "relateId" })
+    public String list(Model m, @RequestParam(required = false) String... relateId) {
 	listByRelate(m, relateId);
-	return getPageView();
+	return getListView();
     }
 
-    protected void listByRelate(Model m, Long... relateId) {
+    protected void listByRelate(Model m, String... relateId) {
     }
 
     /**
      * 
      * @return jsp的页面地址
      */
-    protected abstract String getPageView();
+    protected abstract String getListView();
+
+    protected abstract String getIndexView();
+
+    protected abstract String getFormView();
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ModelAndView delete(@RequestParam String id, final RedirectAttributes redirectAttributes, SessionStatus status) throws EntityNotFound {

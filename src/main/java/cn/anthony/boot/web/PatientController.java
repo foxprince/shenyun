@@ -28,8 +28,18 @@ public class PatientController extends GenericController<Patient> {
     }
 
     @Override
-    protected String getPageView() {
+    protected String getListView() {
 	return "/patient/list";
+    }
+
+    @Override
+    protected String getIndexView() {
+	return "/patient/index";
+    }
+
+    @Override
+    protected String getFormView() {
+	return "/patient/form";
     }
 
     @Override
@@ -41,5 +51,6 @@ public class PatientController extends GenericController<Patient> {
     String deleteHint(Patient t) {
 	return "成功删除：" + t.getName();
     }
+
 
 }
