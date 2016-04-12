@@ -1,0 +1,39 @@
+1：服务器操作系统版本，至少要 windows 2008 server。
+2：数据导出记录里面 2014年的是html格式，2015年的是xml格式，以后生成的是什么格式，有规律吗？
+3：首页、入院纪录、手术记录、出院记录，都是根据住院号/病案号关联的吗（貌似不靠谱，html文件里，有些入院纪录没有病案号,如：HospitalRecord_000024837100_2.html）？文件名也有关联关系（貌似靠谱）？
+4：一个病人有多个首页、入院、手术、出院纪录，但其病案号肯定是唯一的？
+5：PACS影像如何和病案号关联？文件命名有规则吗？
+6：DSA影像如何和病案号关联？
+7：功能需求：
+  1：）导入：把医院的各种记录信息自动导入系统；
+  2：）查询：通过界面查询，灵活设定查询条件；
+  3：）导出：可按条件导出为excel
+  4：）统计：按条件统计
+  5：）分析：具体需要分析哪些信息？
+  6：）数据挖掘：科研项目需要挖掘哪些信息？
+8：这个系统以后还要给其他科室用？
+
+
+select * from xwsw_inhospital where  adminission_no='81517';
+select * from xwsw_operation where  adminission_no='81517';
+select * from xwsw_outhospital where  adminission_no='81517';
+select * from xwsw_frontpage where  adminission_no='81517';
+
+
+git
+1：在github上创建shenyun
+2：eclipse 导入 from github
+3：convert to maven 
+
+1、在github上创建项目
+2、使用git clone https://github.com/xxxxxxx/xxxxx.git克隆到本地
+3、编辑项目
+4、git add . （将改动添加到暂存区）
+5、git commit -m "提交说明"
+6、git push origin master 将本地更改推送到远程master分支。
+这样你就完成了向远程仓库的推送。
+如果在github的remote上已经有了文件，会出现错误。此时应当先pull一下，即：
+git pull origin master
+然后再进行：
+git push origin master
+
