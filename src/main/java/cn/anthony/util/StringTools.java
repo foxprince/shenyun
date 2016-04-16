@@ -5,8 +5,11 @@ package cn.anthony.util;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -212,5 +215,73 @@ public class StringTools {
 	Pattern pattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", Pattern.CASE_INSENSITIVE);
 	Matcher matcher = pattern.matcher(email);
 	return matcher.matches();
+    }
+
+    /**
+     * 提取两个字符串之间的内容
+     * 
+     * @param src
+     * @param start
+     * @param end
+     * @return
+     */
+    public static String e(StringBuilder src, String start, String end) {
+	int startIndex = src.indexOf(start);
+	int endIndex = src.indexOf(end);
+	String s = trimCRLF(src.substring(startIndex + start.length(), endIndex).trim());
+	src.delete(0, endIndex);
+	return s;
+    }
+
+    /**
+     * 提取正则表达式group命中的内容
+     * 
+     * @param src
+     * @param regx
+     * @return
+     */
+    public static String pe(String src, String regx) {
+	Pattern p = Pattern.compile(regx);
+	Matcher m = p.matcher(src);
+	if (m.find())
+	    return m.group(1).trim();
+	return null;
+    }
+
+    /**
+     * 提取正则表达式group命中的内容
+     * 
+     * @param src
+     * @param regx
+     * @return
+     */
+    public static String pe2(String src, String regx) {
+	Pattern p = Pattern.compile(regx);
+	Matcher m = p.matcher(src);
+	if (m.find())
+	    return m.group(2).trim();
+	return null;
+    }
+
+    public static String formatMap(Map m) {
+	StringBuilder sb = new StringBuilder();
+	for (Iterator iterator = m.entrySet().iterator(); iterator.hasNext();) {
+	    Entry entry = (Entry) iterator.next();
+	    sb.append(entry.getKey() + ":\t" + entry.getValue() + "\n");
+	}
+	return sb.toString();
+    }
+    public static void main(String[] args) {
+	StringBuilder s = new StringBuilder("麻醉方法：全身麻醉.静吸复合麻醉    失血量：1 ml   血量：2 ml");
+	System.out.println(pe(s.toString(), "血量：(.*?)[血量|输血量]"));
+	String obj = "科室";
+	Pattern p = Pattern.compile("<text>\\s*科室[:|：]{0,1}</text>");
+	Matcher m = p.matcher("<text>科室</text>");
+	System.out.println(m.matches());
+	while (m.find()) {
+	    System.out.println(m.group());
+	    // System.out.println(m.group(2));
+	    // System.out.println("end(): " + m.end());
+	}
     }
 }

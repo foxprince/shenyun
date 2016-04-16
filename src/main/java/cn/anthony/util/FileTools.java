@@ -187,6 +187,7 @@ public class FileTools {
 	    while ((ln = br.readLine()) != null)
 		list.add(ln);
 	    br.close();
+	    fr.close();
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();
 	} catch (IOException e) {

@@ -1,8 +1,10 @@
 package cn.anthony.boot.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,27 +14,63 @@ public class Patient extends GenericNoSQLEntity {
 
     private static final long serialVersionUID = -9199964027188332358L;
 
-    private String name;
+    public String name;
+    public Integer age;
+    public Integer inTimes;
+    public String sex;
+    public Date dateOfBirth;
+    public String certNo;/* 身份证号码 */
+    public String marriage;
+    public String pId;/* 病案号 */
+    public String clinicNo;/* 门诊号 */
+    public String country;
+    public String birthPlace;
+    public String nativePlace;// 籍贯
+    public String nationality;// 民族
+    public String homeAddress;
+    public String phone;
+    public String payType;
+    public String healthCardNo;
+    public String pathologicNo;
+    public String occupation;
+    public String provinve;
+    public String city;
+    public String street;
+    public String company;
+    public String businessPhone;
+    public String contactName;
+    public String contactRelation;
+    public String contactAddress;
+    public String contactPhone;
 
-    private String description;
+    public Date admissionTime;
+    public String admissionDept;
+    public String admissionWard;
+    public Date dischargeTime;
+    public String dischargeDept;
+    public String dischargeWard;
+    public Integer inDays;
+    public Object diagDetail;
 
+    public List<InHospital> inRecords;/* 入院纪录 */
+    public List<Operation> operations;/* 手术纪录 */
+    public List<OutHospital> outRecords;/* 出院纪录 */
+    public String sourceFile;
+
+    @Transient // 此注解用于不映射到数据库
     private boolean active = true;
     @JsonIgnore
     transient private String activeDesc;
-    @JsonIgnore
-    transient private Map<Long, String> codeMap = new HashMap<Long, String>();
 
+    public Patient(String pId) {
+	super();
+	this.pId = pId;
+    }
     public String getActiveDesc() {
 	if (active)
 	    return "开";
 	else
 	    return "关";
-    }
-
-    public Patient(String title, String description) {
-	super();
-	this.name = title;
-	this.description = description;
     }
 
     public Patient() {
@@ -47,14 +85,6 @@ public class Patient extends GenericNoSQLEntity {
 	this.name = name;
     }
 
-    public String getDescription() {
-	return description;
-    }
-
-    public void setDescription(String description) {
-	this.description = description;
-    }
-
     public boolean isActive() {
 	return active;
     }
@@ -63,4 +93,21 @@ public class Patient extends GenericNoSQLEntity {
 	this.active = active;
     }
 
+    public void addIn(InHospital in) {
+	if (inRecords == null)
+	    inRecords = new LinkedList<InHospital>();
+	inRecords.add(in);
+    }
+
+    public void addOut(OutHospital in) {
+	if (outRecords == null)
+	    outRecords = new LinkedList<OutHospital>();
+	outRecords.add(in);
+    }
+
+    public void addOperation(Operation in) {
+	if (operations == null)
+	    operations = new LinkedList<Operation>();
+	operations.add(in);
+    }
 }

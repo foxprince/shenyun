@@ -3,8 +3,10 @@ package cn.anthony.boot.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,10 +16,11 @@ public class GenericNoSQLEntity implements Serializable {
     @Id
     protected String id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    protected Timestamp ctime;
+    protected Date ctime;
 
     @JsonIgnore
-    transient protected Boolean create = false;
+    @Transient
+    protected Boolean create = false;
     @JsonIgnore
     transient protected String action;
     @JsonIgnore
@@ -55,7 +58,7 @@ public class GenericNoSQLEntity implements Serializable {
 	this.id = id;
     }
 
-    public Timestamp getCtime() {
+    public Date getCtime() {
 	return ctime;
     }
 
