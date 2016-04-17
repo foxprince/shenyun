@@ -73,10 +73,10 @@
           + "<div class='form-group'>"
           + "<label class='control-sidebar-subheading'>"
           + "<input type='checkbox' data-layout='sidebar-collapse' class='pull-right'/> "
-          + "Toggle Sidebar"
+          + "切换侧边栏"
           + "</label>"
           + "<p>Toggle the left sidebar's state (open or collapse)</p>"
-          + "</div>"切换侧边栏
+          + "</div>"
           //Sidebar mini expand on hover toggle
           + "<div class='form-group'>"
           + "<label class='control-sidebar-subheading'>"
