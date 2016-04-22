@@ -37,3 +37,96 @@ git pull origin master
 然后再进行：
 git push origin master
 
+
+
+<ul class="timeline timeline-inverse">
+                      <!-- timeline time label -->
+                      <li class="time-label"> <span class="bg-red">入院时间：</span> </li>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time">入园时间<i class="fa fa-clock-o"></i> 12:05</span>
+                          <h3 class="timeline-header">入院科室： --  入院病房：</h3>
+                          <div class="timeline-body">医疗付费方式：9 <br>第1次住院 <br>门诊号：-<br>健康卡号：-<br>病理号：-<br>
+  病人来源-<br>保健人员分类非保健<br>保健人员在岗状态不适用<br>联系人姓名赵文魁<br>关系夫<br>地址同病人<br>电话18661505296<br>入院途径2
+                            
+                          </div>
+                          <div class="timeline-footer">  </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> 门诊</span>
+                          <h3 class="timeline-header no-border">门（急）诊诊断 脑胶质瘤术后    疾病编码:-</h3>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">出院时间<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">入院病情 -- </h3>
+                          <div class="timeline-body">
+              入院病情
+其他诊断:		
+损伤、中毒的外部原因-疾病编码
+病理诊断：少突神经胶质细胞瘤疾病编码M94500/3
+药物过敏11.无 2.有，过敏药物：-死亡患者尸检—1.是 2.否
+ABO血型31.A 2.B 3.O 4.AB 5.不详 6.未查Rh血型21.阴 2.阳 3.不详 4.未查
+输血品种：红细胞0单位血小板0袋血浆0ml全血0ml其它0ml
+科 主 任-	主任（副主任）医师-	主治医师-	住院医师-
+主诊医师-	责任护士	进修医师	实习医师	编 码 员
+病案质量11.甲 2.乙 3.丙质控医师-质控日期2014-05-26质控护士-填报医师-
+手术、操作及大型设备检查编码	手术、操作及大型设备检查日期	手术、操作及大型设备检查名称	手术及操作医师	手术级别	NNIS评分	切口愈合等级	麻醉方式	ASA分级	麻醉医师
+术者	I助	II助						
+01.5933	2014-05-16	脑肿瘤切除术（幕上）(左侧)	杜建新	林庆堂	-	4	-	I/甲	静脉麻醉	-	于巍
+87.0301	2014-05-18	头部CT	-	-	-	-	-	-	-	-	-
+颅脑损伤患者昏迷时间：入院前-天-小时-分钟 入院后-天-小时-分钟
+重症监护室名称	进重症监护室时间	出重症监护室时间
+--	-	-
+--	-	-
+--	-	-
+--	-	-
+--	-	-
+呼吸机使用时间：-小时
+肿瘤分期：TNMT-N-M-；Ⅱ--III期0期 Ⅰ期 Ⅱ期 Ⅲ期 Ⅳ期；不详NM；0期Ⅰ期Ⅱ期Ⅲ期Ⅳ期；不详
+临床路径：进入路径21.是 2.否变异21.有 2.无退出路径21.是 2.否
+日常生活能力评定量表(ADL)得分：入院100出院100
+新生儿出生体重-克新生儿入院体重-克              
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <li class="time-label"> <span class="bg-green"> 出院时间：${item.admissionTime } </span> </li>
+<li>
+                        
+                      
+<i class="fa fa-clock-o bg-green"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">出院科别 神经外科 病房 神外四 实际住院14天 转科科别- </h3>
+                          <div class="timeline-body">
+                            出院诊断	疾病编码	入院病情
+主要诊断:复发胶质瘤（左额）		1
+其他诊断:脑胶质瘤术后		1
+                            日常生活能力评定量表(ADL)得分：入院100出院100
+新生儿出生体重-克新生儿入院体重-克
+是否有出院31天内再住院计划11.无 2.有，目的:-
+离院方式11.医嘱离院 2.医嘱转院，拟接收医疗机构名称：-3.医嘱转社区卫生服务机构/乡镇卫生院，拟接收医疗机构名称：-4.非医嘱离院5.死亡9.其他
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </ul>

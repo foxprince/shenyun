@@ -1,4 +1,4 @@
-package cn.anthony.shenyun.config;
+package cn.anthony.boot.config;
 
 import java.util.List;
 

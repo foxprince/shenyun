@@ -5,6 +5,7 @@ package cn.anthony.util;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -227,10 +228,11 @@ public class StringTools {
      */
     public static String e(StringBuilder src, String start, String end) {
 	int startIndex = src.indexOf(start);
+	src.delete(0, startIndex);
 	int endIndex = src.indexOf(end);
-	String s = trimCRLF(src.substring(startIndex + start.length(), endIndex).trim());
+	String s = (src.substring(start.length(), endIndex).trim());
 	src.delete(0, endIndex);
-	return s;
+	return s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s;
     }
 
     /**
@@ -243,9 +245,11 @@ public class StringTools {
     public static String pe(String src, String regx) {
 	Pattern p = Pattern.compile(regx);
 	Matcher m = p.matcher(src);
+	String s = null;
 	if (m.find())
-	    return m.group(1).trim();
-	return null;
+	    s = m.group(1).trim();
+	s = s != null ? (s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s) : null;
+	return s;
     }
 
     /**
@@ -258,24 +262,25 @@ public class StringTools {
     public static String pe2(String src, String regx) {
 	Pattern p = Pattern.compile(regx);
 	Matcher m = p.matcher(src);
+	String s = null;
 	if (m.find())
-	    return m.group(2).trim();
-	return null;
+	    s = m.group(2).trim();
+	s = s != null ? (s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s) : null;
+	return s;
     }
 
     public static String formatMap(Map m) {
 	StringBuilder sb = new StringBuilder();
 	for (Iterator iterator = m.entrySet().iterator(); iterator.hasNext();) {
 	    Entry entry = (Entry) iterator.next();
-	    sb.append(entry.getKey() + ":\t" + entry.getValue() + "\n");
+	    sb.append(entry.getKey() + ":" + entry.getValue() + "\n");
 	}
 	return sb.toString();
     }
     public static void main(String[] args) {
-	StringBuilder s = new StringBuilder("麻醉方法：全身麻醉.静吸复合麻醉    失血量：1 ml   血量：2 ml");
-	System.out.println(pe(s.toString(), "血量：(.*?)[血量|输血量]"));
-	String obj = "科室";
-	Pattern p = Pattern.compile("<text>\\s*科室[:|：]{0,1}</text>");
+	StringBuilder s = new StringBuilder("传染病史:dd\n活史dd个人史fgfgdfg个人生活史");
+	System.out.println(pe(s.toString(), "传染病史((\\s|\\S)*?)(个人生活史|个人史)"));
+	Pattern p = Pattern.compile("<text>(\\s*)</text>");
 	Matcher m = p.matcher("<text>科室</text>");
 	System.out.println(m.matches());
 	while (m.find()) {
@@ -283,5 +288,13 @@ public class StringTools {
 	    // System.out.println(m.group(2));
 	    // System.out.println("end(): " + m.end());
 	}
+    }
+
+    public static <T> String formatCollection(Collection<T> l) {
+	StringBuilder sb = new StringBuilder();
+	for (T t : l) {
+	    sb.append(t.toString() + "\n");
+	}
+	return sb.toString();
     }
 }

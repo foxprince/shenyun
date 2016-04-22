@@ -1,18 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="../include/checkLogin.jspf"%>
 <!DOCTYPE html>
 <html>
-<c:import url="../include/head.jsp">
-	<c:param name="pageTitle" value="首页"/>
-</c:import>
-
+<!--/*/ <th:block th:include="fragments/head :: head" th:with="pageTitle='首页'"></th:block> /*/-->
 <body class="hold-transition skin-green-light sidebar-mini">
 	<div class="wrapper">
 	<!-- topbar -->
-	<%@ include file="../include/topbar.jspf" %>
+	<!--/*/ <th:block th:include="fragments/topbar :: topbar" ></th:block> /*/-->
 	<!-- left menu-->
-	<%@ include file="../include/menu.jspf" %>
+	<!--/*/ <th:block th:include="fragments/menu :: menu" ></th:block> /*/-->
 	
 	<div class="content-wrapper" style="min-height: 916px;">
         <!-- Content Header (Page header) -->
@@ -578,10 +572,10 @@
         </section><!-- /.content -->
       </div>
 	
-	<%@ include file="../include/footer.jspf" %>
+	<!--/*/ <th:block th:include="fragments/footer :: footer" ></th:block> /*/-->
+	<!--/*/ <th:block th:include="fragments/sidebar :: sidebar" ></th:block> /*/-->
+	<!--/*/ <th:block th:include="fragments/script :: script" ></th:block> /*/-->
 	
-	<%@ include file="../include/sidebar.jspf" %>
-	<%@ include file="../include/script.jspf" %>
 	</div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package cn.anthony.boot.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,54 +16,24 @@ public class Patient extends GenericNoSQLEntity {
 
     private static final long serialVersionUID = -9199964027188332358L;
 
+    public String pId;/* 病案号 */
     public String name;
     public Integer age;
-    public Integer inTimes;
     public String sex;
     public Date dateOfBirth;
     public String certNo;/* 身份证号码 */
-    public String marriage;
-    public String pId;/* 病案号 */
-    public String clinicNo;/* 门诊号 */
-    public String country;
-    public String birthPlace;
-    public String nativePlace;// 籍贯
-    public String nationality;// 民族
-    public String homeAddress;
-    public String phone;
-    public String payType;
-    public String healthCardNo;
-    public String pathologicNo;
-    public String occupation;
-    public String provinve;
-    public String city;
-    public String street;
-    public String company;
-    public String businessPhone;
-    public String contactName;
-    public String contactRelation;
-    public String contactAddress;
-    public String contactPhone;
-
-    public Date admissionTime;
-    public String admissionDept;
-    public String admissionWard;
-    public Date dischargeTime;
-    public String dischargeDept;
-    public String dischargeWard;
-    public Integer inDays;
-    public Object diagDetail;
-
+    public List<FrontPage> frontRecords;// 首页纪录
     public List<InHospital> inRecords;/* 入院纪录 */
     public List<Operation> operations;/* 手术纪录 */
     public List<OutHospital> outRecords;/* 出院纪录 */
-    public String sourceFile;
 
     @Transient // 此注解用于不映射到数据库
     private boolean active = true;
     @JsonIgnore
     transient private String activeDesc;
-
+    public Patient() {
+	super();
+    }
     public Patient(String pId) {
 	super();
 	this.pId = pId;
@@ -73,9 +45,28 @@ public class Patient extends GenericNoSQLEntity {
 	    return "关";
     }
 
-    public Patient() {
-	super();
+    public String getSexDesc() {
+	if (sex.equalsIgnoreCase("1"))
+	    return "男";
+	else
+	    return "女";
     }
+
+    public String getFormatDateOfBirth() {
+	return new SimpleDateFormat("yyyy年MM月dd日").format(dateOfBirth);
+    }
+
+    public Integer getActualAge() {
+	Calendar cal = Calendar.getInstance();
+	if (frontRecords != null && frontRecords.size() > 0)
+	    cal.setTime(frontRecords.get(0).dateOfBirthday);
+	else if (dateOfBirth != null)
+	    cal.setTime(dateOfBirth);
+	else
+	    return 0;
+	return Calendar.getInstance().get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+    }
+
 
     public String getName() {
 	return name;
@@ -93,6 +84,11 @@ public class Patient extends GenericNoSQLEntity {
 	this.active = active;
     }
 
+    public void addFront(FrontPage in) {
+	if (frontRecords == null)
+	    frontRecords = new LinkedList<FrontPage>();
+	frontRecords.add(in);
+    }
     public void addIn(InHospital in) {
 	if (inRecords == null)
 	    inRecords = new LinkedList<InHospital>();
@@ -110,4 +106,41 @@ public class Patient extends GenericNoSQLEntity {
 	    operations = new LinkedList<Operation>();
 	operations.add(in);
     }
+
+    public Integer getAge() {
+	return age;
+    }
+
+    public String getSex() {
+	return sex;
+    }
+
+    public Date getDateOfBirth() {
+	return dateOfBirth;
+    }
+
+    public String getCertNo() {
+	return certNo;
+    }
+
+    public String getpId() {
+	return pId;
+    }
+
+    public List<InHospital> getInRecords() {
+	return inRecords;
+    }
+
+    public List<Operation> getOperations() {
+	return operations;
+    }
+
+    public List<OutHospital> getOutRecords() {
+	return outRecords;
+    }
+
+    public List<FrontPage> getFrontRecords() {
+	return frontRecords;
+    }
+
 }

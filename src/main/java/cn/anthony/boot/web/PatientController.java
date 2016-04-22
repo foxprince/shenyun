@@ -2,17 +2,21 @@ package cn.anthony.boot.web;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.service.GenericService;
 import cn.anthony.boot.service.PatientService;
+import cn.anthony.boot.util.ControllerUtil;
 
 @Controller
 @RequestMapping(value = "/patient")
-// @SessionAttributes("patient")
+@SessionAttributes("patient")
 public class PatientController extends GenericController<Patient> {
     @Resource
     PatientService service;
@@ -52,5 +56,10 @@ public class PatientController extends GenericController<Patient> {
 	return "成功删除：" + t.getName();
     }
 
-
+    @RequestMapping(value = { "/list", "/listPage" })
+    public String listPage(@ModelAttribute("pageRequest") PatientSearch pageRequest, Model m) {
+	Page<Patient> page = service.findPage(pageRequest);
+	ControllerUtil.setPageVariables(m, page);
+	return getListView();
+    }
 }

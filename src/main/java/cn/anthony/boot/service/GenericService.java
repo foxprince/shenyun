@@ -44,4 +44,14 @@ public abstract class GenericService<T> {
     public Type getClassName() {
 	return (((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
+
+    /**
+     * 按照查询条件分页显示
+     * 
+     * @param pageRequest
+     * @param relate
+     * @return
+     */
+    public abstract Page<T> findPage(cn.anthony.boot.web.PageRequest pageRequest);
+
 }

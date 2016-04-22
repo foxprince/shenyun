@@ -27,4 +27,52 @@ public class OutHospital {
     public String note;
     public String sign;
     public String sourceFile;
+
+    public String getDepartment() {
+	return department;
+    }
+
+    public Date getOutDate() {
+	return outDate;
+    }
+
+    public String getInDescription() {
+	return inDescriotion;
+    }
+
+    public String getInDiagnosis() {
+	return inDiagnosis;
+    }
+
+    public String getTreatment() {
+	return treatment;
+    }
+
+    public String getOutDescription() {
+	return outDescription;
+    }
+
+    public String getOutDiagnosis() {
+	return outDiagnosis;
+    }
+
+    public String getOperationDesc() {
+	return operationDesc;
+    }
+
+    public String getDischargeOrder() {
+	return dischargeOrder;
+    }
+
+    public String getNote() {
+	return note;
+    }
+
+    public String getSign() {
+	return sign;
+    }
+
+    public String getSourceFile() {
+	return sourceFile;
+    }
 }

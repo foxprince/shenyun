@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.anthony.boot.exception.EntityNotFound;
 import cn.anthony.boot.service.GenericService;
-import cn.anthony.boot.util.ControllerUtil;
 
 @Controller
 public abstract class GenericController<T> {
@@ -127,17 +126,18 @@ public abstract class GenericController<T> {
      * @param status
      * @return
      */
-    @RequestMapping(value = { "/index" })
+    @RequestMapping(value = { "/", "/index" })
     public String index(Model m, SessionStatus status) {
-	status.setComplete();
+	// status.setComplete();
 	return getIndexView();
     }
 
-    @RequestMapping(value = { "/", "/list" })
+    @RequestMapping(value = { "/listAll" })
     public String list(Model m) {
 	m.addAttribute("itemList", getService().findAll());
 	return getListView();
     }
+
 
     /**
      * 根据关联id列出列表
@@ -146,7 +146,7 @@ public abstract class GenericController<T> {
      * @param relateId
      * @return
      */
-    @RequestMapping(value = { "/", "/list" }, params = { "relateId" })
+    @RequestMapping(value = { "/listAll" }, params = { "relateId" })
     public String list(Model m, @RequestParam(required = false) String... relateId) {
 	listByRelate(m, relateId);
 	return getListView();

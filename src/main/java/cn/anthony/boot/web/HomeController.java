@@ -11,8 +11,14 @@ public class HomeController {
 	return "main/index";
     }
 
+    @RequestMapping(value = { "/tindex" }, method = RequestMethod.GET)
+    public String thymeLeafIndex() {
+	return "index";
+    }
+
     @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
     public String login() {
 	return "main/login";
     }
+
 }

@@ -34,4 +34,68 @@ public class Operation {
     public String sign;
     public Date recordTime;
     public String sourceFile;
+
+    public String getOperationDpt() {
+	return operationDpt;
+    }
+
+    public String getBedNumber() {
+	return bedNumber;
+    }
+
+    public String getPreDiagnosis() {
+	return preDiagnosis;
+    }
+
+    public String getOperataionDiagnosis() {
+	return operataionDiagnosis;
+    }
+
+    public String getOperationTitle() {
+	return operationTitle;
+    }
+
+    public String getDoctor() {
+	return doctor;
+    }
+
+    public String getAssistant() {
+	return assistant;
+    }
+
+    public Date getBeginTime() {
+	return beginTime;
+    }
+
+    public Date getEndTime() {
+	return endTime;
+    }
+
+    public String getAnaesthetic() {
+	return anaesthetic;
+    }
+
+    public String getBloodLoss() {
+	return bloodLoss;
+    }
+
+    public String getBloodTransfusion() {
+	return bloodTransfusion;
+    }
+
+    public String getDetail() {
+	return detail;
+    }
+
+    public String getSign() {
+	return sign;
+    }
+
+    public Date getRecordTime() {
+	return recordTime;
+    }
+
+    public String getSourceFile() {
+	return sourceFile;
+    }
 }

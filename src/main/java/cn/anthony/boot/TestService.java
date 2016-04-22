@@ -2,6 +2,7 @@ package cn.anthony.boot;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,15 +10,14 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
 import cn.anthony.boot.util.PatientUtil;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class TestService implements CommandLineRunner {
-    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\已处理\\";
+    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2014已处理\\";
     private static final String MUL_DIR = "E:\\project\\神云系统\\data\\重复住院\\";
 
     @Autowired
@@ -30,8 +30,16 @@ public class TestService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-	String srcDir = "E:\\project\\神云系统\\data\\数据导出-2015-1-1日-8月10日";
+	// String id = "571581aa4ea3f8d11a838059";
+	// Patient p = repository.findOne(id);
+	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
+	processTool();
+    }
+
+    private void processTool() throws ParseException {
+	String srcDir = "E:\\project\\神云系统\\KYBLSJ201405-201412\\KYBLSJ";
 	File dir = new File(srcDir);
+	long t1 = System.currentTimeMillis();
 	// 先处理首页文件，处理完移走
 	process(dir, (File f) -> {
 	    return f.isDirectory() ? true : f.getName().startsWith("FrontSheet");
@@ -40,13 +48,14 @@ public class TestService implements CommandLineRunner {
 	process(dir, (File f) -> {
 	    return true;
 	});
+	long t2 = System.currentTimeMillis();
 	// System.out.println(s);
-	System.out.println(s.size());
+	System.out.println((t2 - t1) + "\t" + s.size());
     }
 
 
 
-    public void process(File dir, FileFilter filter) {
+    public void process(File dir, FileFilter filter) throws ParseException {
 	// File[] fs = dir.listFiles((File f) -> {
 	// return f.isDirectory() ? true : f.getName().startsWith("FrontSheet");
 	// });
@@ -61,7 +70,7 @@ public class TestService implements CommandLineRunner {
 	}
     }
 
-    private void pp(File file) {
+    private void pp(File file) throws ParseException {
 	String pId = PatientUtil.extractPIdTag(file);
 	System.out.println(pId + "\t" + file.getAbsolutePath());
 	if (pId != null) {
@@ -72,26 +81,27 @@ public class TestService implements CommandLineRunner {
 		    repository.save(PatientUtil.extractPatientFromFile(file));
 		    file.renameTo(new File(MOVE_DIR + file.getName()));
 		}
+ else
+		    System.out.println("no ffffff\t" + file.getName());
 	    }
 	    else {
 		Patient p = list.get(0);
 		if (fileName.startsWith("FrontSheet")) {
-		    // TODO 更新首页信息
-		    file.renameTo(new File(MUL_DIR + file.getName()));
+		    // 首页信息
+		    p.addFront(PatientUtil.extractFrontPage(file));
 		} else if (fileName.startsWith("HospitalRecord")) {
 		    // 入院信息
 		    p.addIn(PatientUtil.extractInFromFile(file));
-		    file.renameTo(new File(MOVE_DIR + file.getName()));
 		} else if (fileName.startsWith("OperationInfoRecord")) {
 		    // 手术信息
 		    p.addOperation(PatientUtil.extractOperationFromFile(file));
-		    file.renameTo(new File(MOVE_DIR + file.getName()));
 		} else if (fileName.startsWith("Discharge")) {
 		    // 出院信息
 		    p.addOut(PatientUtil.extractOutFromFile(file));
-		    file.renameTo(new File(MOVE_DIR + file.getName()));
-		}
+		} else
+		    System.out.println("errrrrr\t" + file.getName());
 		repository.save(p);
+		file.renameTo(new File(MOVE_DIR + file.getName()));
 	    }
 	    s.add(file.getName() + ":" + pId);
 	}

@@ -1,6 +1,8 @@
 package cn.anthony.boot.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class InHospital {
     /*
@@ -22,18 +24,118 @@ public class InHospital {
     public String infectiousHistory;
     public String lifeHistory;/* 个人生活史 */
     public String familyHistory;/* 家族史 */
-    public String somatoscopy;/* 体格检查 */
-    public String firstDiag;
-    public String confirmDiag;
-    public String supplyDiag;
-    public String correctDiag;
-    public String sourceFile;
-    class Diagnosis {
-	public String type;//// 初步诊断,确定诊断,补充诊断,更正诊断
-	public String conclusion;
-	public String sign;
-	public Date cdate;
+    public Somatoscopy somatoscopy;/* 体格检查 */
+    // 辅助检查
+    public String auxiliaryExamination;
+    public Diag firstDiag;
+    public Diag confirmDiag;
+    public List<Diag> supplyDiags;
+    public Diag correctDiag;
 
+    public static class Diag {
+	public Diag() {
+	}
+	public Diag(String s) {
+	    this.type = s;
+	}
+	public String type;// 初步诊断 确定诊断 补充诊断 更正
+	public String detail;
+	public Date diagDate;
+	public String signature;
+
+	public String toString() {
+	    return type + ":" + detail + "," + diagDate + " " + signature;
+	}
     }
+    public String sourceFile;
+
+    public InHospital() {
+	this.somatoscopy = new Somatoscopy();
+	this.firstDiag = new Diag("初步诊断");
+	this.confirmDiag = new Diag("确定诊断");
+	this.correctDiag = new Diag("更正诊断");
+	this.supplyDiags = new ArrayList<Diag>();
+    }
+    public String getAdmissionDept() {
+	return admissionDept;
+    }
+
+    public String getAdmissionNo() {
+	return admissionNo;
+    }
+
+    public Date getInDate() {
+	return inDate;
+    }
+
+    public Date getTakingDate() {
+	return takingDate;
+    }
+
+    public String getTakingFrom() {
+	return takingFrom;
+    }
+
+    public String getReliability() {
+	return reliability;
+    }
+
+    public String getContact() {
+	return contact;
+    }
+
+    public String getSelfDesc() {
+	return selfDesc;
+    }
+
+    public String getNowMedicalHistory() {
+	return nowMedicalHistory;
+    }
+
+    public String getPastMedicalHistory() {
+	return pastMedicalHistory;
+    }
+
+    public String getInfectiousHistory() {
+	return infectiousHistory;
+    }
+
+    public String getLifeHistory() {
+	return lifeHistory;
+    }
+
+    public String getFamilyHistory() {
+	return familyHistory;
+    }
+
+
+    public String getSourceFile() {
+	return sourceFile;
+    }
+
+    public Somatoscopy getSomatoscopy() {
+	return somatoscopy;
+    }
+
+    public String getAuxiliaryExamination() {
+	return auxiliaryExamination;
+    }
+
+    public Diag getFirstDiag() {
+	return firstDiag;
+    }
+
+    public Diag getConfirmDiag() {
+	return confirmDiag;
+    }
+
+    public List<Diag> getSupplyDiags() {
+	return supplyDiags;
+    }
+
+    public Diag getCorrectDiag() {
+	return correctDiag;
+    }
+
 
 }
