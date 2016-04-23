@@ -1,6 +1,7 @@
 package cn.anthony.util;
 
 import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,11 +30,13 @@ public class DateUtil {
     private final static String DAY_FORMAT = "yyyyMMdd";
 
     public static void main(String[] args) {
-	try {
-	    System.out.println(DateUtils.parseDate(StringTools.pe("，13时55分完毕", "(\\d{2}时\\d{2}分)"), "yyyy-MM-dd HH:mm", "HH时mm分"));
-	} catch (ParseException e) {
-	    e.printStackTrace();
-	}
+	System.out.println(format(Calendar.getInstance().getTime(), TIME_FORMAT_CN));
+	// LocalDate parsedDate = LocalDate.parse(text, formatter);
+    }
+
+    public static String format(Date date, String format) {
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+	return DateConvertUtils.asLocalDateTime(date).format(formatter);
     }
     /**
      * @Title:getMonthFirstDay

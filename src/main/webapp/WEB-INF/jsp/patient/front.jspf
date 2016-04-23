@@ -1,0 +1,108 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+                  <div class="active tab-pane" id="front">
+                    <ul class="timeline timeline-inverse">
+                      <c:forEach var="item" items="${patient.frontRecords}">
+                      <!-- timeline time label -->
+                      <li class="time-label"> <span class="bg-green"> 入院时间：${item.admissionTimeDesc } </span> </li>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time">第${item.numberOfTimes}次住院<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">入院科别：${item.admissionDept} -- 病房：${item.admissionWard}</h3>
+                          <div class="timeline-body">
+               <p>
+               医疗付费方式：${item.patientclassDesc}<br/>
+               门诊号：${item.outpatientnum}，健康卡号：${item.healthCardNo}，病理号：${item.pathological}<br/>
+                                         
+                            联系人：${item.contactName }<br/>
+                       联系人关系：     ${item.relation }<br/>
+                  联系电话：          ${item.contactaddress }<br/>
+                  </p>
+                           </div>
+                          <div class="timeline-footer">  </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> 入院</span>
+                          <h3 class="timeline-header no-border">入院途径：${item.admissionwayDesc} </h3>
+                          <div class="timeline-body">
+             <p>  门（急）诊诊断：${item.REGISTER_DIAGNOSIS}，疾病编码：${item.numberOfTimes}<br/>
+               门诊号：${item.outpatientnum}，健康卡号：${item.healthCardNo}，病理号：${item.pathological}<br/>
+                                         </p>
+                            
+                           </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">住院天数：${item.inhopitalday} }<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">出院科别：${item.dischargeDept} -- 病房：${item.dischargeWard}</h3>
+                          <div class="timeline-body">
+              <p>              转科科别：${item.changedept}<br/>
+                主要诊断:            ${item.mainDiag}<br/>
+                编码:            ${item.mainDiagCode}<br/>
+            其他诊断：${item.otherDiag1}<br/>
+    编码：${item.otherDiagCode1}<br/></p>
+                          </div>
+                          <div class="timeline-footer">
+                            View comment
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> </span>
+                          <div class="timeline-body">
+    <p>            科 主 任：${item.KZR_DOCTOR_NAME}<br/>
+  主任（副主任）医师：${item.ZRFZR_DOCTOR_NAME}<br/>
+  主治医师：${item.ZZ_DOCTOR_NAME}<br/>
+  住院医师：${item.ZY_DOCTOR_NAME}<br/>
+  主诊医师：${item.ZZHEN_DOCTOR_NAME}<br/>
+  责任护士：${item.ZR_NURSE_NAME}<br/>
+  进修医师：${item.JX_DOCTOR_NAME}<br/>
+  实习医师：${item.SX_DOCTOR_NAME}<br/>
+  编 码 员：${item.coder}<br/>
+  病案质量：${item.ZK_DJ1}<br/>
+  质控医师：${item.ZK_DOCTOR_NAME}<br/>
+  质控日期：${item.qualityControlDate}<br/>
+  质控护士：${item.ZK_NURSE_NAME}<br/>
+  填报医师签名：${item.imagSignature1}<br/>
+  填报医师代码：${item.TB_DOC_CODE}<br/>
+  填报医师名称：${item.TB_DOC_NAME}<br/>
+</p>
+                            
+                           </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">手术详情</h3>
+                          <div class="timeline-body">
+                          <p>${item.oDetail.src}</p>
+                          </div>
+                          <div class="timeline-footer">
+                            View comment
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      
+                      </c:forEach>
+                      <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                      </li>
+                    </ul>
+                    <!-- /.post -->
+                  </div>

@@ -1,8 +1,49 @@
 package cn.anthony.boot.domain;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
+
+import cn.anthony.util.DateUtil;
 
 public class FrontPage {
+    transient static Map<String, String> PAY_TYPE_MAP = new TreeMap<String, String>() {
+	private static final long serialVersionUID = -4638190003036563391L;
+	{
+	    put("1", "城镇职工基本医疗保险");
+	    put("2", "城镇居民基本医疗保险");
+	    put("3", "新型农村合作医疗");
+	    put("4", "贫困救助");
+	    put("5", "商业医疗保险");
+	    put("6", "全公费");
+	    put("7", "全自费");
+	    put("8", "其他社会保险");
+	    put("9", "其他");
+	}
+    };
+    transient static Map<String, String> ENTRY_MAP = new TreeMap<String, String>() {
+	{
+	    put("1", "急诊");
+	    put("2", "门诊");
+	    put("3", "其他医疗机构转入");
+	    put("4", "其他");
+	}
+    };
+    public String getAdmissionTimeDesc() {
+	return DateUtil.format(admissionTime, "yyyy年MM月dd日HH时");
+    }
+
+    public String getDischargeTimeDesc() {
+	return DateUtil.format(dischargeTime, "yyyy年MM月dd日HH时");
+    }
+
+    public String getPatientclassDesc() {
+	return PAY_TYPE_MAP.get(patientclass);
+    }
+
+    public String getAdmissionwayDesc() {
+	return ENTRY_MAP.get(admissionway);
+    }
     // 医疗机构
     public String medicalInstitution;
     // （组织机构代码
@@ -296,6 +337,10 @@ public class FrontPage {
 
     public class OperationDetail {
 	public String src;
+
+	public String getSrc() {
+	    return src;
+	}
     }
     public String getSourceFile() {
 	return sourceFile;

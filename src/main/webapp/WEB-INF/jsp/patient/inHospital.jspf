@@ -1,0 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="inHospital">
+                    <ul class="timeline timeline-inverse">
+                      <c:forEach var="item" items="${patient.inRecords}">
+                      <!-- timeline time label -->
+                      <li class="time-label"> <span class="bg-green"> ${item.inDateDesc } </span> </li>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time">入院科室：${item.admissionDept }</span>
+                          <h3 class="timeline-header">${item.admissionDept} </h3>
+                          <div class="timeline-body">
+                            联系人：${item.contact }<br/>
+                          </div>
+                          <div class="timeline-footer">  </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time">病史采集<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header no-border">${item.takingDateDesc }--${item.takingFrom }</h3>
+                          <div class="timeline-body">
+                            <p>自述病史：${item.selfDesc }</p>
+                            <p>现病史：${item.nowMedicalHistory }</p>
+                            <p>既往史：${item.pastMedicalHistory }</p>
+                            <p>传染病史：${item.infectiousHistory }</p>
+                            <p>个人生活史：${item.lifeHistory }</p>
+                            <p>家族史：${item.familyHistory }</p>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">体格检查<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">体格检查 </h3>
+                          <div class="timeline-body">
+                            <p>${item.somatoscopy.sExamination.src}</p>
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">辅助检查<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">辅助检查 </h3>
+                          <div class="timeline-body">
+                            <p>${item.auxiliaryExamination}</p>
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">诊断<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">诊断 </h3>
+                          <div class="timeline-body">
+                            <p>初步诊断：${item.firstDiag}</p>
+                            <p>确定诊断：${item.confirmDiag}</p>
+                            <p>补充诊断：${item.supplyDiags}</p>
+                            <p>更正诊断：${item.correctDiag}</p>
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                      </li>
+                      </c:forEach>
+                    </ul>
+                    
+                  </div><!-- /.tab-pane -->
+                  

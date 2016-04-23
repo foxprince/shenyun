@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.anthony.util.DateUtil;
+import cn.anthony.util.StringTools;
+
 public class InHospital {
     /*
      * 姓名：周惠英 科室：神经外科第1页 住院号：184470
@@ -44,7 +47,13 @@ public class InHospital {
 	public String signature;
 
 	public String toString() {
-	    return type + ":" + detail + "," + diagDate + " " + signature;
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(type + ":");
+	    sb.append(StringTools.checkNull(detail) + "<br/>");
+	    if (diagDate != null)
+		sb.append("时间：" + DateUtil.format(diagDate, "yyyy年MM月dd日"));
+	    sb.append("<br/>签名：" + StringTools.printString(signature));
+	    return sb.toString();
 	}
     }
     public String sourceFile;
@@ -55,6 +64,14 @@ public class InHospital {
 	this.confirmDiag = new Diag("确定诊断");
 	this.correctDiag = new Diag("更正诊断");
 	this.supplyDiags = new ArrayList<Diag>();
+    }
+
+    public String getInDateDesc() {
+	return DateUtil.format(inDate, "yyyy年MM月dd日 HH时mm分");
+    }
+
+    public String getTakingDateDesc() {
+	return DateUtil.format(takingDate, "yyyy年MM月dd日 HH时mm分");
     }
     public String getAdmissionDept() {
 	return admissionDept;

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="html" tagdir="/WEB-INF/tags/html/" %>
 <%@ taglib prefix="ajax" tagdir="/WEB-INF/tags/ajax/" %>
@@ -58,21 +59,20 @@
                     <thead>
                       <tr>
                         <th>姓名</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
+                        <th>首页纪录数</th>
+                        <th>入院纪录数</th>
+                        <th>手术记录数</th>
+                        <th>出院记录数</th>
                       </tr>
                     </thead>
                     <tbody>
                       <c:forEach var="item" items="${itemList}">
                       <tr>
                         <td><a href="./?id=${item.id} ">${item.name}</a> </td>
-                        <td>Internet
-                          Explorer 4.0</td>
-                        <td>Win 95+</td>
-                        <td> 4</td>
-                        <td>X</td>
+                        <td>${fn:length(patient.frontRecords)} </td>
+                        <td>${fn:length(patient.inRecords)}</td>
+                        <td>${fn:length(patient.operations)}</td>
+                        <td>${fn:length(patient.outRecords)}</td>
                       </tr>
                       </c:forEach>
                     </tbody>

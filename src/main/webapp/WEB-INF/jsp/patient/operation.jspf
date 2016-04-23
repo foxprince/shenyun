@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="operation">
+                    <ul class="timeline timeline-inverse">
+                      <c:forEach var="item" items="${patient.operations}">
+                      <li class="time-label"> <span class="bg-red"> ${item.operationTitle } </span> </li>
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                          <h3 class="timeline-header"><a href="#">${item.operationDpt }</a> 床位：${item.bedNumber }</h3>
+                          
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time">开始时间：<i class="fa fa-clock-o"></i> ${item.beginTime }</span>
+                          <h3 class="timeline-header no-border"><a href="#">术前诊断</a> ${item.preDiagnosis }</h3>
+                          <div class="timeline-body"><p>
+                          术中诊断：${item.operataionDiagnosis}<br/>
+                       医生：${item.doctor}<br/>
+                          助手：${item.assistant}<br/>
+                          麻醉方法：${item.anaesthetic}</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+                          <h3 class="timeline-header">手术经过、术中出现的情况及处理等</h3>
+                          <div class="timeline-body">
+                           <p> ${item.detail}</p>
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <span class="bg-green">
+                          3 Jan. 2014
+                        </span>
+                      </li>
+                      <li>
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+                          <div class="timeline-body">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                      </li>
+                      </c:forEach>
+                    </ul>
+                  </div><!-- /.tab-pane -->
+                  

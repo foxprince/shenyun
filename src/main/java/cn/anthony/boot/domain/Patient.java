@@ -31,6 +31,8 @@ public class Patient extends GenericNoSQLEntity {
     private boolean active = true;
     @JsonIgnore
     transient private String activeDesc;
+    transient private String sexDesc;
+
     public Patient() {
 	super();
     }
@@ -56,15 +58,15 @@ public class Patient extends GenericNoSQLEntity {
 	return new SimpleDateFormat("yyyy年MM月dd日").format(dateOfBirth);
     }
 
-    public Integer getActualAge() {
+    public String getActualAge() {
 	Calendar cal = Calendar.getInstance();
 	if (frontRecords != null && frontRecords.size() > 0)
 	    cal.setTime(frontRecords.get(0).dateOfBirthday);
 	else if (dateOfBirth != null)
 	    cal.setTime(dateOfBirth);
 	else
-	    return 0;
-	return Calendar.getInstance().get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+	    return "";
+	return "" + (Calendar.getInstance().get(Calendar.YEAR) - cal.get(Calendar.YEAR));
     }
 
 

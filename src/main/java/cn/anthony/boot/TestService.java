@@ -10,14 +10,17 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
 import cn.anthony.boot.util.PatientUtil;
+import cn.anthony.util.RefactorUtil;
+import cn.anthony.util.StringTools;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class TestService implements CommandLineRunner {
-    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2014已处理\\";
+    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2015已处理\\";
     private static final String MUL_DIR = "E:\\project\\神云系统\\data\\重复住院\\";
 
     @Autowired
@@ -30,14 +33,15 @@ public class TestService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-	// String id = "571581aa4ea3f8d11a838059";
-	// Patient p = repository.findOne(id);
-	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
-	processTool();
+	String id = "571888f2dbab72c294293a2c";
+	Patient p = repository.findOne(id);
+	System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
+	System.out.println(p.operations.size());
+	// processTool();
     }
 
     private void processTool() throws ParseException {
-	String srcDir = "E:\\project\\神云系统\\KYBLSJ201405-201412\\KYBLSJ";
+	String srcDir = "E:\\project\\神云系统\\data\\待处理";
 	File dir = new File(srcDir);
 	long t1 = System.currentTimeMillis();
 	// 先处理首页文件，处理完移走

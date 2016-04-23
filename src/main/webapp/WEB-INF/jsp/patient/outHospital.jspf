@@ -1,0 +1,67 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="outHospital">
+                    <ul class="timeline timeline-inverse">
+                      <c:forEach var="item" items="${patient.outRecords}">
+                      <!-- timeline time label -->
+                      <li class="time-label"> <span class="bg-red"> ${item.outDate } </span> </li>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time">科室：${item.department }</span>
+                          <h3 class="timeline-header">${item.inDiagnosis} </h3>
+                          <div class="timeline-body">
+                            ${item.inDescription }<br/>
+                          </div>
+                          <div class="timeline-footer">  </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time">病史采集<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header no-border"></h3>
+                          <div class="timeline-body">
+                            
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">体格检查<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">体格检查 </h3>
+                          <div class="timeline-body">
+                            
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- END timeline item -->
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">诊断<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">诊断 </h3>
+                          <div class="timeline-body">
+                            
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                      </li>
+                      </c:forEach>
+                    </ul>
+                  </div><!-- /.tab-pane -->
+                  
