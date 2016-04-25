@@ -25,7 +25,7 @@
           </h1>
           <ol class="breadcrumb">
             <li><a href="/"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active"><a href="./listPage">病人列表</a></li>
+            <li class="active"><a href="./list">病人列表</a></li>
           </ol>
         </section>
 
@@ -36,7 +36,6 @@
 
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Data Table With Full Features</h3>
                   <div class="box-content">
 						<html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/listPage">
 						  <table class="table table-condensed">
@@ -45,7 +44,7 @@
 									<html:inputField name="name" label="病人姓名"/>
 								</td>
 								<td align="center" >
-									  <button type="submit" class="btn btn-primary">搜</button>
+									  <button type="submit" class="btn btn-primary pull-left">搜</button>
 									  <input type="hidden" name="action" value="query"/>
 								</td>
 							</tr>
@@ -54,8 +53,7 @@
 					</div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  	
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="example11" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                         <th>姓名</th>
@@ -69,16 +67,16 @@
                       <c:forEach var="item" items="${itemList}">
                       <tr>
                         <td><a href="./?id=${item.id} ">${item.name}</a> </td>
-                        <td>${fn:length(patient.frontRecords)} </td>
-                        <td>${fn:length(patient.inRecords)}</td>
-                        <td>${fn:length(patient.operations)}</td>
-                        <td>${fn:length(patient.outRecords)}</td>
+                        <td>${fn:length(item.frontRecords)} </td>
+                        <td>${fn:length(item.inRecords)}</td>
+                        <td>${fn:length(item.operations)}</td>
+                        <td>${fn:length(item.outRecords)}</td>
                       </tr>
                       </c:forEach>
                     </tbody>
                     <tfoot>
                       <tr>
-                        
+                      	<th colspan="5"></th>
                       </tr>
                     </tfoot>
                   </table>
@@ -93,15 +91,55 @@
 	
 	<%@ include file="../include/footer.jspf" %>
 	<%@ include file="../include/sidebar.jspf" %>
-	</div>
+	</div><!-- ./wrapper -->
 	
-	<%@ include file="../include/script.jspf" %>
+	<!-- jQuery 2.1.4 -->
+    <script src="../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="../plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../dist/js/demo.js"></script>
 	<!-- page script -->
     <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script>
       $(function () {
-        $("#example1").DataTable();
+    	  $("#example1").dataTable( {
+    		 "processing": true,
+    		 "serverSide": true,
+    	     "ajax": {
+                 "url": '/patient/dataTableList?${_csrf.parameterName}=${_csrf.token}',
+                 "type": 'POST',
+                 //"data": function ( d ) { return JSON.stringify( d );}
+             },
+             "columns": [
+    	                 { "name": "id","data": "id" },{ "name": "name","data": "name" },
+    	                 { "name": "fs"  ,"data": "fs"   },
+    	                 { "name": "is"  ,"data": "is"   },
+    	                 { "name": "os"  ,"data": "os"   },
+    	                 { "name": "xs"  ,"data": "xs"   }
+    	               ],
+              "columnDefs": [ 
+                              {
+            	    "targets": 1,
+            	    "data": "name",
+            	    "render": function ( data, type, full, meta ) {
+            	    	return '<a href="./?id='+full+'">'+data+'</a>';
+            	    }
+            	  } ,{
+            	    "targets": 0,
+            	    "data": "name",
+            	    "render": function ( data, type, full, meta ) {
+            	    	return '<a href="./?id='+full+'">'+data+'</a>';
+            	    }
+            	  } ]
+    	    } );
       });
     </script>
 	

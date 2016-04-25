@@ -9,7 +9,7 @@
 	<div class="${cssGroup}" id="${name}">
 		<label class="control-label">${label}</label> 
 		<div class="controls">
-			<form:input path="${name}" /> 
+			<form:input path="${name}"/> 
 			<span class="help-inline">${status.errorMessage}</span>
 		</div>
 	</div>

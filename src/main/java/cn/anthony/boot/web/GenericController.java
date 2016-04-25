@@ -1,13 +1,17 @@
 package cn.anthony.boot.web;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -127,8 +132,7 @@ public abstract class GenericController<T> {
      * @return
      */
     @RequestMapping(value = { "/", "/index" })
-    public String index(Model m, SessionStatus status) {
-	// status.setComplete();
+    public String index(Model m) {
 	return getIndexView();
     }
 
@@ -137,7 +141,6 @@ public abstract class GenericController<T> {
 	m.addAttribute("itemList", getService().findAll());
 	return getListView();
     }
-
 
     /**
      * 根据关联id列出列表
@@ -175,9 +178,41 @@ public abstract class GenericController<T> {
     }
 
     public void validate(T t, Errors errors) {
-
     }
 
+    public static String extractPathFromPattern(final HttpServletRequest request) {
+	String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+	System.out.println(path);
+	String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+	System.out.println(bestMatchPattern);
+	AntPathMatcher apm = new AntPathMatcher();
+	String finalPath = apm.extractPathWithinPattern(bestMatchPattern, path);
+	return finalPath;
+    }
+
+    protected void logPara(Model m, HttpServletRequest request, HttpSession session) {
+	System.out.println("Inside of dosomething handler method");
+	System.out.println("--- Model data ---");
+	Map modelMap = m.asMap();
+	for (Object modelKey : modelMap.keySet()) {
+	    Object modelValue = modelMap.get(modelKey);
+	    System.out.println(modelKey + " -- " + modelValue);
+	}
+	System.out.println("=== Request data ===");
+	java.util.Enumeration<String> reqEnum = request.getAttributeNames();
+	while (reqEnum.hasMoreElements()) {
+	    String s = reqEnum.nextElement();
+	    System.out.println(s);
+	    System.out.println("==" + request.getAttribute(s));
+	}
+	System.out.println("*** Session data ***");
+	Enumeration<String> e = session.getAttributeNames();
+	while (e.hasMoreElements()) {
+	    String s = e.nextElement();
+	    System.out.println(s);
+	    System.out.println("**" + session.getAttribute(s));
+	}
+    }
     String updateHint(T t) {
 	return "成功";
     }
@@ -185,5 +220,4 @@ public abstract class GenericController<T> {
     String deleteHint(T t) {
 	return "成功删除";
     }
-
 }

@@ -12,7 +12,7 @@
 
 							<div class="row-fluid center">
 								<div class="span4">
-								<form:form action="${pageUrl}" commandName="pageRequest" method="GET">每页:
+								<form:form action="${pageUrl}" commandName="pageRequest" method="POST">每页:
 								<form:input  path="size" class="input-short"/>
 								<input type="submit" value="条"/><form:errors path="size" cssclass="error"/>
 								</form:form>
@@ -21,7 +21,7 @@
 									共${total}条，总${totalPages}页。
 								</div>
 								<div class="span4">
-								<form:form action="${pageUrl}" commandName="pageRequest" method="GET">到第:
+								<form:form action="${pageUrl}" commandName="pageRequest" method="POST">到第:
 								<form:input type="text"  path="page" class="input-short"></form:input>
 								<input type="submit" value="页"/>
 								<form:errors path="page" cssclass="error"></form:errors></form:form>

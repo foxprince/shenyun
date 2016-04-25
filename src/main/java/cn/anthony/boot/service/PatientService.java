@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
 import cn.anthony.boot.web.PatientSearch;
+import cn.anthony.util.StringTools;
 
 @Service
 public class PatientService extends GenericService<Patient> {
@@ -23,14 +24,12 @@ public class PatientService extends GenericService<Patient> {
     @Override
     public Page<Patient> findPage(cn.anthony.boot.web.PageRequest pageRequest) {
 	Pageable pageable = new PageRequest(pageRequest.getPage() - 1, pageRequest.getSize());
-	if(pageRequest instanceof PatientSearch) {
-	    PatientSearch ps = (PatientSearch) pageRequest;
-	    if (ps.getName() != null)
-		return repository.findByNameLike(ps.getName(), pageable);
-	    else
-		return repository.findAll(pageable);
-	}
+	PatientSearch ps = (PatientSearch) pageRequest;
+	if (StringTools.checkNull(ps.getName()) != null)
+	    return repository.findByNameLike(ps.getName(), pageable);
 	else
 	    return repository.findAll(pageable);
     }
+
+
 }

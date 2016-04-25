@@ -10,7 +10,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
@@ -18,7 +17,7 @@ import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.StringTools;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class TestService implements CommandLineRunner {
     private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2015已处理\\";
     private static final String MUL_DIR = "E:\\project\\神云系统\\data\\重复住院\\";

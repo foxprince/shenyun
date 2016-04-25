@@ -1,6 +1,7 @@
 package cn.anthony.boot.domain;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -22,16 +23,33 @@ public class Patient extends GenericNoSQLEntity {
     public String sex;
     public Date dateOfBirth;
     public String certNo;/* 身份证号码 */
-    public List<FrontPage> frontRecords;// 首页纪录
-    public List<InHospital> inRecords;/* 入院纪录 */
-    public List<Operation> operations;/* 手术纪录 */
-    public List<OutHospital> outRecords;/* 出院纪录 */
+    public List<FrontPage> frontRecords = new ArrayList();// 首页纪录
+    public List<InHospital> inRecords = new ArrayList();/* 入院纪录 */
+    public List<Operation> operations = new ArrayList();/* 手术纪录 */
+    public List<OutHospital> outRecords = new ArrayList();/* 出院纪录 */
+
+    public Patient(String pId, String name, Integer age, String sex, Date dateOfBirth, String certNo, List<FrontPage> frontRecords,
+	    List<InHospital> inRecords, List<Operation> operations, List<OutHospital> outRecords, boolean active, String activeDesc) {
+	super();
+	this.pId = pId;
+	this.name = name;
+	this.age = age;
+	this.sex = sex;
+	this.dateOfBirth = dateOfBirth;
+	this.certNo = certNo;
+	this.frontRecords = frontRecords;
+	this.inRecords = inRecords;
+	this.operations = operations;
+	this.outRecords = outRecords;
+	this.active = active;
+	this.activeDesc = activeDesc;
+    }
 
     @Transient // 此注解用于不映射到数据库
     private boolean active = true;
     @JsonIgnore
+    @Transient
     transient private String activeDesc;
-    transient private String sexDesc;
 
     public Patient() {
 	super();
@@ -40,6 +58,7 @@ public class Patient extends GenericNoSQLEntity {
 	super();
 	this.pId = pId;
     }
+
     public String getActiveDesc() {
 	if (active)
 	    return "开";

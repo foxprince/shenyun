@@ -52,7 +52,7 @@
                     </li>
                   </ul>
 
-                  <button class="btn btn-primary btn-block"><b>病案号：${patient.pId}</b></button>
+                  <span class="label label-primary btn-block"><b>病案号：${patient.pId}</b></span>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 
