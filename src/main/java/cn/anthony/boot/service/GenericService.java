@@ -52,6 +52,7 @@ public abstract class GenericService<T> {
      * @param relate
      * @return
      */
-    public abstract Page<T> findPage(cn.anthony.boot.web.PageRequest pageRequest);
+    // public abstract Page<T> findPage(cn.anthony.boot.web.PageRequest
+    // pageRequest);
 
 }

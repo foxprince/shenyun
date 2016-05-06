@@ -1,67 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<div class="tab-pane" id="outHospital">
-                    <ul class="timeline timeline-inverse">
-                      <c:forEach var="item" items="${patient.outRecords}">
-                      <!-- timeline time label -->
-                      <li class="time-label"> <span class="bg-red"> ${item.outDate } </span> </li>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-envelope bg-blue"></i>
-                        <div class="timeline-item">
-                          <span class="time">科室：${item.department }</span>
-                          <h3 class="timeline-header">${item.inDiagnosis} </h3>
-                          <div class="timeline-body">
-                            ${item.inDescription }<br/>
-                          </div>
-                          <div class="timeline-footer">  </div>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-user bg-aqua"></i>
-                        <div class="timeline-item">
-                          <span class="time">病史采集<i class="fa fa-clock-o"></i> </span>
-                          <h3 class="timeline-header no-border"></h3>
-                          <div class="timeline-body">
-                            
-                          </div>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-comments bg-yellow"></i>
-                        <div class="timeline-item">
-                          <span class="time">体格检查<i class="fa fa-clock-o"></i> </span>
-                          <h3 class="timeline-header">体格检查 </h3>
-                          <div class="timeline-body">
-                            
-                          </div>
-                          <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <li>
-                        <i class="fa fa-comments bg-yellow"></i>
-                        <div class="timeline-item">
-                          <span class="time">诊断<i class="fa fa-clock-o"></i> </span>
-                          <h3 class="timeline-header">诊断 </h3>
-                          <div class="timeline-body">
-                            
-                          </div>
-                          <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <i class="fa fa-clock-o bg-gray"></i>
-                      </li>
-                      </c:forEach>
-                    </ul>
-                  </div><!-- /.tab-pane -->
+        <div class="tab-pane" id="outHospital">
+          <div class="callout callout-info" >
+            <h4>出院纪录</h4>
+            <p>病人所有出院纪录</p>
+          </div>
+          <!-- Default box -->
+          <c:forEach var="item" items="${patient.outRecords}">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">出院时间：${item.outDateDesc }</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <p>科别：${item.department }</p>
+              <p>入院时情况(包括检验异常结果等)：${item.inDescriotion }</p>
+              <p>入院诊断：${item.inDiagnosis }</p>
+              <p>入院后诊疗经过：${item.treatment }</p>
+              <p>手术情况：${item.operationDesc }</p>
+              <p>出院时情况(包括主要化验结果等)：${item.outDescription }</p>
+              <p>出院诊断：${item.outDiagnosis }</p>
+            </div><!-- /.box-body -->
+            <div class="box-footer">
+              <p>出院医嘱：${item.dischargeOrder }</p>
+            </div><!-- /.box-footer-->
+          </div>
+          </c:forEach>
+        </div><!-- /.tab-pane -->
                   

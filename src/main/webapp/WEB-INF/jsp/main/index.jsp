@@ -18,12 +18,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Dashboard
-            <small>Control panel</small>
+            仪表盘
+            <small>控制面板</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li><a href="/"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">仪表盘</li>
           </ol>
         </section>
 
@@ -35,13 +35,13 @@
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>150</h3>
-                  <p>New Orders</p>
+                  <h3>${homeVO.totalPatients}</h3>
+                  <p>病人纪录数</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-bag"></i>
+                  <i class="ion ion-person-add"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/patient" class="small-box-footer">查看所有 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-6">
@@ -65,7 +65,7 @@
                   <p>User Registrations</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-person-add"></i>
+                  <i class="ion ion-bag"></i>
                 </div>
                 <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>

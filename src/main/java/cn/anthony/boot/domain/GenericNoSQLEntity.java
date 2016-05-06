@@ -11,6 +11,8 @@ import org.springframework.data.annotation.Transient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import cn.anthony.util.DateUtil;
+
 public class GenericNoSQLEntity implements Serializable {
     private static final long serialVersionUID = 4365837246243902781L;
     @Id
@@ -22,8 +24,10 @@ public class GenericNoSQLEntity implements Serializable {
     @Transient
     protected Boolean create = false;
     @JsonIgnore
+    @Transient
     transient protected String action;
     @JsonIgnore
+    @Transient
     transient protected String actionDesc;
 
     public GenericNoSQLEntity() {
@@ -60,6 +64,10 @@ public class GenericNoSQLEntity implements Serializable {
 
     public Date getCtime() {
 	return ctime;
+    }
+
+    public String getFormatCtime() {
+	return DateUtil.format(getCtime(), "yyyy-MM-dd HH:mm:ss");
     }
 
     public void setCtime(Timestamp ctime) {

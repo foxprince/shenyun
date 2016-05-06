@@ -2,6 +2,10 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
+import cn.anthony.util.DateUtil;
+import lombok.Data;
+
+@Data
 public class OutHospital {
     /*
      * 科别：神经外科 入院时间：2015年02月26日 出院时间：2015年03月05日 入院时情况(包括检验异常结果等)：
@@ -28,51 +32,7 @@ public class OutHospital {
     public String sign;
     public String sourceFile;
 
-    public String getDepartment() {
-	return department;
-    }
-
-    public Date getOutDate() {
-	return outDate;
-    }
-
-    public String getInDescription() {
-	return inDescriotion;
-    }
-
-    public String getInDiagnosis() {
-	return inDiagnosis;
-    }
-
-    public String getTreatment() {
-	return treatment;
-    }
-
-    public String getOutDescription() {
-	return outDescription;
-    }
-
-    public String getOutDiagnosis() {
-	return outDiagnosis;
-    }
-
-    public String getOperationDesc() {
-	return operationDesc;
-    }
-
-    public String getDischargeOrder() {
-	return dischargeOrder;
-    }
-
-    public String getNote() {
-	return note;
-    }
-
-    public String getSign() {
-	return sign;
-    }
-
-    public String getSourceFile() {
-	return sourceFile;
+    public String getOutDateDesc() {
+	return DateUtil.format(getOutDate(), "yyyy年MM月dd日HH时");
     }
 }

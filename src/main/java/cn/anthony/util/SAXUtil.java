@@ -18,8 +18,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import cn.anthony.boot.domain.FrontPage;
-
 public class SAXUtil {
     public static void main(String[] args) {
 	SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -29,14 +27,14 @@ public class SAXUtil {
 	    // E:\project\神云系统\data\待处理\FrontSheet_000024837100_3.xml
 	    // E:\project\神云系统\data\已处理\FrontSheet_000472457900_1.xml
 	    handler.type = "front";
-	    File f = new File("E:\\project\\神云系统\\data\\已处理\\FrontSheet_000024837100_3.xml");
+	    File f = new File("E:\\project\\神云系统\\data\\2015已处理\\FrontSheet_000024837100_3.xml");
 	    saxParser.parse(f, handler);
-	    // List<Object> l = handler.structerList;
-	    // frontHandle(handler, f);
-	    // System.out.println(StringTools.formatCollection(l));
-	    FrontPage fp = new FrontPage();
-	    RefactorUtil.setObjectValue(fp, handler.m);
-	    System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(fp)));
+	    List<Object> l = handler.structerList;
+	    frontHandle(handler, f);
+	    System.out.println(StringTools.formatCollection(l));
+	    // FrontPage fp = new FrontPage();
+	    // RefactorUtil.setObjectValue(fp, handler.m);
+	    // System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(fp)));
 	} catch (ParserConfigurationException | SAXException | IOException e) {
 	    e.printStackTrace();
 	}
@@ -118,6 +116,7 @@ class Front {
 	StringBuilder sb = new StringBuilder();
 	sb.append("//" + comment + "\n");
 	sb.append("public String " + tag + "=" + text + ";");
+	// sb.append("put(\"" + tag + "\",\"" + comment + "\");");
 	return sb.toString();
     }
 }

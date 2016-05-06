@@ -2,6 +2,7 @@ package cn.anthony.boot;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.List;
@@ -10,35 +11,76 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.mysema.query.types.Predicate;
 
 import cn.anthony.boot.domain.Patient;
+import cn.anthony.boot.domain.QInHospital;
+import cn.anthony.boot.domain.QPatient;
 import cn.anthony.boot.repository.PatientRepository;
+import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.RefactorUtil;
-import cn.anthony.util.StringTools;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class TestService implements CommandLineRunner {
     private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2015已处理\\";
     private static final String MUL_DIR = "E:\\project\\神云系统\\data\\重复住院\\";
 
     @Autowired
     private PatientRepository repository;
+    @Autowired
+    private PatientService service;
     private Set<String> s = new HashSet<String>();
 
     public static void main(String[] args) {
+	System.setProperty("DB.TRACE", "true");
+	System.setProperty("DEBUG.MONGO", "true");
 	SpringApplication.run(TestService.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
 	String id = "571888f2dbab72c294293a2c";
-	Patient p = repository.findOne(id);
-	System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
-	System.out.println(p.operations.size());
+	Predicate pre = QPatient.patient.name.startsWith("周");
+	pre = queryBinding(QPatient.patient.inRecords.any(), "contact", "李殿祥13611352590", pre);
+	System.out.println(pre);
+	long t1 = System.currentTimeMillis();
+	// System.out.println(service.totalIn());
+	long t2 = System.currentTimeMillis();
+	System.out.println(t2 - t1);
+	// for (Patient p : repository.findAll(pre)) {
+	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
+	// System.out.println(p.name + ":" + p.operations.size());
+	// }
 	// processTool();
     }
 
+    private Predicate bind(String key, String value, Predicate pre) {
+	Field f = RefactorUtil.getFieldByName(QInHospital.inHospital, key);
+	if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath")) {
+	    try {
+		pre = ((com.mysema.query.types.path.StringPath) f.get(QPatient.patient.inRecords.any())).eq(value).and(pre);
+	    } catch (IllegalArgumentException | IllegalAccessException e) {
+		e.printStackTrace();
+	    }
+	}
+	return pre;
+    }
+
+    private Predicate queryBinding(Object o, String key, String value, Predicate predicate) {
+	if (value != null) {
+	    Field f = RefactorUtil.getFieldByName(o, key);
+	    if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
+		try {
+		    predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).eq(value).and(predicate);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+		    e.printStackTrace();
+		}
+	}
+	return predicate;
+    }
     private void processTool() throws ParseException {
 	String srcDir = "E:\\project\\神云系统\\data\\待处理";
 	File dir = new File(srcDir);

@@ -8,6 +8,32 @@ import java.util.Map;
 
 public class RefactorUtil {
 
+    public static Field getFieldByName(Object o, String name) {
+	Field[] fields = o.getClass().getDeclaredFields();
+	for (Field field : fields) {
+	    field.setAccessible(true); // 设置些属性是可以访问的
+	    if (!field.getName().startsWith("this$") && field.getName().equals(name)) // 过滤掉内部类对父类的引用
+		return field;
+	}
+	return null;
+    }
+
+    public static void setFieldValue(Object o, String key, String value) {
+	Field[] fields = o.getClass().getDeclaredFields();
+	for (Field field : fields) {
+	    field.setAccessible(true); // 设置些属性是可以访问的
+	    if (!field.getName().startsWith("this$") && field.getName().equals(key))
+
+		try {
+		    if (field.getType().getCanonicalName().equals("java.lang.Boolean"))
+			field.setBoolean(o, Boolean.getBoolean(value));
+		    else
+			field.set(o, value);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+		    e.printStackTrace();
+		}
+	}
+    }
     public static Map<String, String> getObjectParaMap(Object o) {
 	Field[] fields = o.getClass().getDeclaredFields();
 	Map<String, String> m = new HashMap<String, String>();
@@ -49,6 +75,8 @@ public class RefactorUtil {
 				field.set(o, new SimpleDateFormat("yyyy年MM月dd日HH时").parse(value));
 			    } catch (ParseException e) {
 			    }
+			else if (c.getCanonicalName().equals("java.lang.Boolean"))
+			    field.setBoolean(o, Boolean.getBoolean(value));
 			else if (c.getCanonicalName().equals("java.lang.String"))
 			    field.set(o, value);
 		    }
@@ -57,4 +85,6 @@ public class RefactorUtil {
 	    }
 	}
     }
+
+
 }

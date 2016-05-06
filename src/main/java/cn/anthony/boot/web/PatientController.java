@@ -1,27 +1,34 @@
 package cn.anthony.boot.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 
+import com.mysema.query.types.Predicate;
+
 import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.domain.PatientPO;
+import cn.anthony.boot.domain.QPatient;
+import cn.anthony.boot.domain.SearchModel;
 import cn.anthony.boot.service.GenericService;
 import cn.anthony.boot.service.PatientService;
+import cn.anthony.boot.service.SearchModelService;
 import cn.anthony.boot.util.ControllerUtil;
+import cn.anthony.util.RefactorUtil;
+import cn.anthony.util.StringTools;
 
 @Controller
 @RequestMapping(value = "/patient")
@@ -29,7 +36,8 @@ import cn.anthony.boot.util.ControllerUtil;
 public class PatientController extends GenericController<Patient> {
     @Resource
     PatientService service;
-
+    @Resource
+    SearchModelService smService;
     @Override
     public Patient init(Model m) {
 	return new Patient();
@@ -66,40 +74,67 @@ public class PatientController extends GenericController<Patient> {
     }
 
     @ModelAttribute("pageRequest")
-    PageRequest initPageRquest() {
+    PatientSearch initPageRquest() {
 	return new PatientSearch();
     }
 
-    @RequestMapping(value = { "/list", "/listPage" })
-    public String listPage(@ModelAttribute("pageRequest") PatientSearch pageRequest, Model m, HttpServletRequest request) {
+    @RequestMapping(value = { "/search", "/list", "/listPage" })
+    public String listPage(@ModelAttribute("pageRequest") PatientSearch ps, @QuerydslPredicate(root = Patient.class) Predicate predicate,
+	    @PageableDefault Pageable pageable, Model m, @RequestParam MultiValueMap<String, String> parameters, HttpServletRequest request) {
 	String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-	if (path.endsWith("list")) {
-	    pageRequest = new PatientSearch();
-	}
-	Page<Patient> page = service.findPage(pageRequest);
-	if (page.getContent().size() == 1) {
+	if (path.endsWith("list"))// 清空搜索历史
+	    ps = new PatientSearch();
+	if (ps.minAge != null)
+	    predicate = QPatient.patient.age.goe(ps.minAge).and(predicate);
+	if (ps.maxAge != null)
+	    predicate = QPatient.patient.age.lt(ps.maxAge).and(predicate);
+	if (ps.inDateBegin != null)
+	    predicate = QPatient.patient.inRecords.any().inDate.after(ps.inDateBegin).and(predicate);
+	if (ps.inDateEnd != null)
+	    predicate = QPatient.patient.inRecords.any().inDate.before(ps.inDateEnd).and(predicate);
+	predicate = queryBinding(QPatient.patient.inRecords.any(), "admissionDept", ps.admissionDept, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "marriageStatus", ps.marriageStatus, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "mainDiag", ps.mainDiag, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "KZR_DOCTOR_NAME", ps.KZR_DOCTOR_NAME, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "dischargeDept", ps.dischargeDept, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "ZY_DOCTOR_NAME", ps.ZY_DOCTOR_NAME, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "ZZHEN_DOCTOR_NAME", ps.ZZHEN_DOCTOR_NAME, predicate);
+	predicate = queryBinding(QPatient.patient.frontRecords.any(), "company", ps.company, predicate);
+	System.out.println(ps.name);
+	System.out.println(predicate);
+	Page<Patient> page = service.find(predicate, pageable);
+	if (page.getContent().size() == 1)
 	    return "redirect:" + getIndexView() + "?id=" + page.getContent().get(0).getId();
-	}
 	ControllerUtil.setPageVariables(m, page);
-	m.addAttribute("pageRequest", pageRequest);
+	m.addAttribute("pageRequest", ps);
+	if (path.endsWith("search") && ps.isNeedSave()) {
+	    smService.create(new SearchModel(ps, page));
+	}
 	return getListView();
     }
 
-    @RequestMapping(value = { "/dataTableList" })
-    @ResponseBody
-    private DatatablePageResponse<PatientPO> dataTableList(@RequestParam Map<String, String> q, Model m) {
-	System.out.println(q);
-	int start = Integer.parseInt(q.get("start"));
-	int length = Integer.parseInt(q.get("length"));
-	int pageNumber = start % length + 1;
-	PatientSearch ps = new PatientSearch(pageNumber, length, q.get("search[value]"));
-	Page<Patient> page = service.findPage(ps);
-	List<PatientPO> l = new ArrayList<PatientPO>();
-	for (Patient p : page.getContent())
-	    l.add(new PatientPO(p.getId(), p.getName(), p.frontRecords.size(), p.inRecords.size(), p.operations.size(), p.outRecords.size()));
-	ControllerUtil.setPageVariables(m, page);
-	DatatablePageResponse<PatientPO> dResp = new DatatablePageResponse<PatientPO>(Integer.parseInt(q.get("draw")), page.getTotalElements(),
-		page.getTotalElements(), l, "");
-	return dResp;
+    private Predicate queryBinding(Object o, String key, String value, Predicate predicate) {
+	if (StringTools.checkNull(value) != null) {
+	    Field f = RefactorUtil.getFieldByName(o, key);
+	    if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
+		try {
+		    predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).containsIgnoreCase(value).and(predicate);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+		    e.printStackTrace();
+		}
+	}
+	return predicate;
     }
+
+    @RequestMapping(value = { "/initSearch" })
+    public String searchForm() {
+	return "/patient/search";
+    }
+
+    @RequestMapping(value = { "/reSearch" })
+    public String reSearchForm(@ModelAttribute("pageRequest") PatientSearch ps, @RequestParam String searchId) {
+	RefactorUtil.setObjectValue(ps, smService.findById(searchId).getKeyValueMap());
+	return "/patient/search";
+    }
+
 }

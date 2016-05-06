@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <c:import url="../include/head.jsp">
-	<c:param name="pageTitle" value="病人列表"/>
+	<c:param name="pageTitle" value="历史查询纪录"/>
 </c:import>
 
 <body class="hold-transition skin-green-light sidebar-mini">
@@ -25,7 +25,7 @@
           </h1>
           <ol class="breadcrumb">
             <li><a href="/"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active"><a href="./list">病人列表</a></li>
+            <li class="active"><a href="./list">历史查询纪录</a></li>
           </ol>
         </section>
 
@@ -37,11 +37,34 @@
               <div class="box">
                 <div class="box-header">
                   <div class="box-content">
-						<html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/listPage">
-						  <div class="row">
-                            <html:inputField labelCss="col-sm-4" css="col-sm-4" name="name" label="病人姓名"/>
-                            <div class="col-sm-4"><button type="submit" class="btn btn-primary pull-left">搜</button></div>
-                          </div>
+						<html:form id="patientForm" modelAttribute="pageRequest" formUrl="/searchModel/listPage">
+						  <table class="table table-condensed">
+							<tr bgcolor="#F3F3F3">
+								<td>
+					  <DIV class="col-md-4 col-sm-4">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime2">开始</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <INPUT name="searchBegin" class="form-control" id="dischargetime2" type="date">
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-4 col-sm-4">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime2">截止</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <INPUT name="searchEnd" class="form-control" id="dischargetime2" type="date">
+                          </DIV>
+                        </DIV>
+                      </DIV>
+								</td>
+								<td align="center" >
+									  <button type="submit" class="btn btn-primary pull-left">搜</button>
+                    <INPUT type="hidden" name="action" value="" class="form-control" id="ZZ_DOCTOR_NAME" 
+                              placeholder="主治医师" >
+								</td>
+							</tr>
+						  </table>
 						</html:form>
 					</div>
                 </div><!-- /.box-header -->
@@ -49,33 +72,21 @@
                   <table id="example11" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>病案号</th>
-                        <th>姓名</th>
-                        <th>年龄</th>
-                        <th>性别</th>
-                        <th>首页数</th>
-                        <th>入院数</th>
-                        <th>手术数</th>
-                        <th>出院数</th>
-                        <th>主要诊断</th>
-                        <th>住院医师</th>
-                        <th>主诊医师</th>
+                        <th>时间</th>
+                        <th>操作者</th>
+                        <th>查询条件</th>
+                        <th>记录数</th>
+                        <th>操作</th>
                       </tr>
                     </thead>
                     <tbody>
                       <c:forEach var="item" items="${itemList}">
                       <tr>
-                        <td>${item.pId}</td>
-                        <td><a href="./?id=${item.id} ">${item.name}</a> </td>
-                        <td>${item.actualAge}</td>
-                        <td>${item.sexDesc}</td>
-                        <td>${fn:length(item.frontRecords)} </td>
-                        <td>${fn:length(item.inRecords)}</td>
-                        <td>${fn:length(item.operations)}</td>
-                        <td>${fn:length(item.outRecords)}</td>
-                        <td>${item.frontRecords.get(0).mainDiag}</td>
-                        <td>${item.frontRecords.get(0).ZY_DOCTOR_NAME}</td>
-                        <td>${item.frontRecords.get(0).ZZHEN_DOCTOR_NAME}</td>
+                        <td>${item.formatCtime}</td>
+                        <td>${item.operator}</td>
+                        <td>${item.fieldsDesc}</td>
+                        <td>${item.hits}</td>
+                        <td><a href="/patient/reSearch?searchId=${item.id}"><button>再次查询</button></a></td>
                       </tr>
                       </c:forEach>
                     </tbody>

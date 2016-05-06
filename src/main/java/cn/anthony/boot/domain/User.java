@@ -1,37 +1,48 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package cn.anthony.boot.domain;
 
-public class User extends GenericNoSQLEntity {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    private static final long serialVersionUID = -6742282967978471611L;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-    private String email;
+import lombok.Data;
 
-    private String passwordHash;
+/**
+ * @author Christoph Strobl
+ * @author Oliver Gierke
+ */
+@Data
+@Document
+public class User {
 
-    private Role role;
+	private @Id String username;
+	private String firstname, lastname, email, nationality;
+	private @JsonIgnore String password;
 
-    public String getEmail() {
-	return email;
-    }
+	private @JsonUnwrapped Address address;
+	private Picture picture;
 
-    public void setEmail(String email) {
-	this.email = email;
-    }
+	public static class Address {
+		String city, street, zip;
+	}
 
-    public String getPasswordHash() {
-	return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-	this.passwordHash = passwordHash;
-    }
-
-    public Role getRole() {
-	return role;
-    }
-
-    public void setRole(Role role) {
-	this.role = role;
-    }
-
+	public static class Picture {
+		String large, medium, small;
+	}
 }
