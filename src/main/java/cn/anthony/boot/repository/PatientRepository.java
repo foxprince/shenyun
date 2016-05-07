@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.querydsl.binding.MultiValueBinding;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -38,10 +37,6 @@ public interface PatientRepository
     // @Query("select from Patient p where p.name like ?1")
     Page<Patient> findByNameLike(String name, Pageable request);
 
-    @Query("{ $or : [ { $where: '?0 == null' } , { field : ?0 } ] }")
-    List<Patient> findAll(String query);
 
-    @Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
-    List<Patient> findAllIn(String query, Pageable pageable);
 
 }

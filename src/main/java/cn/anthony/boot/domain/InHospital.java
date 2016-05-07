@@ -4,16 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.anthony.util.DateUtil;
-import cn.anthony.util.StringTools;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-public class InHospital {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mysema.query.annotations.QueryEntity;
+
+import cn.anthony.util.DateUtil;
+import lombok.Data;
+
+@QueryEntity
+@Entity
+@Data
+public class InHospital extends GenericEntity {
     /*
      * 姓名：周惠英 科室：神经外科第1页 住院号：184470
      * 
      * 入 院 记 录 姓名：周惠英 入院日期：2015-02-26 14:02 性别：女 病史采集日期：2015-02-26 14:41 年龄：62岁
      * 婚姻状况：已婚 民族：汉族 病史叙述人：本人 出生地：北京市 可靠性：可靠 职业：其他 亲属姓名、电话：李殿祥13611352590
      */
+    @ManyToOne(cascade = { CascadeType.DETACH }, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "patient_id")
+    @JsonIgnore
+    private Patient patient;
     public String admissionDept;
     public String admissionNo;
     public Date inDate;
@@ -27,43 +46,29 @@ public class InHospital {
     public String infectiousHistory;
     public String lifeHistory;/* 个人生活史 */
     public String familyHistory;/* 家族史 */
+    @OneToOne
+    @MapsId // One-to-one association that assumes both the source and target
+	    // share the same primary key values.
     public Somatoscopy somatoscopy;/* 体格检查 */
     // 辅助检查
     public String auxiliaryExamination;
-    public Diag firstDiag;
-    public Diag confirmDiag;
-    public List<Diag> supplyDiags;
-    public Diag correctDiag;
-
-    public static class Diag {
-	public Diag() {
-	}
-	public Diag(String s) {
-	    this.type = s;
-	}
-	public String type;// 初步诊断 确定诊断 补充诊断 更正
-	public String detail;
-	public Date diagDate;
-	public String signature;
-
-	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append(type + ":");
-	    sb.append(StringTools.checkNull(detail) + "<br/>");
-	    if (diagDate != null)
-		sb.append("时间：" + DateUtil.format(diagDate, "yyyy年MM月dd日"));
-	    sb.append("<br/>签名：" + StringTools.printString(signature));
-	    return sb.toString();
-	}
-    }
+    // public Diag firstDiag;
+    // public Diag confirmDiag;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "inHospital")
+    public List<Diag> diags;
+    // public Diag correctDiag;
     public String sourceFile;
 
     public InHospital() {
 	this.somatoscopy = new Somatoscopy();
-	this.firstDiag = new Diag("初步诊断");
-	this.confirmDiag = new Diag("确定诊断");
-	this.correctDiag = new Diag("更正诊断");
-	this.supplyDiags = new ArrayList<Diag>();
+	// this.firstDiag = new Diag("初步诊断");
+	// this.confirmDiag = new Diag("确定诊断");
+	// this.correctDiag = new Diag("更正诊断");
+	this.diags = new ArrayList<Diag>();
+    }
+
+    public void addDiag(Diag d) {
+	diags.add(d);
     }
 
     public String getInDateDesc() {
@@ -73,86 +78,8 @@ public class InHospital {
     public String getTakingDateDesc() {
 	return DateUtil.format(takingDate, "yyyy年MM月dd日 HH时mm分");
     }
-    public String getAdmissionDept() {
-	return admissionDept;
-    }
-
-    public String getAdmissionNo() {
-	return admissionNo;
-    }
-
-    public Date getInDate() {
-	return inDate;
-    }
-
-    public Date getTakingDate() {
-	return takingDate;
-    }
-
-    public String getTakingFrom() {
-	return takingFrom;
-    }
-
-    public String getReliability() {
-	return reliability;
-    }
-
-    public String getContact() {
-	return contact;
-    }
-
-    public String getSelfDesc() {
-	return selfDesc;
-    }
-
-    public String getNowMedicalHistory() {
-	return nowMedicalHistory;
-    }
-
-    public String getPastMedicalHistory() {
-	return pastMedicalHistory;
-    }
-
-    public String getInfectiousHistory() {
-	return infectiousHistory;
-    }
-
-    public String getLifeHistory() {
-	return lifeHistory;
-    }
-
-    public String getFamilyHistory() {
-	return familyHistory;
-    }
-
-
-    public String getSourceFile() {
-	return sourceFile;
-    }
 
     public Somatoscopy getSomatoscopy() {
 	return somatoscopy;
     }
-
-    public String getAuxiliaryExamination() {
-	return auxiliaryExamination;
-    }
-
-    public Diag getFirstDiag() {
-	return firstDiag;
-    }
-
-    public Diag getConfirmDiag() {
-	return confirmDiag;
-    }
-
-    public List<Diag> getSupplyDiags() {
-	return supplyDiags;
-    }
-
-    public Diag getCorrectDiag() {
-	return correctDiag;
-    }
-
-
 }

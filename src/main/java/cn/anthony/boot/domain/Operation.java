@@ -2,7 +2,21 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
-public class Operation {
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mysema.query.annotations.QueryEntity;
+
+import lombok.Data;
+
+@QueryEntity
+@Entity
+@Data
+public class Operation extends GenericEntity {
     /*
      * 科别 神经外科 床位号 41301 术前诊断：颈内动脉动脉瘤（ICA）(双) 术中诊断：颅内动脉瘤 手术名称：颅内动脉瘤支架辅助栓塞术
      * 手术医师：叶明 助手姓名： 手术时间：2015-03-02 13:09开始 2015-03-02 14:30完毕
@@ -18,6 +32,10 @@ public class Operation {
      * 
      * 手术医师签名： 记录日期：2015-03-02 20:52
      */
+    @ManyToOne(cascade = { CascadeType.DETACH }, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "patient_id")
+    @JsonIgnore
+    private Patient patient;
     public String operationDpt;
     public String bedNumber;
     public String preDiagnosis;

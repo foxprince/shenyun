@@ -4,11 +4,26 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mysema.query.annotations.QueryEntity;
+
 import cn.anthony.util.DateUtil;
 import lombok.Data;
 
+@QueryEntity
+@Entity
 @Data
-public class FrontPage {
+public class FrontPage extends GenericEntity {
+    @ManyToOne(cascade = { CascadeType.DETACH }, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "patient_id")
+    @JsonIgnore
+    private Patient patient;
     transient static Map<String, String> PAY_TYPE_MAP = new TreeMap<String, String>() {
 	private static final long serialVersionUID = -4638190003036563391L;
 	{
@@ -242,7 +257,7 @@ public class FrontPage {
     // 填报医师名称
     public String TB_DOC_NAME;
     // 手术详情
-    public OperationDetail oDetail;
+    public String operationDetail;
     // 颅脑损伤患者昏迷时间：入院前-天-小时-分钟 入院后-天-小时-分钟
     // 入院前
     public Integer beforeday;
@@ -345,15 +360,4 @@ public class FrontPage {
 	}
     }
 
-    public FrontPage() {
-	this.oDetail = new OperationDetail();
-    }
-
-    public OperationDetail getoDetail() {
-        return oDetail;
-    }
-
-    public void setoDetail(OperationDetail oDetail) {
-        this.oDetail = oDetail;
-    }
 }

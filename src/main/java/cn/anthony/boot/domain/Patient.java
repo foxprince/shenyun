@@ -7,8 +7,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysema.query.annotations.QueryEntity;
@@ -16,8 +21,9 @@ import com.mysema.query.annotations.QueryEntity;
 import lombok.Data;
 
 @QueryEntity
-@Document(collection = "patient")
-public @Data class Patient extends GenericNoSQLEntity {
+@Entity
+@Data 
+public class Patient extends GenericEntity {
     private static final long serialVersionUID = -9199964027188332358L;
     public String pId;/* 病案号 */
     public String name;
@@ -36,9 +42,13 @@ public @Data class Patient extends GenericNoSQLEntity {
     // 出生地
     public String birthplace;
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "patient")
     public List<FrontPage> frontRecords = new ArrayList<FrontPage>();// 首页纪录
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "patient")
     public List<InHospital> inRecords = new ArrayList<InHospital>();/* 入院纪录 */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "patient")
     public List<Operation> operations = new ArrayList<Operation>();/* 手术纪录 */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "patient")
     public List<OutHospital> outRecords = new ArrayList<OutHospital>();/* 出院纪录 */
 
     public Patient(String pId, String name, Integer age, String sex, Date dateOfBirth, String certNo, List<FrontPage> frontRecords,

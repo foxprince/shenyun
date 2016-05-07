@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mysema.query.annotations.QueryEntity;
 
@@ -17,9 +21,9 @@ import cn.anthony.util.StringTools;
 import lombok.Data;
 
 @QueryEntity
-@Document
+@Entity
 @Data
-public class SearchModel extends GenericNoSQLEntity {
+public class SearchModel extends GenericEntity {
     public SearchModel(PatientSearch ps, Page<Patient> page) {
 	hits = page.getTotalElements();
 	fields = new ArrayList<SearchField>();
@@ -34,29 +38,20 @@ public class SearchModel extends GenericNoSQLEntity {
     public Map<String,String> getKeyValueMap() {
 	Map<String,String> m = new HashMap<String,String>();
 	for(SearchField sf : getFields())
-	    m.put(sf.getKey(), sf.getValue());
+	    m.put(sf.getSkey(), sf.getSvalue());
 	return m;
     }
     public String operator;
     public Long hits;
     public String orderBy,sort;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "searchModel")
     public List<SearchField> fields;
     public String getFieldsDesc() {
 	StringBuilder sb = new StringBuilder();
 	for(SearchField sf : fields)
-	    if(Constant.keyNameMap.containsKey(sf.getKey()))
-		sb.append(Constant.keyNameMap.get(sf.getKey())+":"+sf.getValue()+",");
+	    if(Constant.keyNameMap.containsKey(sf.getSkey()))
+		sb.append(Constant.keyNameMap.get(sf.getSkey())+":"+sf.getSvalue()+",");
 	return sb.substring(0, sb.length()-1);
-    }
-    public @Data class SearchField {
-	public String key,value;
-
-	public SearchField(String key, String value) {
-	    super();
-	    this.key = key;
-	    this.value = value;
-	}
-	
     }
     public void addField(String k, String v) {
 	this.fields.add(new SearchField(k,v));

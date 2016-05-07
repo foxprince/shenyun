@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.DateUtils;
 
+import cn.anthony.boot.domain.Diag;
 import cn.anthony.boot.domain.FrontPage;
 import cn.anthony.boot.domain.InHospital;
 import cn.anthony.boot.domain.Operation;
@@ -28,8 +29,7 @@ import cn.anthony.util.StringTools;
 
 public class PatientUtil {
     public static void main(String[] args) throws ParseException {
-	File file = new File(
-"E:\\project\\神云系统\\KYBLSJ201405-201412\\KYBLSJ\\KYBLSJ_08\\出院记录_20140813\\DischargeSummary_000412730700_1.xml");
+	File file = new File("E:\\project\\神云系统\\KYBLSJ201405-201412\\KYBLSJ\\KYBLSJ_08\\出院记录_20140813\\DischargeSummary_000412730700_1.xml");
 	// System.out.println(extractAllText(file).toString());
 	OutHospital in = (extractOutFromFile(file));
 	System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in)));
@@ -79,7 +79,7 @@ public class PatientUtil {
 	}
 	p.certNo = StringTools.e(s, "身份证号", "职业");
 	FrontPage f = extractFrontPage(file);
-	f.oDetail.src = "手术、操作及大型设备检查编码\n" + StringTools.e(s, "手术、操作及大型设备检查编码", "颅脑损伤患者昏迷时间");
+	f.operationDetail = "手术、操作及大型设备检查编码\n" + StringTools.e(s, "手术、操作及大型设备检查编码", "颅脑损伤患者昏迷时间");
 	p.addFront(f);
 	return p;
     }
@@ -113,50 +113,54 @@ public class PatientUtil {
 	i.selfDesc = StringTools.e(s, "主诉", "现病史");
 	i.nowMedicalHistory = StringTools.e(s, "现病史", "既往史");
 	i.pastMedicalHistory = StringTools.pe(s.toString(), "既往史([\\s\\S]*?)(传染病史|个人生活史|个人史)");
-	if(s.indexOf("传染病史")>=0)
+	if (s.indexOf("传染病史") >= 0)
 	    i.infectiousHistory = StringTools.pe(s.toString(), "传染病史([\\s\\S]*?)(个人生活史|个人史)");
 	i.lifeHistory = StringTools.pe2(s.toString(), "(个人生活史|个人史)([\\s\\S]*?)家族史");
 	i.familyHistory = StringTools.e(s, "家族史", "体 格 检 查");
 	i.somatoscopy = ParseUtil.extractSomatoscopy(StringTools.e(s, "体 格 检 查", "辅助检查"));
 	if (s.indexOf("初步诊断") >= 0) {
 	    i.auxiliaryExamination = StringTools.e(s, "辅助检查", "初步诊断");
-	    i.firstDiag.detail = StringTools.e(s, "初步诊断", "签名");
-	    i.firstDiag.signature = StringTools.e(s, "签名", "时间");
+	    Diag d = new Diag("初步诊断");
+	    d.detail = StringTools.e(s, "初步诊断", "签名");
+	    d.signature = StringTools.e(s, "签名", "时间");
 	    try {
-		i.firstDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
+		d.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
 	    } catch (ParseException e) {
 	    }
+	    i.addDiag(d);
 	} else {
 	    i.auxiliaryExamination = StringTools.e(s, "辅助检查", "</text>");
 	}
 	if (s.indexOf("确定诊断") > 0) {
-		i.confirmDiag.detail = StringTools.e(s, "确定诊断", "签名");
-		i.confirmDiag.signature = StringTools.e(s, "签名", "时间");
+	    Diag d = new Diag("确定诊断");
+	    d.detail = StringTools.e(s, "确定诊断", "签名");
+	    d.signature = StringTools.e(s, "签名", "时间");
 	    try {
-		i.confirmDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
+		d.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
 	    } catch (ParseException e) {
 	    }
-	    }
-		while (s.indexOf("补充诊断") >= 0) {
-		InHospital.Diag diag = new InHospital.Diag("补充诊断");
-		    diag.detail = StringTools.e(s, "补充诊断", "签名");
-		    diag.signature = StringTools.e(s, "签名", "时间");
+	    i.addDiag(d);
+	}
+	while (s.indexOf("补充诊断") >= 0) {
+	    Diag diag = new Diag("补充诊断");
+	    diag.detail = StringTools.e(s, "补充诊断", "签名");
+	    diag.signature = StringTools.e(s, "签名", "时间");
 	    try {
 		diag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
 	    } catch (ParseException e) {
 	    }
-		    i.supplyDiags.add(diag);
-		}
-		if (s.indexOf("更正诊断") > 0) {
-		    i.correctDiag.detail = StringTools.e(s, "更正诊断", "签名");
-		    i.correctDiag.signature = StringTools.e(s, "签名", "时间");
+	    i.addDiag(diag);
+	}
+	if (s.indexOf("更正诊断") > 0) {
+	    Diag d = new Diag("更正诊断");
+	    d.detail = StringTools.e(s, "更正诊断", "签名");
+	    d.signature = StringTools.e(s, "签名", "时间");
 	    try {
-		i.correctDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
+		d.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
 	    } catch (ParseException e) {
 	    }
-		}
-
-
+	    i.addDiag(d);
+	}
 	return i;
     }
 
@@ -194,7 +198,7 @@ public class PatientUtil {
 	so.limbs = StringTools.e(b, "四肢（关节）", "神经系统");
 	if (b.indexOf("专科情况") > 0) {
 	    so.nervousSystem = StringTools.e(b, "神经系统", "专科情况");
-	    so.sExamination.src = StringTools.e(b, "专科情况", "辅助检查");
+	    so.sExamination = StringTools.e(b, "专科情况", "辅助检查");
 	} else
 	    so.nervousSystem = StringTools.e(b, "神经系统", "辅助检查");
 	return so;
@@ -260,7 +264,7 @@ public class PatientUtil {
 	o.operationDesc = StringTools.e(s, "手术名称及伤口愈合情况", "出院医嘱");
 	o.dischargeOrder = StringTools.pe(s.toString(), "出院医嘱([\\s\\S]*?)(备注|医生签名)");
 	if (s.indexOf("备注") >= 0)
-	o.note = StringTools.e(s, "备注", "医生签名");
+	    o.note = StringTools.e(s, "备注", "医生签名");
 	o.sign = StringTools.e(s, "医生签名", "</text>");
 	o.sourceFile = file.getAbsolutePath();
 	return o;

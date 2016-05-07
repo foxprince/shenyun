@@ -154,7 +154,7 @@ public class ParseUtil {
 	so.spine = m.get("脊    柱");
 	so.limbs = m.get("四肢（关节）");
 	so.nervousSystem = m.get("神经系统");
-	so.sExamination.src = m.get("专科情况");
+	so.sExamination = m.get("专科情况");
 	return so;
     }
     public static Map<String, String> getMap(List<String> l) {

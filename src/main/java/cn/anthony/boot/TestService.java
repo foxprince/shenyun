@@ -54,7 +54,7 @@ public class TestService implements CommandLineRunner {
 	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
 	// System.out.println(p.name + ":" + p.operations.size());
 	// }
-	// processTool();
+	processTool();
     }
 
     private Predicate bind(String key, String value, Predicate pre) {

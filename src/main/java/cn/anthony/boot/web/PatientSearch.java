@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.SearchModel;
-import cn.anthony.boot.domain.SearchModel.SearchField;
 import cn.anthony.util.RefactorUtil;
 import lombok.Data;
 

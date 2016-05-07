@@ -2,11 +2,22 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mysema.query.annotations.QueryEntity;
+
 import cn.anthony.util.DateUtil;
 import lombok.Data;
 
+@QueryEntity
+@Entity
 @Data
-public class OutHospital {
+public class OutHospital extends GenericEntity {
     /*
      * 科别：神经外科 入院时间：2015年02月26日 出院时间：2015年03月05日 入院时情况(包括检验异常结果等)：
      * 患者9月前无明显诱因出现头晕症状，无恶心呕吐，无意识障碍，无肢体活动障碍，于当地医院就诊，查头CT及MR提示未见明显异常。
@@ -19,6 +30,10 @@ public class OutHospital {
      * 出院诊断： 颈内动脉动脉瘤（ICA）(双) 颈内动脉动脉瘤栓塞术后 手术名称及伤口愈合情况： 颅内动脉瘤栓塞术 出院医嘱： 1.控制高血压
      * 2.继续口服波立维抗血小板治疗 3.控制血糖 4.有情况及时就诊 备注： (注：出院记录打印时一式三份) 医生签名：
      */
+    @ManyToOne(cascade = { CascadeType.DETACH }, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "patient_id")
+    @JsonIgnore
+    private Patient patient;
     public String department;
     public Date outDate;
     public String inDescriotion;
