@@ -57,9 +57,13 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="age1">年龄</LABEL>
                           <DIV class="col-md-9 col-sm-9 form-inline">
-                            <form:input class="form-control" style="width: 100px;" path="minAge" type="text" placeholder="最小"/>
+                            <form:input class="form-control" style="width: 100px;" path="age" type="text" placeholder="最小"/>
+                            <input type="hidden" name="age_andOr" value="and"/>
+                            <input type="hidden" name="age_option" value="ge"/>
                             ~
-                            <form:input class="form-control" style="width: 100px;" path="maxAge" type="text" placeholder="最大"/>
+                            <form:input class="form-control" style="width: 100px;" path="age" type="text" placeholder="最大"/>
+                            <input type="hidden" name="age_andOr" value="and"/>
+                            <input type="hidden" name="age_option" value="le"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -77,8 +81,8 @@
                           <LABEL class="col-md-3 col-sm-3 control-label" style="padding-left: 0px;"> 婚姻 </LABEL>
                           <DIV class="col-md-9 col-sm-9" style="padding-left: 0px;">
                             <LABEL class="radio-inline">
-                            <form:radiobutton path="marriageStatus" value="1" />已婚 </LABEL> 
-                            <LABEL class="radio-inline"><form:radiobutton path="marriageStatus" 
+                            <form:radiobutton path="frontPage.marriageStatus" value="1" />已婚 </LABEL> 
+                            <LABEL class="radio-inline"><form:radiobutton path="frontPage.marriageStatus" 
                               value="0"/> 未婚 </LABEL>
                           </DIV>
                         </DIV>
@@ -123,7 +127,7 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="company">工作单位</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="company" type="text" placeholder="工作单位"/>
+                            <form:input class="form-control" path="frontPage.company" type="text" placeholder="工作单位"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -134,13 +138,13 @@
                         <DIV class="form-group form-group-sm ">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="mainDiag">诊断病情</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                              <form:input class="form-control" path="mainDiag" type="text" placeholder="诊断病情"/>
+                              <form:input class="form-control" path="frontPage.mainDiag" type="text" placeholder="诊断病情"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionDept">入院科室</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="admissionDept" type="text" placeholder="入院科室"/>
+                            <form:input class="form-control" path="inHospital.admissionDept" type="text" placeholder="入院科室"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -148,7 +152,9 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime">入院起始</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="inDateBegin" type="date" />
+                            <form:input class="form-control" path="inHospital.inDate" type="date" />
+                            <input type="hidden" name="inHospital.inDate_andOr" value="and"/>
+                            <input type="hidden" name="inHospital.inDate_option" value="ge"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
@@ -163,13 +169,15 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime2">入院截止</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="inDateEnd" type="date" />
+                            <form:input class="form-control" path="inHospital.inDate" type="date" />
+                            <input type="hidden" name="inHospital.inDate_andOr" value="and"/>
+                            <input type="hidden" name="inHospital.inDate_option" value="le"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="ZZ_DOCTOR_NAME">主治医师</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="ZZ_DOCTOR_NAME" type="text" placeholder="主治医师"/>
+                            <form:input class="form-control" path="frontPage.ZZ_DOCTOR_NAME" type="text" placeholder="主治医师"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -179,7 +187,7 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="dischargeDept">出院科室</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="dischargeDept" type="text" placeholder="出院科室"/>
+                            <form:input class="form-control" path="frontPage.dischargeDept" type="text" placeholder="出院科室"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
@@ -229,7 +237,9 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">住院医师</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="ZY_DOCTOR_NAME" type="text" placeholder="住院医师"/>
+                            <form:input class="form-control" path="frontPage.ZY_DOCTOR_NAME" type="text" placeholder="住院医师"/>
+                            <input type="hidden" name="frontPage.ZY_DOCTOR_NAME_andOr" value="and"/>
+                            <input type="hidden" name="frontPage.ZY_DOCTOR_NAME_option" value="contains"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -239,7 +249,9 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="ZZHEN_DOCTOR_NAME">主诊医师</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="ZZHEN_DOCTOR_NAME" type="text" placeholder="主诊医师"/>
+                            <form:input class="form-control" path="frontPage.ZZHEN_DOCTOR_NAME" type="text" placeholder="主诊医师"/>
+                            <input type="hidden" name="frontPage.ZZHEN_DOCTOR_NAME_andOr" value="and"/>
+                            <input type="hidden" name="frontPage.ZZHEN_DOCTOR_NAME_option" value="contains"/>
                           </DIV>
                         </DIV>
                       </DIV>

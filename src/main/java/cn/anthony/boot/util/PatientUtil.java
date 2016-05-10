@@ -21,7 +21,6 @@ import cn.anthony.boot.domain.OutHospital;
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.Somatoscopy;
 import cn.anthony.util.FileTools;
-import cn.anthony.util.ParseUtil;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.SAXUtil;
 import cn.anthony.util.StringTools;

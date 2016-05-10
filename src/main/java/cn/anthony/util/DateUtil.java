@@ -38,6 +38,14 @@ public class DateUtil {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 	return DateConvertUtils.asLocalDateTime(date).format(formatter);
     }
+
+    public static Date parse(String s) {
+	try {
+	    return DateUtils.parseDate(s, DATE_FORMAT, DATE_FORMAT_CN, TIME_FORMAT, TIME_FORMAT_CN, DAY_FORMAT, MONTH_FORMAT, TIME_FORMAT_SHORT_CN);
+	} catch (ParseException e) {
+	    return null;
+	}
+    }
     /**
      * @Title:getMonthFirstDay
      * @Description: 得到当前月的第一天.

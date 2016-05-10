@@ -19,18 +19,18 @@ public class OutHospital {
      * 出院诊断： 颈内动脉动脉瘤（ICA）(双) 颈内动脉动脉瘤栓塞术后 手术名称及伤口愈合情况： 颅内动脉瘤栓塞术 出院医嘱： 1.控制高血压
      * 2.继续口服波立维抗血小板治疗 3.控制血糖 4.有情况及时就诊 备注： (注：出院记录打印时一式三份) 医生签名：
      */
-    public String department;
-    public Date outDate;
-    public String inDescriotion;
-    public String inDiagnosis;
-    public String treatment;
-    public String outDescription;
-    public String outDiagnosis;
-    public String operationDesc;
-    public String dischargeOrder;// 出院医嘱
-    public String note;
-    public String sign;
-    public String sourceFile;
+    public String department;//科别
+    public Date outDate;//出院时间
+    public String inDescriotion;//入院时情况
+    public String inDiagnosis;//入院诊断
+    public String treatment;//入院后诊疗经过
+    public String outDescription;//出院时情况
+    public String outDiagnosis;//出院诊断
+    public String operationDesc;//手术名称及伤口愈合情况
+    public String dischargeOrder;//出院医嘱
+    public String note;//
+    public String sign;//
+    public String sourceFile;//
 
     public String getOutDateDesc() {
 	return DateUtil.format(getOutDate(), "yyyy年MM月dd日HH时");

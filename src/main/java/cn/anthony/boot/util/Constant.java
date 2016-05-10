@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Constant {
-    public static Map<String, String> keyNameMap = new TreeMap<String, String>() {
+    public static Map<String, String> frontPageKeyMap = new TreeMap<String, String>() {
 	{
 	    put("medicalInstitution", "医疗机构");
 	    put("organizationCode", "（组织机构代码");
@@ -148,6 +148,80 @@ public class Constant {
 	    put("outclass", "");
 	    put("outToHospital", " 1.医嘱离院  2.医嘱转院，拟接收医疗机构名称");
 	    put("outToCommunity", "3.医嘱转社区卫生服务机构/乡镇卫生院，拟接收医疗机构名称");
+	}
+    };
+    public static Map<String, String> inKeyMap = new TreeMap<String, String>() {
+	{
+	    put("takingFrom", "病史叙述人");
+	    put("reliability", "可靠性");
+	    put("contact", "亲属姓名、电话");
+	    put("selfDesc", "自述病史");
+	    put("nowMedicalHistory", "现病史");
+	    put("pastMedicalHistory", "既往史");
+	    put("infectiousHistory", "传染史");
+	    put("lifeHistory", "个人生活史");
+	    put("familyHistory", "家族史");
+	    put("general", "一般情况");
+	    put("T", "体温");
+	    put("P", "心率");
+	    put("R", "R");
+	    put("BP", "血压");
+	    put("skin", "皮肤粘膜");
+	    put("superficialLymph", "浅表淋巴结");
+	    put("skull", "头颅");
+	    put("eye", "眼");
+	    put("ear", "耳");
+	    put("node", "鼻");
+	    put("mouse", "口腔");
+	    put("throat", "咽");
+	    put("neck", "颈    部");
+	    put("thorax", "胸廓");
+	    put("lung", "肺");
+	    put("heart", "心");
+	    put("bloodVessels", "周围血管征");
+	    put("abdomen", "腹    部");
+	    put("liver", "肝（胆）");
+	    put("spleen", "脾");
+	    put("kidney", "肾");
+	    put("vulva", "外阴及肛门");
+	    put("spine", "脊    柱");
+	    put("limbs", "四肢（关节）");
+	    put("nervousSystem", "神经系统");
+	    put("sExamination", "专科情况");
+	    put("firstDiag", "初步诊断");
+	    put("confirmDiag", "确定诊断");
+	    put("correctDiag", "更正诊断");
+	    put("supplyDiags", "补充诊断");
+	}
+    };
+    public static Map<String, String> operKeyMap = new TreeMap<String, String>() {
+	{
+	    put("operationDpt", "科别");
+	    put("bedNumber", "床位号");
+	    put("preDiagnosis", "术前诊断");
+	    put("operataionDiagnosis", "术中诊断");
+	    put("operationTitle", "手术名称");
+	    put("doctor", "手术医师");
+	    put("assistant", "助手");
+	    put("beginTime", "开始时间");
+	    put("endTime", "结束时间");
+	    put("anaesthetic", "麻醉方法");
+	    put("bloodLoss", "失血量");
+	    put("bloodTransfusion", "输血量");
+	    put("detail", "手术经过");
+	}
+    };
+    public static Map<String, String> outKeyMap = new TreeMap<String, String>() {
+	{
+	    put("department", "科别");
+	    put("outDate", "出院时间");
+	    put("inDescriotion", "入院时情况");
+	    put("inDiagnosis", "入院诊断");
+	    put("treatment", "入院后诊疗经过");
+	    put("outDescription", "出院时情况");
+	    put("outDiagnosis", "出院诊断");
+	    put("operationDesc", "手术名称及伤口愈合情况");
+	    put("dischargeOrder", "出院医嘱");
 	}
     };
 }

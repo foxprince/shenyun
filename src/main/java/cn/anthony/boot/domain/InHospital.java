@@ -24,7 +24,7 @@ public class InHospital {
     public String selfDesc;/* 自述病史 */
     public String nowMedicalHistory;/* 现病史 */
     public String pastMedicalHistory;/* 既往史 */
-    public String infectiousHistory;
+    public String infectiousHistory;/* 传染史 */
     public String lifeHistory;/* 个人生活史 */
     public String familyHistory;/* 家族史 */
     public Somatoscopy somatoscopy;/* 体格检查 */

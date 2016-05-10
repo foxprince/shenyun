@@ -44,8 +44,8 @@ public class SearchModel extends GenericNoSQLEntity {
     public String getFieldsDesc() {
 	StringBuilder sb = new StringBuilder();
 	for(SearchField sf : fields)
-	    if(Constant.keyNameMap.containsKey(sf.getKey()))
-		sb.append(Constant.keyNameMap.get(sf.getKey())+":"+sf.getValue()+",");
+	    if(Constant.frontPageKeyMap.containsKey(sf.getKey()))
+		sb.append(Constant.frontPageKeyMap.get(sf.getKey())+":"+sf.getValue()+",");
 	return sb.substring(0, sb.length()-1);
     }
     public @Data class SearchField {

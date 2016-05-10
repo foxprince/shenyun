@@ -18,22 +18,22 @@ public class Operation {
      * 
      * 手术医师签名： 记录日期：2015-03-02 20:52
      */
-    public String operationDpt;
-    public String bedNumber;
-    public String preDiagnosis;
-    public String operataionDiagnosis;
-    public String operationTitle;
-    public String doctor;
-    public String assistant;
-    public Date beginTime;
-    public Date endTime;
-    public String anaesthetic;
-    public String bloodLoss;
-    public String bloodTransfusion;
-    public String detail;
-    public String sign;
-    public Date recordTime;
-    public String sourceFile;
+    public String operationDpt;// 科别
+    public String bedNumber;// 床位号
+    public String preDiagnosis;// 术前诊断
+    public String operataionDiagnosis;// 术中诊断
+    public String operationTitle;// 手术名称
+    public String doctor;// 手术医师
+    public String assistant;// 助手
+    public Date beginTime;// 开始时间
+    public Date endTime;// 结束时间
+    public String anaesthetic;// 麻醉方法
+    public String bloodLoss;// 失血量
+    public String bloodTransfusion;// 输血量
+    public String detail;// 手术经过
+    public String sign;//
+    public Date recordTime;//
+    public String sourceFile;//
 
     public String getOperationDpt() {
 	return operationDpt;

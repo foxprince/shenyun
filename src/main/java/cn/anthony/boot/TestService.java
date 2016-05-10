@@ -47,7 +47,7 @@ public class TestService implements CommandLineRunner {
 	pre = queryBinding(QPatient.patient.inRecords.any(), "contact", "李殿祥13611352590", pre);
 	System.out.println(pre);
 	long t1 = System.currentTimeMillis();
-	// System.out.println(service.totalIn());
+	// System.out.println(repository.findAll(pre));
 	long t2 = System.currentTimeMillis();
 	System.out.println(t2 - t1);
 	// for (Patient p : repository.findAll(pre)) {
@@ -74,7 +74,7 @@ public class TestService implements CommandLineRunner {
 	    Field f = RefactorUtil.getFieldByName(o, key);
 	    if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
 		try {
-		    predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).eq(value).and(predicate);
+		    predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).eq(value).or(predicate);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 		    e.printStackTrace();
 		}

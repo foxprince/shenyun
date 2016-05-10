@@ -5,7 +5,9 @@ package cn.anthony.util;
  */
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,6 +89,8 @@ public class StringTools {
 	if (s.toString().trim().length() == 0)
 	    return null;
 	if (s.toString().trim().equalsIgnoreCase("null"))
+	    return null;
+	if (s instanceof List && ((List) s).size() == 0)
 	    return null;
 	return s.toString();
     }
@@ -278,6 +282,12 @@ public class StringTools {
 	return sb.toString();
     }
     public static void main(String[] args) {
+	Map<String, List<String>> map = new HashMap<String, List<String>>() {
+	    {
+		put("a", new ArrayList<String>());
+	    }
+	};
+	System.out.println(checkNull(map.get("a")));
 	StringBuilder s = new StringBuilder("传染病史:dd\n活史dd个人史fgfgdfg个人生活史");
 	System.out.println(pe(s.toString(), "传染病史((\\s|\\S)*?)(个人生活史|个人史)"));
 	Pattern p = Pattern.compile("<text>(\\s*)</text>");

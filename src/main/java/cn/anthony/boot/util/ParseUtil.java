@@ -1,4 +1,4 @@
-package cn.anthony.util;
+package cn.anthony.boot.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import cn.anthony.boot.domain.Somatoscopy;
+import cn.anthony.util.RefactorUtil;
+import cn.anthony.util.StringTools;
 
 public class ParseUtil {
     public static String extractAllTag(File file, String tag) {
