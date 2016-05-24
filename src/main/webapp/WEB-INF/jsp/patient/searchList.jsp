@@ -60,8 +60,6 @@
 								</td>
 								<td align="center" >
 									  <button type="submit" class="btn btn-primary pull-left">搜</button>
-                    <INPUT type="hidden" name="action" value="" class="form-control" id="ZZ_DOCTOR_NAME" 
-                              placeholder="主治医师" >
 								</td>
 							</tr>
 						  </table>
@@ -77,6 +75,7 @@
                         <th>查询条件</th>
                         <th>记录数</th>
                         <th>操作</th>
+                        <th>操作</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -86,7 +85,8 @@
                         <td>${item.operator}</td>
                         <td>${item.fieldsDesc}</td>
                         <td>${item.hits}</td>
-                        <td><a href="/patient/reSearch?searchId=${item.id}"><button>再次查询</button></a></td>
+                        <td><a href="/searchModel/reSearch?searchId=${item.id}"><button class="btn btn-block btn-info">再次查询</button></a></td>
+                        <td><a href="/searchModel/delete?id=${item.id}"><button class="btn btn-block btn-warning">删除</button></a></td>
                       </tr>
                       </c:forEach>
                     </tbody>

@@ -10,7 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.anthony.boot.domain.Patient.动眼神经;
+import cn.anthony.boot.domain.Patient.反射;
+import cn.anthony.boot.domain.Patient.听力;
+import cn.anthony.boot.domain.Patient.头部反射;
+import cn.anthony.boot.domain.Patient.痛触觉;
+import cn.anthony.boot.domain.Patient.眼底;
+import cn.anthony.boot.domain.Patient.视力;
 import cn.anthony.boot.domain.Somatoscopy;
+import cn.anthony.boot.domain.Somatoscopy.SpecialExamination;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.StringTools;
 
@@ -47,7 +55,7 @@ public class ParseUtil {
 	return sb.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 	List<String> l = new ArrayList<String>();
 	// l.add("一般情况：");
 	// l.add("T:36.2℃ P:64次/分 R:18次/分 BP:110/70mmHg");
@@ -127,7 +135,7 @@ public class ParseUtil {
 
     public static Somatoscopy extractSomatoscopy(String s) {
 	Somatoscopy so = new Somatoscopy();
-	Map<String, String> m = getMap(StringTools.splitString(s, "\n"));
+	Map<String, String> m = getMap(StringTools.split(new StringBuilder(s), "\n"));
 	so.general = m.get("一般情况");
 	if (so.general != null) {
 	    so.T = StringTools.pe(so.general, "T[:|：](.*?)℃");
@@ -156,9 +164,151 @@ public class ParseUtil {
 	so.spine = m.get("脊    柱");
 	so.limbs = m.get("四肢（关节）");
 	so.nervousSystem = m.get("神经系统");
-	so.sExamination.src = m.get("专科情况");
+	try {
+	    if (m.get("专科情况") != null)
+		so.sExamination = extractSpecialExam(so, m.get("专科情况"));
+	} catch (StringIndexOutOfBoundsException e) {
+	    so.sExamination = new Somatoscopy.SpecialExamination();
+	    so.sExamination.src = m.get("专科情况");
+	}
 	return so;
     }
+
+    private static SpecialExamination extractSpecialExam(Somatoscopy so, String e) {
+	SpecialExamination se = new Somatoscopy.SpecialExamination();
+	StringBuilder s = new StringBuilder(e);
+	se.高级皮层功能.神志 = StringTools.e(s, "神志", "精神状态");
+	if (s.indexOf("性格/人格") > 0) {
+	    se.高级皮层功能.精神状态 = StringTools.e(s, "精神状态", "性格/人格");
+	    if (s.indexOf("头部") > 0)
+		se.高级皮层功能.性格人格 = StringTools.e(s, "性格/人格", "头部");
+	} else if (s.indexOf("头部") > 0) {
+	    se.高级皮层功能.精神状态 = StringTools.e(s, "精神状态", "头部");
+	    if (s.indexOf("语言") >= 0) {
+		se.高级皮层功能.头部 = StringTools.e(s, "头部", "语言");
+		se.高级皮层功能.语言 = StringTools.e(s, "语言", "脑膜刺激征");
+	    } else
+		se.高级皮层功能.头部 = StringTools.e(s, "头部", "脑膜刺激征");
+	}
+	se.高级皮层功能.脑膜刺激征 = StringTools.e(s, "脑膜刺激征", "颅神经");
+	se.颅神经.嗅觉 = StringTools.e(s, "嗅觉", "Ⅱ：视力");
+	String c = "\n";
+	String[] ss;
+	try {
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "Ⅱ：视力", "视野"), c);
+	    se.颅神经.视力 = new 视力(ss[0], ss[7], ss[8], ss[9], ss[10], ss[11], ss[13],
+		    ss[14], ss[15], ss[16], ss[17]);
+	} catch (Exception ex) {
+	}
+	try {
+	    se.颅神经.视野 = StringTools.e(s, "视野", "眼底");
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "视盘", "Ⅲ、Ⅳ、Ⅵ"), c);
+	    se.颅神经.眼底 = new 眼底(ss[3], ss[4], ss[5], ss[7], ss[8], ss[9]);
+	} catch (Exception ex) {
+	}
+	try {
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "Ⅲ、Ⅳ、Ⅵ", "眼球运动"), c);
+	    se.颅神经.动眼神经 = new 动眼神经(ss[10], ss[11], ss[12], ss[13], ss[14], ss[15],
+		    ss[16], ss[17], ss[18], ss[20], ss[21], ss[22], ss[23], ss[24], ss[25], ss[26], ss[27], ss[28]);
+	} catch (Exception ex) {
+	}
+	if (s.indexOf("复视") >= 0) {
+	    se.颅神经.眼球运动 = StringTools.e(s, "眼球运动", "复视");
+	    se.颅神经.复视 = StringTools.e(s, "复视", "Ⅴ：感觉");
+	} else
+	    se.颅神经.眼球运动 = StringTools.e(s, "眼球运动", "Ⅴ：感觉");
+	if (s.indexOf("第一支") >= 0 && s.indexOf("洋葱样皮样感觉障碍") > 0) {
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "第一支", "洋葱样皮样感觉障碍"), c);
+	    if (s.indexOf("运动") > 0 && s.indexOf("运动") < s.indexOf("Ⅶ")) {
+		se.颅神经.洋葱样皮样感觉障碍 = StringTools.e(s, "洋葱样皮样感觉障碍", "运动");
+		try {
+		    se.颅神经.痛触觉 = new 痛触觉(ss[3], ss[4], ss[5], ss[7], ss[8], ss[9]);
+		} catch (Exception ex) {
+		}
+		if (s.indexOf("运动") > 0 && s.indexOf("反射") > 0) {
+		    se.颅神经.运动 = StringTools.e(s, "运动", "反射");
+		    // StringTools.e(s, "反射", "Ⅶ：检查");
+		}
+	    }
+	}
+
+	ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "Ⅶ：检查", "Ⅷ：听力"), c);
+	try {
+	    se.颅神经.头部反射 = new 头部反射(ss[0], ss[8], ss[9], ss[10], ss[11], ss[12], ss[13],
+		    ss[14], ss[16], ss[17], ss[18], ss[19], ss[20], ss[21], ss[22]);
+	} catch (Exception ex) {
+	}
+	try {
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "Ⅷ：听力", "Ⅸ、Ⅹ、Ⅺ"), c);
+	    if (ss[0].indexOf("不合作") >= 0)
+		se.颅神经.听力 = new 听力(ss[0], null, null, null, null);
+	    else
+		se.颅神经.听力 = new 听力(ss[0], ss[1], ss[2], ss[3], ss[4]);
+	} catch (Exception ex) {
+	}
+	try {
+	    ss = StringTools.splitToArray(StringTools.eWithoutTrim(s, "Ⅸ、Ⅹ、Ⅺ", "运动系统"), c);
+	    if (!(ss[0].indexOf("不合作") >= 0)) {
+		se.颅神经.发音 = ss[1];
+		se.颅神经.咽反射 = ss[2];
+		se.颅神经.味觉 = ss[3];
+		se.颅神经.耸肩 = ss[4];
+		se.颅神经.头侧转 = ss[5];
+		se.颅神经.舌 = ss[6];
+	    }
+	} catch (Exception ex) {
+	}
+	if (s.indexOf("共济运动") > 0 && s.indexOf("感觉系统") > 0) {
+	    se.运动系统 = StringTools.e(s, "运动系统", "共济运动");
+	    se.共济运动 = StringTools.e(s, "共济运动", "感觉系统");
+	    se.感觉系统 = StringTools.e(s, "感觉系统", "反射");
+	} else
+	    se.运动系统 = StringTools.e(s, "运动系统", "反射");
+	String t = null;
+	if (s.indexOf("自主神经与内分泌系统") > 0) {
+	    t = StringTools.eWithoutTrim(s, "腹壁反射", "自主神经与内分泌系统");
+	    se.自主神经与内分泌系统 = s.substring("自主神经与内分泌系统".length());
+	} else
+	    t = s.substring("腹壁反射".length());
+	List<String> l = StringTools.split(new StringBuilder(t), c);
+	// 没有提睾反射的情况
+	try {
+	    if (l.size() > 49) {
+	    if (t.indexOf("提睾反射") > 0)
+		if (l.size() >= 69)
+		se.反射 = new 反射(l.get(0), l.get(5), l.get(6), l.get(8), l.get(9),
+			l.get(11), l.get(12), l.get(17), l.get(18), l.get(20), l.get(21), l.get(32), l.get(33),
+			l.get(34), l.get(35), l.get(36), l.get(37), l.get(38), l.get(40), l.get(41), l.get(42),
+			l.get(43), l.get(44), l.get(45), l.get(46), l.get(56), l.get(57), l.get(58), l.get(59),
+			l.get(60), l.get(61), l.get(63), l.get(64), l.get(65), l.get(66), l.get(67), l.get(68));
+		else
+		    se.反射 = new 反射(l.get(0), l.get(5), l.get(6), l.get(8), l.get(9), l.get(11), l.get(12), null, null,
+			    l.get(18), l.get(19), l.get(30), l.get(31), l.get(32), l.get(33), l.get(34), l.get(35),
+			    l.get(36), l.get(38), l.get(39), l.get(40), l.get(41), l.get(42), l.get(43), l.get(44),
+			    l.get(54), l.get(55), l.get(56), l.get(57), l.get(58), l.get(59), l.get(61), l.get(62),
+			    l.get(63), l.get(64), l.get(65), l.get(66));
+	    else if (t.indexOf("肛门反射") > 0)
+		se.反射 = new 反射(l.get(0), l.get(5), l.get(6), l.get(8), l.get(9),
+			l.get(11), l.get(12), null, null, l.get(18), l.get(19), l.get(30), l.get(31), l.get(32),
+			l.get(33), l.get(34), l.get(35), l.get(36), l.get(38), l.get(39), l.get(40), l.get(41),
+			l.get(42), l.get(43), l.get(44), l.get(54), l.get(55), l.get(56), l.get(57), l.get(58),
+			l.get(59), l.get(61), l.get(62), l.get(63), l.get(64), l.get(65), l.get(66));
+	    else
+		se.反射 = new 反射(l.get(0), l.get(5), l.get(6), l.get(8), l.get(9),
+			l.get(11), l.get(12), null, null, null, null, l.get(20), l.get(21), l.get(22), l.get(23),
+			l.get(24), l.get(25), l.get(26), l.get(28), l.get(29), l.get(30), l.get(31), l.get(32),
+			l.get(33), l.get(34), l.get(44), l.get(45), l.get(46), l.get(47), l.get(48), l.get(49),
+			l.get(51), l.get(52), l.get(53), l.get(54), l.get(55), l.get(56));
+	    }
+	} catch (Exception ex) {
+	    System.out.println(t);
+	    // System.out.println(l);
+	    ex.printStackTrace();
+	}
+
+	return se;
+    }
+
     public static Map<String, String> getMap(List<String> l) {
 	Map<String, String> m = new TreeMap<String, String>();
 	String t;

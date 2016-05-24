@@ -15,12 +15,15 @@
  */
 package cn.anthony.boot.domain;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
+import cn.anthony.util.DateUtil;
 import lombok.Data;
 
 /**
@@ -40,6 +43,24 @@ public class User {
 
 	public static class Address {
 		String city, street, zip;
+		SevereDetail severeDetail;
+		public static class SevereDetail {
+			public String name;
+			Date inTime,outTime;
+			Long minutes;
+
+			public SevereDetail(String name, String inTime, String outTime) {
+			    super();
+			    this.name = name;
+			    this.inTime = DateUtil.parse(inTime);
+			    this.outTime = DateUtil.parse(outTime);
+			    this.minutes = (this.outTime.getTime()-this.inTime.getTime())/(60*1000);
+			}
+
+			public SevereDetail() {
+			    super();
+			}
+		    }
 	}
 
 	public static class Picture {

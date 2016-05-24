@@ -38,7 +38,7 @@
                 <div class="box-body box-profile">
                   <img class="profile-user-img img-responsive img-circle" src="../dist/img/${patient.sex eq 1?"Patient-Male.png":"Patient-Female.png"}" alt="病人照片">
                   <h3 class="profile-username text-center">${patient.name} </h3>
-                  <p class="text-muted text-center">${patient.actualAge}岁，${patient.sexDesc} </p>
+                  <p class="text-muted text-center">今年${patient.actualAge}岁，${patient.sexDesc} </p>
 
                   <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
@@ -50,9 +50,17 @@
                     <li class="list-group-item">
                       <b>手术次数</b> <p class="pull-right">${fn:length(patient.operations)}</p>
                     </li>
+                    <li class="list-group-item">
+                      <b>病案号</b> <p class="pull-right">${patient.pId}</p>
+                    </li>
                   </ul>
 
-                  <span class="label label-primary btn-block"><b>病案号：${patient.pId}</b></span>
+          <div class="row no-print">
+            <div class="col-xs-12">
+              <a href="./print?id=${patient.id}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> 打印</a>
+              <a href="./pdf?id=${patient.id}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a>
+            </div>
+          </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 
@@ -63,12 +71,13 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <strong><i class="fa fa-book margin-r-5"></i>  身份证号码</strong>
-                  <p class="text-muted">
-                    ${patient.certNo }
-                  </p>
+                  <p class="text-muted"> ${patient.certNo } </p>
                   <hr>
                   <strong><i class="fa fa-map-marker margin-r-5"></i> 家庭住址</strong>
                   <p class="text-muted">${patient.frontRecords.get(0).homeAddress} </p>
+                  <hr>
+                  <strong><i class="glyphicon glyphicon-earphone"></i>  联系电话</strong>
+                  <p class="text-muted">${patient.frontRecords.get(0).mobilephone} </p>
                   <hr>
                   <strong><i class="fa fa-pencil margin-r-5"></i> 诊断</strong>
                   <p>
@@ -290,7 +299,7 @@
                             We are more like Germany, ambitious and misunderstood!
                           </div>
                           <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            <a class="btn btn-warning btn-flat btn-xs"></a>
                           </div>
                         </div>
                       </li>

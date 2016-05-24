@@ -14,8 +14,8 @@
                       <li>
                         <i class="fa fa-user bg-aqua"></i>
                         <div class="timeline-item">
-                          <span class="time">开始时间：<i class="fa fa-clock-o"></i> ${item.beginTime }</span>
-                          <h3 class="timeline-header no-border"><a href="#">术前诊断</a> ${item.preDiagnosis }</h3>
+                          <span class="time">开始时间：<i class="fa fa-clock-o"></i> ${item.beginTimeDesc }</span>
+                          <h3 class="timeline-header "><a href="#">术前诊断</a> ${item.preDiagnosis }</h3>
                           <div class="timeline-body"><p>
                           术中诊断：${item.operataionDiagnosis}<br/>
                        医生：${item.doctor}<br/>
@@ -27,36 +27,27 @@
                       <li>
                         <i class="fa fa-comments bg-yellow"></i>
                         <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+                          <span class="time"><i class="fa fa-clock-o"></i></span>
                           <h3 class="timeline-header">手术经过、术中出现的情况及处理等</h3>
                           <div class="timeline-body">
-                           <p> ${item.detail}</p>
+                           <code> <p> ${item.detail}</p></code>
+                           <p><strong>手术取标本肉眼所见：</strong></p> <pre>${item.bb}</pre>
+                           <p><strong>手术取标本送病理：</strong></p> <pre>${item.bl}(1:是，2:否)</pre>
                           </div>
                           <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <span class="bg-green">
-                          3 Jan. 2014
-                        </span>
-                      </li>
-                      <li>
-                        <i class="fa fa-camera bg-purple"></i>
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                          <div class="timeline-body">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <a class="btn btn-warning btn-flat btn-xs"> </a>
                           </div>
                         </div>
                       </li>
                       <li>
                         <i class="fa fa-clock-o bg-gray"></i>
+                        <div class="timeline-item">
+                          
+                          <h3 class="timeline-header no-border"><span class="time">结束时间：<i class="fa fa-clock-o"></i> ${item.endTimeDesc }</span></h3>
+                          <div class="timeline-body">
+                          <p>记录日期：${item.recordTimeDesc}</p>
+                          </div>
+                        </div>
                       </li>
                       </c:forEach>
                     </ul>

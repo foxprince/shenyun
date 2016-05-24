@@ -2,6 +2,10 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
+import cn.anthony.util.DateUtil;
+import lombok.Data;
+
+@Data
 public class Operation {
     /*
      * 科别 神经外科 床位号 41301 术前诊断：颈内动脉动脉瘤（ICA）(双) 术中诊断：颅内动脉瘤 手术名称：颅内动脉瘤支架辅助栓塞术
@@ -31,10 +35,23 @@ public class Operation {
     public String bloodLoss;// 失血量
     public String bloodTransfusion;// 输血量
     public String detail;// 手术经过
+    public String bb;//手术取标本肉眼所见
+    public String bl;//手术取标本送病理,1:是，2:否
     public String sign;//
     public Date recordTime;//
-    public String sourceFile;//
+    public String srcFile;//
 
+    public String getBeginTimeDesc() {
+	return DateUtil.format(beginTime, "yyyy-MM-dd HH:mm");
+    }
+
+    public String getEndTimeDesc() {
+	return DateUtil.format(endTime, "yyyy-MM-dd HH:mm");
+    }
+    
+    public String getRecordTimeDesc() {
+	return DateUtil.format(recordTime, "yyyy-MM-dd HH:mm");
+    }
     public String getOperationDpt() {
 	return operationDpt;
     }
@@ -96,6 +113,6 @@ public class Operation {
     }
 
     public String getSourceFile() {
-	return sourceFile;
+	return srcFile;
     }
 }

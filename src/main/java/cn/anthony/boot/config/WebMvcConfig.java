@@ -2,12 +2,15 @@ package cn.anthony.boot.config;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import cn.anthony.boot.web.PatientExcelView;
 
 /**
  * 如果想全面控制Spring MVC，你可以添加自己的@Configuration，并使用@EnableWebMvc对其注解。如果想保留SpringBoot
@@ -23,6 +26,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	converters.add(createGsonHttpMessageConverter());
 	super.configureMessageConverters(converters);
 
+    }
+
+    @Bean
+    public PatientExcelView patientExcelView() {
+	return new PatientExcelView();
     }
 
     private GsonHttpMessageConverter createGsonHttpMessageConverter() {

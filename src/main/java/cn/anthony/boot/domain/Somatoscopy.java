@@ -1,5 +1,8 @@
 package cn.anthony.boot.domain;
 
+import lombok.Data;
+
+@Data
 public class Somatoscopy {
     /*
      * 一般情况： T:36.6℃P:80次/分R:18次/分BP:130/70mmHg 发育正常,营养良好，身高172厘米，体重74公斤。
@@ -36,7 +39,9 @@ public class Somatoscopy {
     public Somatoscopy() {
 	this.sExamination = new SpecialExamination();
     }
-    public class SpecialExamination {
+
+    @Data
+    public static class SpecialExamination {
 	/*
 	 * 神志清醒
 	 * 精神状态：一般表现良好，情绪良好，定向力正常，计算力正常，远记忆力正常，近记忆力正常，理解力正常，妄想无，幻觉无，错觉无，自知力正常
@@ -44,120 +49,23 @@ public class Somatoscopy {
 	 * meningismus; smelling; sight; visionField; eyeGround; eyeMovement;
 	 * diplopia;//复视;
 	 */
+	public Patient.高级皮层功能 高级皮层功能;
+	public Patient.颅神经 颅神经;
+	public String 运动系统, 共济运动, 感觉系统;
+	public Patient.反射 反射;
+	public String 自主神经与内分泌系统;
 	public String src;
 
-	public String getSrc() {
-	    return src;
+	public SpecialExamination() {
+	    高级皮层功能 = new Patient.高级皮层功能();
+	    颅神经 = new Patient.颅神经();
+	    反射 = new Patient.反射();
 	}
-    }
 
-    public String getGeneral() {
-	return general;
-    }
-
-    public String getT() {
-	return T;
-    }
-
-    public String getP() {
-	return P;
-    }
-
-    public String getR() {
-	return R;
-    }
-
-    public String getBP() {
-	return BP;
-    }
-
-    public String getSkin() {
-	return skin;
-    }
-
-    public String getSuperficialLymph() {
-	return superficialLymph;
-    }
-
-    public String getSkull() {
-	return skull;
-    }
-
-    public String getEye() {
-	return eye;
-    }
-
-    public String getEar() {
-	return ear;
-    }
-
-    public String getNode() {
-	return node;
-    }
-
-    public String getMouse() {
-	return mouse;
-    }
-
-    public String getThroat() {
-	return throat;
-    }
-
-    public String getNeck() {
-	return neck;
-    }
-
-    public String getThorax() {
-	return thorax;
-    }
-
-    public String getLung() {
-	return lung;
-    }
-
-    public String getHeart() {
-	return heart;
-    }
-
-    public String getBloodVessels() {
-	return bloodVessels;
-    }
-
-    public String getAbdomen() {
-	return abdomen;
-    }
-
-    public String getLiver() {
-	return liver;
-    }
-
-    public String getSpleen() {
-	return spleen;
-    }
-
-    public String getKidney() {
-	return kidney;
-    }
-
-    public String getVulva() {
-	return vulva;
-    }
-
-    public String getSpine() {
-	return spine;
-    }
-
-    public String getLimbs() {
-	return limbs;
-    }
-
-    public String getNervousSystem() {
-	return nervousSystem;
+	
     }
 
     public SpecialExamination getsExamination() {
 	return sExamination;
     }
 }
-
-

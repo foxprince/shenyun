@@ -15,16 +15,18 @@
               </div>
             </div>
             <div class="box-body">
-              <p>科别：${item.department }</p>
-              <p>入院时情况(包括检验异常结果等)：${item.inDescriotion }</p>
-              <p>入院诊断：${item.inDiagnosis }</p>
-              <p>入院后诊疗经过：${item.treatment }</p>
-              <p>手术情况：${item.operationDesc }</p>
-              <p>出院时情况(包括主要化验结果等)：${item.outDescription }</p>
-              <p>出院诊断：${item.outDiagnosis }</p>
+              <ul>
+              <li><p><strong>科别：${item.department }</strong></p> </li>
+              <li><p><strong>入院时情况(包括检验异常结果等)：</strong> <samp>${item.inDescriotion }</samp></li></p>
+              <li><p><strong>入院诊断：</strong> <samp>${item.inDiagnosis }</samp></li></p>
+              <li><p><strong>入院后诊疗经过：</strong> <samp>${item.treatment }</samp></li></p>
+              <li><p><strong>手术情况：</strong> <samp>${item.operationDesc }</samp></li></p>
+              <li><p><strong>出院时情况(包括主要化验结果等)：</strong> <samp>${item.outDescription }</samp></li></p>
+              <li><p><strong>出院诊断：</strong><samp>${item.outDiagnosis }</samp></li></p>
+              </ul>
             </div><!-- /.box-body -->
             <div class="box-footer">
-              <p>出院医嘱：${item.dischargeOrder }</p>
+              <p><strong>出院医嘱：</strong></p><pre>${item.dischargeOrder }</pre>
             </div><!-- /.box-footer-->
           </div>
           </c:forEach>

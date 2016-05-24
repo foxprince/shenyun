@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import cn.anthony.util.DateUtil;
 import cn.anthony.util.StringTools;
+import lombok.Data;
 
+@Data
 public class InHospital {
     /*
      * 姓名：周惠英 科室：神经外科第1页 住院号：184470
@@ -16,6 +20,7 @@ public class InHospital {
      */
     public String admissionDept;
     public String admissionNo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date inDate;
     public Date takingDate;/* 病史采集日期 */
     public String takingFrom;/* 病史叙述人 */
@@ -30,40 +35,18 @@ public class InHospital {
     public Somatoscopy somatoscopy;/* 体格检查 */
     // 辅助检查
     public String auxiliaryExamination;
-    public Diag firstDiag;
-    public Diag confirmDiag;
-    public List<Diag> supplyDiags;
-    public Diag correctDiag;
-
-    public static class Diag {
-	public Diag() {
-	}
-	public Diag(String s) {
-	    this.type = s;
-	}
-	public String type;// 初步诊断 确定诊断 补充诊断 更正
-	public String detail;
-	public Date diagDate;
-	public String signature;
-
-	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append(type + ":");
-	    sb.append(StringTools.checkNull(detail) + "<br/>");
-	    if (diagDate != null)
-		sb.append("时间：" + DateUtil.format(diagDate, "yyyy年MM月dd日"));
-	    sb.append("<br/>签名：" + StringTools.printString(signature));
-	    return sb.toString();
-	}
-    }
-    public String sourceFile;
+    public Patient.Diag firstDiag;
+    public Patient.Diag confirmDiag;
+    public List<Patient.Diag> supplyDiags;
+    public Patient.Diag correctDiag;
+    public String srcFile;
 
     public InHospital() {
 	this.somatoscopy = new Somatoscopy();
-	this.firstDiag = new Diag("初步诊断");
-	this.confirmDiag = new Diag("确定诊断");
-	this.correctDiag = new Diag("更正诊断");
-	this.supplyDiags = new ArrayList<Diag>();
+	this.firstDiag = new Patient.Diag("初步诊断");
+	this.confirmDiag = new Patient.Diag("确定诊断");
+	this.correctDiag = new Patient.Diag("更正诊断");
+	this.supplyDiags = new ArrayList<Patient.Diag>();
     }
 
     public String getInDateDesc() {
@@ -73,86 +56,5 @@ public class InHospital {
     public String getTakingDateDesc() {
 	return DateUtil.format(takingDate, "yyyy年MM月dd日 HH时mm分");
     }
-    public String getAdmissionDept() {
-	return admissionDept;
-    }
-
-    public String getAdmissionNo() {
-	return admissionNo;
-    }
-
-    public Date getInDate() {
-	return inDate;
-    }
-
-    public Date getTakingDate() {
-	return takingDate;
-    }
-
-    public String getTakingFrom() {
-	return takingFrom;
-    }
-
-    public String getReliability() {
-	return reliability;
-    }
-
-    public String getContact() {
-	return contact;
-    }
-
-    public String getSelfDesc() {
-	return selfDesc;
-    }
-
-    public String getNowMedicalHistory() {
-	return nowMedicalHistory;
-    }
-
-    public String getPastMedicalHistory() {
-	return pastMedicalHistory;
-    }
-
-    public String getInfectiousHistory() {
-	return infectiousHistory;
-    }
-
-    public String getLifeHistory() {
-	return lifeHistory;
-    }
-
-    public String getFamilyHistory() {
-	return familyHistory;
-    }
-
-
-    public String getSourceFile() {
-	return sourceFile;
-    }
-
-    public Somatoscopy getSomatoscopy() {
-	return somatoscopy;
-    }
-
-    public String getAuxiliaryExamination() {
-	return auxiliaryExamination;
-    }
-
-    public Diag getFirstDiag() {
-	return firstDiag;
-    }
-
-    public Diag getConfirmDiag() {
-	return confirmDiag;
-    }
-
-    public List<Diag> getSupplyDiags() {
-	return supplyDiags;
-    }
-
-    public Diag getCorrectDiag() {
-	return correctDiag;
-    }
-
 
 }

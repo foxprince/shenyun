@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <c:import url="../include/head.jsp">
-  <c:param name="pageTitle" value="高级查询" />
+  <c:param name="pageTitle" value="标准查询" />
 </c:import>
 <body class="hold-transition skin-green-light sidebar-mini">
   <div class="wrapper">
@@ -18,10 +18,10 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>病人列表</h1>
+        <h1>标准查询</h1>
         <ol class="breadcrumb">
           <li><a href="/"><i class="fa fa-dashboard"></i> 主页</a></li>
-          <li class="active"><a href="./list">病人列表</a></li>
+          <li class="active"><a href="./initSearch">标准查询</a></li>
         </ol>
       </section>
       <!-- Main content -->
@@ -37,8 +37,7 @@
                   <div class="col-sm-8 pull-left">
                     <label class="col-sm-4 control-label">保存查询历史</label>
                     <div class="checkbox col-sm-4 ">
-                       <form:checkbox path="needSave" id="needSave" />
-                       <form:errors path="needSave" class="control-label" />
+                       <input type="checkbox" name="needSave" id="needSave" />
                     </div>
                   </div>
                 </DIV>
@@ -57,13 +56,9 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="age1">年龄</LABEL>
                           <DIV class="col-md-9 col-sm-9 form-inline">
-                            <form:input class="form-control" style="width: 100px;" path="age" type="text" placeholder="最小"/>
-                            <input type="hidden" name="age_andOr" value="and"/>
-                            <input type="hidden" name="age_option" value="ge"/>
+                            <form:input class="form-control" style="width: 100px;" path="minAge" type="text" placeholder="最小"/>
                             ~
-                            <form:input class="form-control" style="width: 100px;" path="age" type="text" placeholder="最大"/>
-                            <input type="hidden" name="age_andOr" value="and"/>
-                            <input type="hidden" name="age_option" value="le"/>
+                            <form:input class="form-control" style="width: 100px;" path="maxAge" type="text" placeholder="最大"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -99,7 +94,7 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="nationality">民族</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="nationality" type="text" placeholder="民族"/>
+                            <form:input class="form-control" path="frontPage.nationality" type="text" placeholder="民族"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -107,13 +102,13 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="certNo">身份证</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="certNo" type="text" placeholder="身份证号码"/>
+                            <form:input class="form-control" path="frontPage.certNo" type="text" placeholder="身份证号码"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="country">国别</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="country" type="text" placeholder="国别"/>
+                            <form:input class="form-control" path="frontPage.country" type="text" placeholder="国别"/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -121,7 +116,7 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="registeredaddress">户口地址</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="registeredaddress" type="text" placeholder="户口地址"/>
+                            <form:input class="form-control" path="frontPage.registeredaddress" type="text" placeholder="户口地址"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
@@ -152,16 +147,14 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime">入院起始</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="inHospital.inDate" type="date" />
-                            <input type="hidden" name="inHospital.inDate_andOr" value="and"/>
-                            <input type="hidden" name="inHospital.inDate_option" value="ge"/>
+                            <form:input class="form-control" path="inDateBegin" type="date" />
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
-                          <LABEL class="col-md-3 col-sm-3 control-label" for="KZR_DOCTOR_NAME">科主任</LABEL>
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="KZR_DOCTOR_NAME">主诊医生</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <INPUT name="KZR_DOCTOR_NAME" class="form-control" id="KZR_DOCTOR_NAME" type="text"
-                              placeholder="科主任" value="">
+                            <form:input name="KZR_DOCTOR_NAME" class="form-control" path="frontPage.ZZHEN_DOCTOR_NAME" type="text"
+                              placeholder="主诊医生" value=""/>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -169,9 +162,7 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime2">入院截止</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="inHospital.inDate" type="date" />
-                            <input type="hidden" name="inHospital.inDate_andOr" value="and"/>
-                            <input type="hidden" name="inHospital.inDate_option" value="le"/>
+                            <form:input class="form-control" path="inDateEnd" type="date" />
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
@@ -193,14 +184,10 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="admissionWard">入院病房</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <SELECT name="admissionWard" class="form-control" id="admissionWard"><OPTION
-                                value="">全部</OPTION>
-                              <OPTION value="神外一">神外一</OPTION>
-                              <OPTION value="神外二">神外二</OPTION>
-                              <OPTION value="神外三">神外三</OPTION>
-                              <OPTION value="神外四">神外四</OPTION>
-                              <OPTION value="监护室">监护室</OPTION>
-                            </SELECT>
+                            <form:select path="frontPage.admissionWard" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${admissionWardList}" />
+                            </form:select>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -214,14 +201,10 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="dischargeWard">出院病房</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <SELECT name="dischargeWard" class="form-control" id="dischargeWard"><OPTION
-                                value="">全部</OPTION>
-                              <OPTION value="神外一">神外一</OPTION>
-                              <OPTION value="神外二">神外二</OPTION>
-                              <OPTION value="神外三">神外三</OPTION>
-                              <OPTION value="神外四">神外四</OPTION>
-                              <OPTION value="监护室">监护室</OPTION>
-                            </SELECT>
+                            <form:select path="frontPage.dischargeWard" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${dischargeWardList}" />
+                            </form:select>
                           </DIV>
                         </DIV>
                       </DIV>
@@ -237,47 +220,54 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">住院医师</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="frontPage.ZY_DOCTOR_NAME" type="text" placeholder="住院医师"/>
-                            <input type="hidden" name="frontPage.ZY_DOCTOR_NAME_andOr" value="and"/>
-                            <input type="hidden" name="frontPage.ZY_DOCTOR_NAME_option" value="contains"/>
+                            <form:input class="form-control"  path="frontPage.ZY_DOCTOR_NAME" type="text" placeholder="住院医师"/>
                           </DIV>
                         </DIV>
                       </DIV>
                     </DIV>
+                    
                     <DIV class="row">
                       <DIV class="col-md-4 col-sm-4">
                         <DIV class="form-group form-group-sm">
-                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZZHEN_DOCTOR_NAME">主诊医师</LABEL>
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">转科病房</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <form:input class="form-control" path="frontPage.ZZHEN_DOCTOR_NAME" type="text" placeholder="主诊医师"/>
-                            <input type="hidden" name="frontPage.ZZHEN_DOCTOR_NAME_andOr" value="and"/>
-                            <input type="hidden" name="frontPage.ZZHEN_DOCTOR_NAME_option" value="contains"/>
-                          </DIV>
-                        </DIV>
-                      </DIV>
-                      <DIV class="col-md-4 col-sm-4">
-                        <DIV class="form-group form-group-sm">
-                          <LABEL class="col-md-3 col-sm-3 control-label">排序</LABEL>
-                          <DIV class="col-md-9 col-sm-9">
-                            <SELECT name="sort" class="form-control" value="admissionTime"><OPTION
-                                value="adminission_no">病案号</OPTION>
-                              <OPTION value="age">年龄</OPTION>
-                              <OPTION value="admissionTime">入院时间</OPTION>
-                              <OPTION value="dischargeTime">出院时间</OPTION>
-                            </SELECT>
-                          </DIV>
-                        </DIV>
-                      </DIV>
-                      <DIV class="col-md-2 col-sm-2">
-                        <DIV class="form-group form-group-sm">
-                          <DIV class="col-md-9 col-sm-9" style="padding-left: 0px;">
-                            <LABEL class="radio-inline"><INPUT name="order" type="radio" value="asc"> 顺序
-                            </LABEL> <LABEL class="radio-inline"><INPUT name="order" type="radio" checked=""
-                              value="desc"> 逆序 </LABEL>
+                            <form:select path="frontPage.changedept" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${changedeptList}" />
+                            </form:select>
                           </DIV>
                         </DIV>
                       </DIV>
                     </DIV>
+                    <div class="box box-success">
+    <div class="box-header">
+      <h3 class="box-title">排序选项</h3>
+      <!-- tools box -->
+      <div class="pull-right box-tools">
+      <button class="btn btn-success btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-success btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+      </div><!-- /. tools -->
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+        <DIV class="row">
+          <div class="form-group">
+          <DIV class="col-md-4 col-sm-4">
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 年龄</label>
+            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+          </DIV>
+          <DIV class="col-md-4 col-sm-4">
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 入院时间</label>
+            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+          </DIV>
+          <DIV class="col-md-4 col-sm-4">
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 出院时间</label>
+            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+          </DIV>
+          </div>
+        </DIV>
+      
+    </div>
+  </div>
                   </DIV>
                 </DIV>
                 <DIV class="panel-heading clearfix ">
@@ -287,8 +277,7 @@
                   <div class="col-sm-8 pull-left">
                     <label class="col-sm-4 control-label">保存查询历史</label>
                     <div class="checkbox col-sm-4 ">
-                       <form:checkbox path="needSave" id="needSave" />
-                       <form:errors path="needSave" class="control-label" />
+                       <input type="checkbox" name="needSave" id="needSave" />
                     </div>
                   </div>
                 </DIV>

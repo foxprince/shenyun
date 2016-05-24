@@ -4,12 +4,31 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ObjectUtils;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.ListPath;
+
+import cn.anthony.boot.domain.QPatient_Diag;
+import cn.anthony.boot.domain.QPatient_OperationDetail;
+import cn.anthony.boot.domain.QPatient_OutDiag;
+import cn.anthony.boot.domain.QPatient_SevereDetail;
+import cn.anthony.boot.domain.QPatient_动眼神经;
+import cn.anthony.boot.domain.QPatient_反射;
+import cn.anthony.boot.domain.QPatient_听力;
+import cn.anthony.boot.domain.QPatient_头部反射;
+import cn.anthony.boot.domain.QPatient_痛触觉;
+import cn.anthony.boot.domain.QPatient_眼底;
+import cn.anthony.boot.domain.QPatient_视力;
+import cn.anthony.boot.domain.QPatient_颅神经;
+import cn.anthony.boot.domain.QPatient_高级皮层功能;
+import cn.anthony.boot.domain.QSomatoscopy_SpecialExamination;
 
 public class RefactorUtil {
     public static Field getFieldByName(Object o, String name) {
@@ -20,6 +39,12 @@ public class RefactorUtil {
 		return field;
 	}
 	return null;
+    }
+
+    public static Object initPathClass(Path p)
+	    throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+	// System.out.println(p.getType().toString().substring(6));
+	return Class.forName(p.getType().toString().substring(6)).newInstance();
     }
 
     /**
@@ -43,13 +68,62 @@ public class RefactorUtil {
 
     public static Map<String, String> getObjectParaMap(Object o) {
 	Field[] fields = o.getClass().getDeclaredFields();
-	Map<String, String> m = new HashMap<String, String>();
+	Map<String, String> m = new LinkedHashMap<String, String>();
 	for (Field field : fields) {
 	    try {
 		field.setAccessible(true); // 设置些属性是可以访问的
 		Object val = field.get(o);// 得到此属性的值
-		if (!field.getName().startsWith("this$")) // 过滤掉内部类对父类的引用
+		if (!field.getName().startsWith("this$")) { // 过滤掉内部类对父类的引用
 		    m.put(field.getName(), StringTools.printString(val));
+		}
+	    } catch (IllegalArgumentException | IllegalAccessException e) {
+		e.printStackTrace();
+	    }
+	}
+	return m;
+    }
+
+    public static Map<String, String> getKeyValueMap(Object o, List<String> keys) {
+	Field[] fields = o.getClass().getDeclaredFields();
+	Map<String, String> m = new LinkedHashMap<String, String>();
+	for (Field field : fields) {
+	    try {
+		field.setAccessible(true); // 设置些属性是可以访问的
+		Object val = field.get(o);// 得到此属性的值
+		if (!field.getName().startsWith("this$") && keys.contains(field.getName())) {
+		    m.put(field.getName(), StringTools.printString(val));
+		}
+	    } catch (IllegalArgumentException | IllegalAccessException e) {
+		e.printStackTrace();
+	    }
+	}
+	return m;
+    }
+
+    public static List<String> getQueraPaths(Object o) {
+	Field[] fields = o.getClass().getDeclaredFields();
+	List<String> m = new ArrayList<String>();
+	for (Field field : fields) {
+	    try {
+		field.setAccessible(true); // 设置些属性是可以访问的
+		Object val = field.get(o);// 得到此属性的值
+		if (!field.getName().startsWith("this$")) { // 过滤掉内部类对父类的引用
+		    m.add(StringTools.printString(val));
+		    System.out.println(val.getClass().getName());
+		    if (!val.getClass().getName().equals(o.getClass().getName())) {
+			if (val instanceof com.mysema.query.types.path.ListPath) {
+			    m.addAll(getQueraPaths(((ListPath) val).any()));
+			} else if ((val instanceof QPatient_OutDiag || val instanceof QPatient_Diag
+				|| val instanceof QPatient_OperationDetail || val instanceof QPatient_SevereDetail
+				|| val instanceof QPatient_动眼神经 || val instanceof QPatient_反射
+				|| val instanceof QPatient_听力 || val instanceof QPatient_头部反射
+				|| val instanceof QPatient_痛触觉 || val instanceof QPatient_眼底
+				|| val instanceof QPatient_视力 || val instanceof QPatient_颅神经
+				|| val instanceof QPatient_高级皮层功能 || val instanceof QSomatoscopy_SpecialExamination)) {
+			    m.addAll(getQueraPaths(val));
+			}
+		    }
+		}
 	    } catch (IllegalArgumentException | IllegalAccessException e) {
 		e.printStackTrace();
 	    }
@@ -73,7 +147,8 @@ public class RefactorUtil {
 		if (!key.startsWith("this$")) // 过滤掉内部类对父类的引用
 		    if (m.containsKey(key)) {
 			String value = StringTools.printString(m.get(key));
-			if (c.getCanonicalName().equals("java.lang.Integer") && StringTools.checkNull(m.get(field.getName())) != null)
+			if (c.getCanonicalName().equals("java.lang.Integer")
+				&& StringTools.checkNull(m.get(field.getName())) != null)
 			    try {
 				field.set(o, Integer.parseInt(StringTools.pe(value, "(\\d+).*")));
 			    } catch (NumberFormatException e) {
@@ -99,6 +174,22 @@ public class RefactorUtil {
 	}
     }
 
+    public static Map<String, List<String>> filterEmpty(MultiValueMap<String, String> map) {
+	Map<String, List<String>> m = new LinkedHashMap<String, List<String>>(map.size());
+	for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+	    if (!ObjectUtils.isEmpty(entry.getValue()) && !isEmptyCollection(entry.getValue()))
+		m.put(entry.getKey(), entry.getValue());
+	}
+	return m;
+    }
+
+    public static boolean isEmptyCollection(List<String> l) {
+	for (String s : l)
+	    if (StringTools.checkNull(s) != null)
+		return false;
+	return true;
+    }
+
     /**
      * 获得对象的非空字段的键值对
      * 
@@ -106,8 +197,8 @@ public class RefactorUtil {
      * @param paramMap
      * @return
      */
-    public static List<QueryOption> getNotNullValueMap(Object o, String requestPre, MultiValueMap<String, String> paramMap) {
-	System.out.println(paramMap);
+    public static List<QueryOption> getNotNullValueMap(Object o, String requestPre,
+	    Map<String, List<String>> paramMap) {
 	List<QueryOption> l = new ArrayList<QueryOption>();
 	Field[] selfFields = o.getClass().getDeclaredFields();
 	// 父类属性
@@ -119,9 +210,9 @@ public class RefactorUtil {
 		String key = field.getName();
 		String reqKey = requestPre + key;
 		if (!key.startsWith("this$")) // 过滤掉内部类对父类的引用
-		    if (paramMap.containsKey(reqKey) && (StringTools.checkNull(paramMap.get(reqKey)) != null)) {
+		    if (paramMap.containsKey(reqKey) && (!ObjectUtils.isEmpty(paramMap.get(reqKey)))) {
 			for (int i = 0; i < paramMap.get(reqKey).size(); i++) {
-				String value = StringTools.printString(paramMap.get(reqKey).get(i));
+			    String value = StringTools.printString(paramMap.get(reqKey).get(i));
 			    String andOr = "and";// 缺省比较方法是与
 			    try {
 				andOr = paramMap.get(reqKey + "_andOr").get(i);
@@ -132,14 +223,13 @@ public class RefactorUtil {
 				option = paramMap.get(reqKey + "_option").get(i);
 			    } catch (NullPointerException e) {
 			    }
-				l.add(new QueryOption(key, value, andOr, option));
-			    }
+			    l.add(new QueryOption(key, value, andOr, option));
+			}
 		    }
 	    } catch (IllegalArgumentException e) {
 		e.printStackTrace();
 	    }
 	}
-	System.out.println(l);
 	return l;
     }
 }

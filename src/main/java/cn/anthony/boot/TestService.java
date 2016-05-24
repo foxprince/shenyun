@@ -25,9 +25,8 @@ import cn.anthony.util.RefactorUtil;
 
 @SpringBootApplication
 public class TestService implements CommandLineRunner {
-    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\2015已处理\\";
-    private static final String MUL_DIR = "E:\\project\\神云系统\\data\\重复住院\\";
-
+    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\待处理\\";
+    private static final String MUL_DIR = "E:\\project\\神云系统\\data\\待处理\\";
     @Autowired
     private PatientRepository repository;
     @Autowired
@@ -35,26 +34,32 @@ public class TestService implements CommandLineRunner {
     private Set<String> s = new HashSet<String>();
 
     public static void main(String[] args) {
-	System.setProperty("DB.TRACE", "true");
-	System.setProperty("DEBUG.MONGO", "true");
+	// System.setProperty("DB.TRACE", "true");
+	// System.setProperty("DEBUG.MONGO", "true");
 	SpringApplication.run(TestService.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-	String id = "571888f2dbab72c294293a2c";
-	Predicate pre = QPatient.patient.name.startsWith("周");
-	pre = queryBinding(QPatient.patient.inRecords.any(), "contact", "李殿祥13611352590", pre);
-	System.out.println(pre);
-	long t1 = System.currentTimeMillis();
-	// System.out.println(repository.findAll(pre));
-	long t2 = System.currentTimeMillis();
-	System.out.println(t2 - t1);
+	System.out.println("run test");
+	// String id = "571888f2dbab72c294293a2c";
+	// Predicate pre = QPatient.patient.name.startsWith("周");
+	// pre = queryBinding(QPatient.patient.inRecords.any(), "contact",
+	// "李殿祥13611352590", pre);
+	// System.out.println(service.ditinctField());
+	// long t1 = System.currentTimeMillis();
+	// repository.deleteAll();
+	// long t2 = System.currentTimeMillis();
+	// System.out.println(t2 - t1);
 	// for (Patient p : repository.findAll(pre)) {
 	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
 	// System.out.println(p.name + ":" + p.operations.size());
 	// }
-	// processTool();
+	try {
+	    // processTool();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     private Predicate bind(String key, String value, Predicate pre) {
@@ -69,20 +74,8 @@ public class TestService implements CommandLineRunner {
 	return pre;
     }
 
-    private Predicate queryBinding(Object o, String key, String value, Predicate predicate) {
-	if (value != null) {
-	    Field f = RefactorUtil.getFieldByName(o, key);
-	    if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
-		try {
-		    predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).eq(value).or(predicate);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-		    e.printStackTrace();
-		}
-	}
-	return predicate;
-    }
     private void processTool() throws ParseException {
-	String srcDir = "E:\\project\\神云系统\\data\\待处理";
+	String srcDir = "E:\\project\\神云系统\\data\\已处理";
 	File dir = new File(srcDir);
 	long t1 = System.currentTimeMillis();
 	// 先处理首页文件，处理完移走
@@ -94,11 +87,8 @@ public class TestService implements CommandLineRunner {
 	    return true;
 	});
 	long t2 = System.currentTimeMillis();
-	// System.out.println(s);
 	System.out.println((t2 - t1) + "\t" + s.size());
     }
-
-
 
     public void process(File dir, FileFilter filter) throws ParseException {
 	// File[] fs = dir.listFiles((File f) -> {
@@ -110,7 +100,12 @@ public class TestService implements CommandLineRunner {
 	    if (file.isDirectory()) {
 		process(file, filter);
 	    } else {
-		pp(file);
+		// try {
+		    pp(file);
+		// } catch (StringIndexOutOfBoundsException e) {
+		// System.out.println("==============================================================================");
+		// file.renameTo(new File(MUL_DIR + file.getName()));
+		// }
 	    }
 	}
     }
@@ -125,11 +120,9 @@ public class TestService implements CommandLineRunner {
 		if (fileName.startsWith("FrontSheet")) {
 		    repository.save(PatientUtil.extractPatientFromFile(file));
 		    file.renameTo(new File(MOVE_DIR + file.getName()));
-		}
- else
+		} else
 		    System.out.println("no ffffff\t" + file.getName());
-	    }
-	    else {
+	    } else {
 		Patient p = list.get(0);
 		if (fileName.startsWith("FrontSheet")) {
 		    // 首页信息
@@ -151,6 +144,4 @@ public class TestService implements CommandLineRunner {
 	    s.add(file.getName() + ":" + pId);
 	}
     }
-
-
 }

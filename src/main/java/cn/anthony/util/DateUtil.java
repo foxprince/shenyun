@@ -21,28 +21,45 @@ import org.apache.commons.lang3.time.DateUtils;
  * @UpdateRemark:What is modified?
  */
 public class DateUtil {
-    private final static String DATE_FORMAT = "yyyy-MM-dd";
-    private final static String DATE_FORMAT_CN = "yyyy年MM月dd日";
-    private final static String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private final static String TIME_FORMAT_CN = "yyyy年MM月dd日 HH:mm:ss";
-    private final static String TIME_FORMAT_SHORT_CN = "HH时mm分";
-    private final static String MONTH_FORMAT = "yyyy-MM";
-    private final static String DAY_FORMAT = "yyyyMMdd";
+    public final static String DATE_FORMAT = "yyyy-MM-dd";
+    public final static String DATE_FORMAT_CN = "yyyy年MM月dd日";
+    public final static String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public final static String TIME_FORMAT_CN = "yyyy年MM月dd日 HH:mm:ss";
+    public final static String TIME_FORMAT_SHORT_CN = "HH时mm分";
+    public final static String MONTH_FORMAT = "yyyy-MM";
+    public final static String DAY_FORMAT = "yyyyMMdd";
+    public final static String FULL_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
     public static void main(String[] args) {
 	System.out.println(format(Calendar.getInstance().getTime(), TIME_FORMAT_CN));
-	// LocalDate parsedDate = LocalDate.parse(text, formatter);
+	System.out.println(getDHM(1556l));
     }
 
+    public static String getDHM(Long minutes) {
+	long days = minutes / (24 * 60);
+	long hours = (minutes - days * 24 * 60) / 60;
+	StringBuilder sb = new StringBuilder();
+	if (days > 0)
+	    sb.append(days + "天");
+	if (hours > 0)
+	    sb.append(hours + "小时");
+	sb.append((minutes - hours * 60 - days * 24 * 60) + "分钟");
+	return sb.toString();
+    }
     public static String format(Date date, String format) {
+	if (date != null) {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-	return DateConvertUtils.asLocalDateTime(date).format(formatter);
+	    return DateConvertUtils.asLocalDateTime(date).format(formatter);
+	}
+	return null;
     }
 
     public static Date parse(String s) {
 	try {
-	    return DateUtils.parseDate(s, DATE_FORMAT, DATE_FORMAT_CN, TIME_FORMAT, TIME_FORMAT_CN, DAY_FORMAT, MONTH_FORMAT, TIME_FORMAT_SHORT_CN);
+	    return DateUtils.parseDate(s, FULL_FORMAT, DATE_FORMAT, DATE_FORMAT_CN, TIME_FORMAT, TIME_FORMAT_CN, DAY_FORMAT, MONTH_FORMAT,
+		    TIME_FORMAT_SHORT_CN);
 	} catch (ParseException e) {
+	    e.printStackTrace();
 	    return null;
 	}
     }

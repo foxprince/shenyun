@@ -13,12 +13,12 @@
                           <h3 class="timeline-header">入院科别：${item.admissionDept} -- 病房：${item.admissionWard}</h3>
                           <div class="timeline-body">
                <p>
-               医疗付费方式：${item.patientclassDesc}<br/>
+               医疗付费方式：${item.patientclass}-${item.patientclassDesc}<br/>
                门诊号：${item.outpatientnum}，健康卡号：${item.healthCardNo}，病理号：${item.pathological}<br/>
                                          
                             联系人：${item.contactName }<br/>
                        联系人关系：     ${item.relation }<br/>
-                  联系电话：          ${item.contactaddress }<br/>
+                  联系地址：          ${item.contactaddress }<br/>  联系电话：          ${item.contactphone }<br/>
                   </p>
                            </div>
                           <div class="timeline-footer">  </div>
@@ -34,6 +34,7 @@
                           <div class="timeline-body">
              <p>  门（急）诊诊断：${item.REGISTER_DIAGNOSIS}，疾病编码：${item.numberOfTimes}<br/>
                门诊号：${item.outpatientnum}，健康卡号：${item.healthCardNo}，病理号：${item.pathological}<br/>
+                                         转科科别：${item.changedept}<br/>
                                          </p>
                             
                            </div>
@@ -44,17 +45,22 @@
                       <li>
                         <i class="fa fa-comments bg-yellow"></i>
                         <div class="timeline-item">
-                          <span class="time">住院天数：${item.inhopitalday} }<i class="fa fa-clock-o"></i> </span>
+                          <span class="time">住院天数：${item.inhopitalday} <i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header">出院科别：${item.dischargeDept} -- 病房：${item.dischargeWard}</h3>
                           <div class="timeline-body">
-              <p>              转科科别：${item.changedept}<br/>
-                主要诊断:            ${item.mainDiag}<br/>
-                编码:            ${item.mainDiagCode}<br/>
-            其他诊断：${item.otherDiag1}<br/>
-    编码：${item.otherDiagCode1}<br/></p>
+                           <p> 出院时间:${item.dischargeTimeDesc }<br/> </p>
+<table class="table table-bordered">
+<tr>
+  <th>主要诊断：${item.mainDiag }</th><th>疾病编码：${item.mainDiagCode }</th><th>入院病情：${item.admissionCondition }</th>
+</tr>
+<c:forEach var="diag" items="${item.outDiags}">
+<tr>
+<td>其他诊断：${diag.diag}</td><td>疾病编码：${diag.code}</td><td>入院病情：${diag.have}</td>
+</tr>
+</c:forEach>
+</table>                          
                           </div>
                           <div class="timeline-footer">
-                            View comment
                           </div>
                         </div>
                       </li>
@@ -90,12 +96,41 @@
                           <span class="time"><i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header">手术详情</h3>
                           <div class="timeline-body">
-                          <p>${item.oDetail.src}</p>
+                          <table class="table table-bordered">
+<tr>
+  <th>编码</th><th>检查日期</th><th>名称</th><th>术者</th><th>I助</th><th>II助</th><th>级别</th><th>NNIS</th><th>麻醉</th><th>ASA</th><th>麻醉师</th>
+</tr>
+<c:forEach var="o" items="${item.operationDetails}">
+<tr>
+<td>${o.code}</td><td>${o.checkDate}</td><td>${o.title}</td><td>${o.chief}</td>
+<td>${o.assistant1}</td><td>${o.assistant2}</td><td>${o.oclass}</td><td>${o.nnis}</td><td>${o.mzfs}</td><td>${o.asa}</td><td>${o.mzDoc}</td>
+</tr>
+                          </c:forEach>
+</table>
+                          
+                          
                           </div>
-                          <div class="timeline-footer">
-                            View comment
-                          </div>
+                          
                         </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> </span>
+                          <div class="timeline-body">
+<table class="table table-bordered">
+<tr>
+  <th>重症监护室名称</th><th>进入时间</th><th>离开时间</th><th>总计(分钟)</th>
+</tr>
+<c:forEach var="o" items="${item.severeDetails}">
+<tr>
+<td>${o.name}</td><td>${o.inTimeDesc}</td><td>${o.outTimeDesc}</td><td>${o.duration}</td>
+</tr>
+</c:forEach>
+</table>
+                           </div><div class="timeline-footer">${item.srcFile } </div>
+                        </div>
+                        
                       </li>
                       <!-- END timeline item -->
                       

@@ -1,0 +1,12 @@
+.container {
+	background: rgb(255, 255, 255); border-radius: 4px; border: 1px solid transparent; border-image: none; left: 45%; top: 170px; width: 340px; margin-left: -105px; position: absolute;
+}
+body {
+	
+}
+.my-center {
+	margin: 0px auto; width: 180px;
+}
+.padding-top {
+	padding-top: 4px;
+}

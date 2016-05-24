@@ -4,6 +4,10 @@ package cn.anthony.util;
  * Author:Anthony
  */
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -217,7 +221,8 @@ public class StringTools {
     }
 
     public static boolean checkEmail(String email) {
-	Pattern pattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", Pattern.CASE_INSENSITIVE);
+	Pattern pattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*",
+		Pattern.CASE_INSENSITIVE);
 	Matcher matcher = pattern.matcher(email);
 	return matcher.matches();
     }
@@ -235,6 +240,15 @@ public class StringTools {
 	src.delete(0, startIndex);
 	int endIndex = src.indexOf(end);
 	String s = (src.substring(start.length(), endIndex).trim());
+	src.delete(0, endIndex);
+	return s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s;
+    }
+
+    public static String eWithoutTrim(StringBuilder src, String start, String end) {
+	int startIndex = src.indexOf(start);
+	src.delete(0, startIndex);
+	int endIndex = src.indexOf(end);
+	String s = (src.substring(start.length(), endIndex));
 	src.delete(0, endIndex);
 	return s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s;
     }
@@ -281,23 +295,52 @@ public class StringTools {
 	}
 	return sb.toString();
     }
+
+    public static List<String> split(StringBuilder src, String c) {
+	List<String> l = new ArrayList<String>();
+	int index = src.indexOf(c);
+	while (index >= 0) {
+	    l.add(src.substring(0, index));
+	    src.delete(0, index + c.length());
+	    index = src.indexOf(c);
+	}
+	if (src.length() > 0)
+	    l.add(src.toString());
+	return l;
+    }
+
+    public static String[] splitToArray(String s, String c) {
+	StringBuilder src = new StringBuilder(s);
+	List<String> l = split(src, c);
+	String[] a = new String[l.size()];
+	l.toArray(a);
+	return a;
+    }
+
     public static void main(String[] args) {
+	StringBuilder sb = new StringBuilder();
+	sb.append("正常\n");
+	sb.append("\n");
+	sb.append("ddd");
+	System.out.println(split(sb, "\n"));
+	// String[] ss = StringUtils.split(sb.toString(), c);
+	// System.out.println(ss.length + ":" + Arrays.asList(ss));
 	Map<String, List<String>> map = new HashMap<String, List<String>>() {
 	    {
 		put("a", new ArrayList<String>());
 	    }
 	};
-	System.out.println(checkNull(map.get("a")));
-	StringBuilder s = new StringBuilder("传染病史:dd\n活史dd个人史fgfgdfg个人生活史");
-	System.out.println(pe(s.toString(), "传染病史((\\s|\\S)*?)(个人生活史|个人史)"));
-	Pattern p = Pattern.compile("<text>(\\s*)</text>");
-	Matcher m = p.matcher("<text>科室</text>");
-	System.out.println(m.matches());
-	while (m.find()) {
-	    System.out.println(m.group());
-	    // System.out.println(m.group(2));
-	    // System.out.println("end(): " + m.end());
-	}
+	// System.out.println(checkNull(map.get("a")));
+	// StringBuilder s = new StringBuilder("传染病史:dd\n活史dd个人史fgfgdfg个人生活史");
+	// System.out.println(pe(s.toString(), "传染病史((\\s|\\S)*?)(个人生活史|个人史)"));
+	// Pattern p = Pattern.compile("<text>(\\s*)</text>");
+	// Matcher m = p.matcher("<text>科室</text>");
+	// System.out.println(m.matches());
+	// while (m.find()) {
+	// System.out.println(m.group());
+	// // System.out.println(m.group(2));
+	// // System.out.println("end(): " + m.end());
+	// }
     }
 
     public static <T> String formatCollection(Collection<T> l) {
@@ -306,5 +349,25 @@ public class StringTools {
 	    sb.append(t.toString() + "\n");
 	}
 	return sb.toString();
+    }
+
+    public static String readDataFromConsole(String prompt) {
+	Console console = System.console();
+	if (console == null) {
+	    throw new IllegalStateException("Console is not available!");
+	}
+	return console.readLine(prompt);
+    }
+
+    public static String readDataFromIn(String prompt) {
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	String str = null;
+	try {
+	    System.out.print(prompt);
+	    str = br.readLine();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return str;
     }
 }

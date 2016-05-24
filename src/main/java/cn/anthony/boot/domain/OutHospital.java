@@ -30,7 +30,7 @@ public class OutHospital {
     public String dischargeOrder;//出院医嘱
     public String note;//
     public String sign;//
-    public String sourceFile;//
+    public String srcFile;//
 
     public String getOutDateDesc() {
 	return DateUtil.format(getOutDate(), "yyyy年MM月dd日HH时");

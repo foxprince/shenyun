@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- spring boot 缺省是不需要这个文件的，这是为了来测试http client用 -->
+<configuration>
+	<!-- <logger name="org.apache" level="WARN" />
+	<logger name="httpclient" level="WARN" /> -->
+</configuration>

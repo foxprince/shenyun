@@ -17,9 +17,10 @@ import lombok.Data;
 public class PatientSearch extends Patient {
     public static void main(String[] args) {
 	SearchModel sm = new SearchModel();
-	sm.addField("ZZHEN_DOCTOR_NAME", "王");
+	sm.addField("ZZHEN_DOCTOR_NAME", "王","and","eq");
 	System.out.println(sm.getKeyValueMap());
 	PatientSearch ps = new PatientSearch();
+	//ps.age
 	RefactorUtil.setObjectValue(ps, sm.getKeyValueMap());
 	
 	System.out.println(ps);
@@ -31,13 +32,16 @@ public class PatientSearch extends Patient {
 	operation = new Operation();
 	outHospital = new OutHospital();
     }
-    Integer minAge,maxAge,size,page ;
-    //String admissionDept,marriageStatus,mainDiag,KZR_DOCTOR_NAME,ZZ_DOCTOR_NAME,dischargeDept,ZY_DOCTOR_NAME,ZZHEN_DOCTOR_NAME,company;
+    Integer size,page ;
     FrontPage frontPage;
     InHospital inHospital;
     Operation operation;
     OutHospital outHospital;
     boolean needSave;
+    
+    //保留以下字段是为了让标准搜索的再搜索功能依然可用
+    Integer minAge,maxAge;
+    String admissionDept,marriageStatus,mainDiag,KZR_DOCTOR_NAME,ZZ_DOCTOR_NAME,dischargeDept,ZY_DOCTOR_NAME,ZZHEN_DOCTOR_NAME,company;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date inDateBegin;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

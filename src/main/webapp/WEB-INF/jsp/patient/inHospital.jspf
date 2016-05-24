@@ -25,12 +25,12 @@
                           <span class="time">病史采集<i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header no-border">${item.takingDateDesc }--${item.takingFrom }</h3>
                           <div class="timeline-body">
-                            <p>自述病史：${item.selfDesc }</p>
-                            <p>现病史：${item.nowMedicalHistory }</p>
-                            <p>既往史：${item.pastMedicalHistory }</p>
-                            <p>传染病史：${item.infectiousHistory }</p>
-                            <p>个人生活史：${item.lifeHistory }</p>
-                            <p>家族史：${item.familyHistory }</p>
+                            <p><strong>自述病史：</strong>${item.selfDesc }</p>
+                            <p><strong>现病史：</strong>${item.nowMedicalHistory }</p>
+                            <p><strong>既往史：</strong>${item.pastMedicalHistory }</p>
+                            <p><strong>传染病史：</strong>${item.infectiousHistory }</p>
+                            <p><strong>个人生活史：</strong>${item.lifeHistory }</p>
+                            <p><strong>家族史：</strong>${item.familyHistory }</p>
                           </div>
                         </div>
                       </li>
@@ -42,10 +42,186 @@
                           <span class="time">体格检查<i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header">体格检查 </h3>
                           <div class="timeline-body">
-                            <p>${item.somatoscopy.sExamination.src}</p>
+                            <ul >
+                            <li><p><strong>一般情况：</strong></p> <pre>${item.somatoscopy.general}</pre></li>
+                            <li><p><strong>皮肤黏膜：</strong></p> <pre>${item.somatoscopy.skin}</pre></li>
+                            <li><p><strong>浅表淋巴结：</strong></p> <pre>${item.somatoscopy.superficialLymph}</pre></li>
+                            <li><p><strong>皮肤黏膜：</strong></p> <pre>${item.somatoscopy.skin}</pre></li>
+                            <li><p><strong>头部五官：</strong></p> <pre class="pre-scrollable">头颅：${item.somatoscopy.skull}<br/>眼：${item.somatoscopy.eye}<br/>耳：${item.somatoscopy.ear}<br/>鼻：${item.somatoscopy.node}<br/>口：${item.somatoscopy.mouse}<br/>咽：${item.somatoscopy.throat}<br/>
+                            </pre></li>
+                            <li><p><strong>颈部：</strong></p> <pre>${item.somatoscopy.neck}</pre></li>
+                            <li><p><strong>胸廓：</strong></p> <pre>${item.somatoscopy.thorax}</pre></li>
+                            <li><p><strong>肺：</strong></p> <pre>${item.somatoscopy.lung}</pre></li>
+                            <li><p><strong>心：</strong></p> <pre>${item.somatoscopy.heart}</pre></li>
+                            <li><p><strong>腹部：</strong></p> <pre>${item.somatoscopy.abdomen}</pre></li>
+                            <li><p><strong>肝胆：</strong></p> <pre>${item.somatoscopy.liver}</pre></li>
+                            <li><p><strong>脾：</strong></p> <pre>${item.somatoscopy.spleen}</pre></li>
+                            <li><p><strong>肾：</strong></p> <pre>${item.somatoscopy.kidney}</pre></li>
+                            <li><p><strong>外阴及肛门：</strong></p> <pre>${item.somatoscopy.vulva}</pre></li>
+                            <li><p><strong>脊柱：</strong></p> <pre>${item.somatoscopy.spine}</pre></li>
+                            <li><p><strong>四肢：</strong></p> <pre>${item.somatoscopy.limbs}</pre></li>
+                            
+                            </ul>
                           </div>
                           <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            <a class="btn btn-warning btn-flat btn-xs"></a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+                        <div class="timeline-item">
+                          <span class="time">专科检查<i class="fa fa-clock-o"></i> </span>
+                          <h3 class="timeline-header">专科检查 </h3>
+                          <div class="timeline-body">
+                            <ul>
+                            <li><p><strong>高级皮层功能：</strong></p><pre class="pre-scrollable">神志：${item.somatoscopy.sExamination.高级皮层功能.神志}<br/>精神状态：${item.somatoscopy.sExamination.高级皮层功能.精神状态}<br/>性格/人格：${item.somatoscopy.sExamination.高级皮层功能.性格人格}<br/>头部：${item.somatoscopy.sExamination.高级皮层功能.头部}<br/>语言：${item.somatoscopy.sExamination.高级皮层功能.语言}<br/>脑膜刺激征：${item.somatoscopy.sExamination.高级皮层功能.脑膜刺激征}<br/></pre></li>
+                            <li><p><strong>嗅觉：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.嗅觉}</pre></li>
+                            <li><p><strong>视力：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>视力</th><th>指数距离</th><th>指动距离</th><th>光感</th><th>失明</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.颅神经.视力.视力左侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.指数距离左侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.指动距离左侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.光感左侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.失明左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.颅神经.视力.视力右侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.指数距离右侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.指动距离右侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.光感右侧}</td><td>${item.somatoscopy.sExamination.颅神经.视力.失明右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>视野：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.视野}</pre></li>
+                            <li><p><strong>眼底：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>视盘</th><th>血管</th><th>视网膜</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.颅神经.眼底.视盘左侧}</td><td>${item.somatoscopy.sExamination.颅神经.眼底.血管左侧}</td><td>${item.somatoscopy.sExamination.颅神经.眼底.视网膜左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.颅神经.眼底.视盘右侧}</td><td>${item.somatoscopy.sExamination.颅神经.眼底.血管右侧}</td><td>${item.somatoscopy.sExamination.颅神经.眼底.视网膜右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>动眼神经：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>眼睑下垂</th><th>眼球突出</th><th>眼球下陷</th><th>瞳孔大小</th><th>瞳孔形状</th><th>直接对光反射</th><th>间接对光反射</th><th>调节反射</th><th>辐辏反射</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼睑下垂左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼球突出左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼球下陷左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.瞳孔大小左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.瞳孔形状左侧}</td>
+<td>${item.somatoscopy.sExamination.颅神经.动眼神经.直接对光反射左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.间接对光反射左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.调节反射左侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.辐辏反射左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼睑下垂右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼球突出右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.眼球下陷右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.瞳孔大小右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.瞳孔形状右侧}</td>
+<td>${item.somatoscopy.sExamination.颅神经.动眼神经.直接对光反射右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.间接对光反射右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.调节反射右侧}</td><td>${item.somatoscopy.sExamination.颅神经.动眼神经.辐辏反射右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>眼球运动：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.眼球运动}</pre></li>
+                            <li><p><strong>复视：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.复视}</pre></li>
+                            <li><p><strong>痛触觉：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>第一支</th><th>第二支</th><th>第三支</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第一支左侧}</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第二支左侧}</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第三支左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第一支右侧}</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第二支右侧}</td><td>${item.somatoscopy.sExamination.颅神经.痛触觉.第三支右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>洋葱样皮样感觉障碍：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.洋葱样皮样感觉障碍}</pre></li>
+                            <li><p><strong>运动：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.运动}</pre></li>
+                            <li><p><strong>头部反射：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>皱额</th><th>闭目</th><th>鼻唇沟</th><th>口角偏</th><th>鼓腮</th><th>面肌抽搐</th><th>味觉</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.皱额左侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.闭目左侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.鼻唇沟左侧}</td>
+<td>${item.somatoscopy.sExamination.颅神经.头部反射.口角偏左侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.鼓腮左侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.面肌抽搐左侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.味觉左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.皱额右侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.闭目右侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.鼻唇沟右侧}</td>
+<td>${item.somatoscopy.sExamination.颅神经.头部反射.口角偏右侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.鼓腮右侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.面肌抽搐右侧}</td><td>${item.somatoscopy.sExamination.颅神经.头部反射.味觉右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>发音：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.发音}</pre></li>
+                            <li><p><strong>咽反射：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.咽反射}</pre></li>
+                            <li><p><strong>味觉：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.味觉}</pre></li>
+                            <li><p><strong>听力：</strong></p><pre>
+${item.somatoscopy.sExamination.颅神经.听力.schwaban试验}<br/>
+${item.somatoscopy.sExamination.颅神经.听力.weber试验}<br/>
+${item.somatoscopy.sExamination.颅神经.听力.rinne试验}<br/>
+${item.somatoscopy.sExamination.颅神经.听力.眼球震颤}<br/>
+                            </pre></li>
+                            <li><p><strong>耸肩：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.耸肩}</pre></li>
+                            <li><p><strong>头侧转：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.头侧转}</pre></li>
+                            <li><p><strong>舌：</strong></p><pre>${item.somatoscopy.sExamination.颅神经.舌}</pre></li>
+         
+                            <li><p><strong>运动系统：</strong></p><pre>${item.somatoscopy.sExamination.运动系统}</pre></li>
+                            <li><p><strong>共济运动：</strong></p><pre>${item.somatoscopy.sExamination.共济运动}</pre></li>
+                            <li><p><strong>感觉系统：</strong></p><pre>${item.somatoscopy.sExamination.感觉系统}</pre></li>
+  
+  
+                            <li><p><strong>腹壁反射：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>上</th><th>中</th><th>下</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.左侧腹壁反射上}</td><td>${item.somatoscopy.sExamination.反射.左侧腹壁反射中}</td><td>${item.somatoscopy.sExamination.反射.左侧腹壁反射下}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.右侧腹壁反射上}</td><td>${item.somatoscopy.sExamination.反射.右侧腹壁反射中}</td><td>${item.somatoscopy.sExamination.反射.右侧腹壁反射下}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>提睾肛门反射：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>提睾反射</th><th>肛门反射</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.提睾反射左侧}</td><td>${item.somatoscopy.sExamination.反射.肛门反射左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.提睾反射右侧}</td><td>${item.somatoscopy.sExamination.反射.肛门反射右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>深反射：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>肱二头肌</th><th>肱三头肌</th><th>桡骨膜</th><th>膝反射</th><th>踝反射</th><th>髌痉挛</th><th>踝痉挛</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.肱二头肌左侧}</td><td>${item.somatoscopy.sExamination.反射.肱三头肌左侧}</td><td>${item.somatoscopy.sExamination.反射.桡骨膜左侧}</td>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.膝反射左侧}</td><td>${item.somatoscopy.sExamination.反射.踝反射左侧}</td><td>${item.somatoscopy.sExamination.反射.髌痉挛左侧}</td><td>${item.somatoscopy.sExamination.反射.踝痉挛左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.肱二头肌右侧}</td><td>${item.somatoscopy.sExamination.反射.肱三头肌右侧}</td><td>${item.somatoscopy.sExamination.反射.桡骨膜右侧}</td>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.膝反射右侧}</td><td>${item.somatoscopy.sExamination.反射.踝反射右侧}</td><td>${item.somatoscopy.sExamination.反射.髌痉挛右侧}</td><td>${item.somatoscopy.sExamination.反射.踝痉挛右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>病理反射：</strong></p><pre>
+<table class="table table-bordered table-condensed">
+<tr>
+  <th>左/右</th><th>Hoffmann</th><th>Babinski</th><th>Chaddock</th><th>Oppenheim</th><th>Gordon</th><th>其他</th>
+</tr>
+<tr>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.hoffmann左侧}</td><td>${item.somatoscopy.sExamination.反射.babinski左侧}</td><td>${item.somatoscopy.sExamination.反射.chaddock左侧}</td>
+<td>左侧</td><td>${item.somatoscopy.sExamination.反射.oppenheim左侧}</td><td>${item.somatoscopy.sExamination.反射.gordon左侧}</td><td>${item.somatoscopy.sExamination.反射.其他左侧}</td>
+</tr><tr>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.hoffmann右侧}</td><td>${item.somatoscopy.sExamination.反射.babinski右侧}</td><td>${item.somatoscopy.sExamination.反射.chaddock右侧}</td>
+<td>右侧</td><td>${item.somatoscopy.sExamination.反射.oppenheim右侧}</td><td>${item.somatoscopy.sExamination.反射.gordon右侧}</td><td>${item.somatoscopy.sExamination.反射.其他右侧}</td>
+</tr>
+</table>
+                            </pre></li>
+                            <li><p><strong>自主神经与内分泌系统：</strong></p><pre>${item.somatoscopy.sExamination.自主神经与内分泌系统}</pre></li>
+                            
+                            </ul>
+                          </div>
+                          <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs"></a>
                           </div>
                         </div>
                       </li>
@@ -55,10 +231,10 @@
                           <span class="time">辅助检查<i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header">辅助检查 </h3>
                           <div class="timeline-body">
-                            <p>${item.auxiliaryExamination}</p>
+                            <p><pre>${item.auxiliaryExamination}</pre></p>
                           </div>
                           <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            <a class="btn btn-warning btn-flat btn-xs"></a>
                           </div>
                         </div>
                       </li>
@@ -69,13 +245,13 @@
                           <span class="time">诊断<i class="fa fa-clock-o"></i> </span>
                           <h3 class="timeline-header">诊断 </h3>
                           <div class="timeline-body">
-                            <p>初步诊断：${item.firstDiag}</p>
-                            <p>确定诊断：${item.confirmDiag}</p>
-                            <p>补充诊断：${item.supplyDiags}</p>
-                            <p>更正诊断：${item.correctDiag}</p>
+                            <p><strong>初步诊断：</strong></p><pre>${item.firstDiag}</pre>
+                            <p><strong>确定诊断：</strong></p><pre>${item.confirmDiag}</pre>
+                            <p><strong>补充诊断：</strong></p><pre>${item.supplyDiags}</pre>
+                            <p><strong>更正诊断：</strong></p><pre>${item.correctDiag}</pre>
                           </div>
                           <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            <a class="btn btn-warning btn-flat btn-xs"></a>
                           </div>
                         </div>
                       </li>

@@ -26,31 +26,19 @@
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>文件导入</span>
-                <span class="label label-primary pull-right">4</span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="/pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                <li><a href="/pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                <li><a href="/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                <li><a href="/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-              </ul>
-            </li>
             <li>
               <a href="/patient/list">
-                <i class="fa fa-th"></i> <span>病人信息</span> 
+                <i class="fa fa-th"></i> <span>病人</span> 
               </a>
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-table"></i> <span>查询统计</span>
+                <i class="fa fa-table"></i> <span>查询</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/patient/initSearch"><i class="fa fa-tasks"></i> 高级查询</a></li>
+                <li><a href="/patient/initSearch"><i class="fa fa-tasks"></i> 标准查询</a></li>
+                <li><a href="/searchModel/initFullSearch"><i class="fa fa-tasks"></i> 全量查询</a></li>
                 <li><a href="/searchModel/list"><i class="fa fa-database"></i> 查询历史</a></li>
               </ul>
             </li>
