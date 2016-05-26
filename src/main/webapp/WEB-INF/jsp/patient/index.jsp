@@ -36,7 +36,7 @@
               <!-- Profile Image -->
               <div class="box box-primary">
                 <div class="box-body box-profile">
-                  <img class="profile-user-img img-responsive img-circle" src="../dist/img/${patient.sex eq 1?"Patient-Male.png":"Patient-Female.png"}" alt="病人照片">
+                  <img class="profile-user-img img-responsive img-circle" src="../resources/dist/img/${patient.sex eq 1?"Patient-Male.png":"Patient-Female.png"}" alt="病人照片">
                   <h3 class="profile-username text-center">${patient.name} </h3>
                   <p class="text-muted text-center">今年${patient.actualAge}岁，${patient.sexDesc} </p>
 
@@ -206,10 +206,10 @@
             <!-- accepted payments column -->
             <div class="col-xs-6">
               <p class="lead">Payment Methods:</p>
-              <img src="../../dist/img/credit/visa.png" alt="Visa">
-              <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-              <img src="../../dist/img/credit/american-express.png" alt="American Express">
-              <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+              <img src="../resources/dist/img/credit/visa.png" alt="Visa">
+              <img src="../resources/dist/img/credit/mastercard.png" alt="Mastercard">
+              <img src="../resources/dist/img/credit/american-express.png" alt="American Express">
+              <img src="../resources/dist/img/credit/paypal2.png" alt="Paypal">
               <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                 Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
               </p>

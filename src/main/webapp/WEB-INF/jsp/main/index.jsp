@@ -40,7 +40,7 @@
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="/patient" class="small-box-footer">查看所有 <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/patient/list" class="small-box-footer">查看所有 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-6">
@@ -123,7 +123,7 @@
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><div class="box-body chat" id="chat-box" style="overflow: hidden; width: auto; height: 250px;">
                   <!-- chat item -->
                   <div class="item">
-                    <img src="../dist/img/user4-128x128.jpg" alt="user image" class="online">
+                    <img src="../resources/dist/img/user4-128x128.jpg" alt="user image" class="online">
                     <p class="message">
                       <a href="#" class="name">
                         <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
@@ -145,7 +145,7 @@
                   </div><!-- /.item -->
                   <!-- chat item -->
                   <div class="item">
-                    <img src="../dist/img/user3-128x128.jpg" alt="user image" class="offline">
+                    <img src="../resources/dist/img/user3-128x128.jpg" alt="user image" class="offline">
                     <p class="message">
                       <a href="#" class="name">
                         <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
@@ -158,7 +158,7 @@
                   </div><!-- /.item -->
                   <!-- chat item -->
                   <div class="item">
-                    <img src="../dist/img/user2-160x160.jpg" alt="user image" class="offline">
+                    <img src="../resources/dist/img/user2-160x160.jpg" alt="user image" class="offline">
                     <p class="message">
                       <a href="#" class="name">
                         <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
