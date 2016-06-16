@@ -36,7 +36,7 @@ public class BJGuahao {
     String confirmUrl = "http://www.bjguahao.gov.cn/order/confirm.htm";
     String hospitalId = "142";
     String departmentId = "200039602";
-    String dutyDate = "2016-06-02";
+    String dutyDate = "2016-06-06";
     // 创建CookieStore实例
     static CookieStore cookieStore = null;
     static HttpClientContext context = null;
@@ -102,7 +102,7 @@ public class BJGuahao {
 		    Duty duty = new Gson().fromJson(json, Duty.class);
 		    for (DutyData data : duty.data) {
 			if (data.remainAvailableNumber > 0 && data.doctorTitleName.indexOf("14") > 0
-				&& data.skill.indexOf("运动创伤") > 0) {
+				&& data.skill.indexOf("运动伤") > 0) {
 			    docId = data.doctorId;
 			    sourceId = data.dutySourceId;
 			    ghUrl = "http://www.bjguahao.gov.cn/order/confirm/" + hospitalId + "-" + departmentId + "-"

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -18,23 +18,24 @@ import com.mysema.query.types.Predicate;
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
 
+@SuppressWarnings("rawtypes")
 @Service
 public class PatientService extends GenericService<Patient> {
     @Resource
     protected PatientRepository repository;
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private MongoOperations mongoTemplate;
 
     private static List<String> changedeptList;
     private static List<String> dischargeWardList;
     private static List<String> admissionWardList;
-    
+
     public PatientService() {
 	super();
     }
-    
+
     public List<String> getChangedeptList() {
-	if(changedeptList==null)
+	if (changedeptList == null)
 	    changedeptList = ditinctChangedept();
 	Collections.sort(changedeptList);
 	return changedeptList;
@@ -53,7 +54,8 @@ public class PatientService extends GenericService<Patient> {
 	Collections.sort(admissionWardList);
 	return admissionWardList;
     }
-    
+
+    @Override
     public PatientRepository getRepository() {
 	return repository;
     }
@@ -69,6 +71,7 @@ public class PatientService extends GenericService<Patient> {
     public Long total() {
 	return repository.count();
     }
+
     public Long totalIn() {
 	repository.count();
 	long l = 0;
@@ -92,5 +95,7 @@ public class PatientService extends GenericService<Patient> {
     public List<String> ditinctAdmissionWard() {
 	return mongoTemplate.getCollection("patient").distinct("frontRecords.admissionWard");
     }
+
     
+
 }

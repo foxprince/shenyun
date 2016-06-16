@@ -102,6 +102,12 @@
 			<artifactId>org.json</artifactId>
 			<version>chargebee-1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.12</version>
+		</dependency>
+
 		<!-- 配置简单的安全访问控制 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

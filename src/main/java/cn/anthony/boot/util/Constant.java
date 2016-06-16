@@ -19,13 +19,67 @@ public class Constant {
 	    this.label = label;
 	}
     }
+    
+    public static void main(String[] args) {
+	System.out.println(getKeyDesc("sex"));
+    }
+    public static String getKeyDesc(String key) {
+	String find = key.substring(key.indexOf(".")>=0?key.indexOf(".")+1:0);
+	if(totalKeyMap.containsKey("frontRecords."+find))
+	    return totalKeyMap.get("frontRecords."+find).getLabel();
+	if(patientKeyMap.containsKey("patient."+find))
+	    return patientKeyMap.get("patient."+find).getLabel();
+	if(frontPageKeyMap.containsKey("frontPage."+find))
+	    return frontPageKeyMap.get("frontPage."+find).getLabel();
+	if(inKeyMap.containsKey("inHospital."+find))
+	    return frontPageKeyMap.get("inHospital."+find).getLabel();
+	if(operKeyMap.containsKey("operation."+find))
+	    return frontPageKeyMap.get("operation."+find).getLabel();
+	if(outKeyMap.containsKey("outHospital."+find))
+	    return frontPageKeyMap.get("outHospital."+find).getLabel();
+	return null;
+    }
+    
+    public static final String[] pieColors = new String[]{"#00a65a","#f56954","#f39c12","#f39c12","#d2d6de","#32d6de","#d223de","#d2d645","#57d6de"};
+    public static final String[] pieHighlights = new String[]{"#00a65b","#f56955","#f39c14","#f39c15","#d2d6ee","#32d7de","#d224de","#d2d675","#57d7de"};
 
     private static final String DEFAULT_TYPE = "text";
     private static final String DATETIME_TYPE = "datetime-local";
     private static final String DATE_TYPE = "date";
 
+    public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
+    static {
+	defaultPut(totalKeyMap, "frontRecords.age", "年龄");
+	defaultPut(totalKeyMap, "frontRecords.sex", "性别，1：男，2：女");
+	defaultPut(totalKeyMap, "frontRecords.name", "姓名");
+	defaultPut(totalKeyMap, "frontRecords.nativeplace", "籍贯");
+	defaultPut(totalKeyMap, "frontRecords.nationality", "民族");
+	defaultPut(totalKeyMap, "frontRecords.country", "国籍");
+	defaultPut(totalKeyMap, "frontRecords.birthplace", "出生地");
+	//defaultPut(totalKeyMap, "frontRecords.registeredaddress", "户口地址");
+	//defaultPut(totalKeyMap, "frontRecords.homeAddress", "现住址");
+	defaultPut(totalKeyMap, "frontRecords.admissionDept", "入院科别");
+	defaultPut(totalKeyMap, "frontRecords.admissionWard", "入院病房");
+	defaultPut(totalKeyMap, "frontRecords.dischargeDept", "出院科别");
+	defaultPut(totalKeyMap, "frontRecords.dischargeWard", "出院病房");
+	defaultPut(totalKeyMap, "frontRecords.inhopitalday", "实际住院天数");
+	defaultPut(totalKeyMap, "frontRecords.changedept", "转科科别");
+	defaultPut(totalKeyMap, "frontRecords.REGISTER_DIAGNOSIS", "门（急）诊诊断　");
+	//defaultPut(totalKeyMap, "frontRecords.REGISTER_CODE", "门（急）诊诊断疾病编码");
+	defaultPut(totalKeyMap, "frontRecords.mainDiag", "出院主要诊断");
+	defaultPut(totalKeyMap, "frontRecords.ZRFZR_DOCTOR_NAME", "主任（副主任）医师");
+	defaultPut(totalKeyMap, "frontRecords.ZZ_DOCTOR_NAME", "主治医师");
+	defaultPut(totalKeyMap, "frontRecords.ZY_DOCTOR_NAME", "住院医师");
+	defaultPut(totalKeyMap, "frontRecords.ZZHEN_DOCTOR_NAME", "主诊医师");
+	defaultPut(totalKeyMap, "frontRecords.ZR_NURSE_NAME", "责任护士");
+	//defaultPut(totalKeyMap, "frontRecords.JX_DOCTOR_NAME", "进修医师");
+	//defaultPut(totalKeyMap, "frontRecords.SX_DOCTOR_NAME", "实习医师");
+	defaultPut(totalKeyMap, "frontRecords.operationDetails.title", "手术、操作及大型设备检查名称");
+	defaultPut(totalKeyMap, "frontRecords.operationDetails.chief", "手术操作医师");
+	}
+    
     public static Map<String, CheckOption> patientKeyMap = new LinkedHashMap<String, CheckOption>();
-
+    
     static {
 	defaultPut(patientKeyMap, "patient.age", "年龄");
 	defaultPut(patientKeyMap, "patient.sex", "性别");

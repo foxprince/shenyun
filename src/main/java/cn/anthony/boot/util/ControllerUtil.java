@@ -4,8 +4,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
+
+import cn.anthony.boot.service.KeyGroup;
 
 public class ControllerUtil {
     private static Map<String, String> provinceMap = new TreeMap<String, String>() {
@@ -74,4 +77,28 @@ public class ControllerUtil {
 	return provinceMap;
     }
 
+    public static String getSearchParaString(KeyGroup kg, String field) {
+	if (kg.getKey() instanceof Map) {
+	    StringBuilder sb = new StringBuilder();
+	    Map<String, Object> m = (Map<String, Object>) kg.getKey();
+	    for (Map.Entry<String, Object> entry : m.entrySet()) {
+		String k = entry.getKey();
+		k = k.replaceAll("operationDetails", "operationDetail");
+		String v = entry.getValue().toString();
+		v = StringUtils.replace(v, "[", "");
+		v = StringUtils.replace(v, "]", "");
+		sb.append("frontPage." + k + "_andOr=and&frontPage." + k + "_option=eq&frontPage." + k + "=" + v
+			+ "&");
+	    }
+	    return sb.toString();
+	} else {
+	    String k = field.substring(field.indexOf(".") >= 0 ? field.indexOf(".") + 1 : 0);
+	    k = k.replaceAll("operationDetails", "operationDetail");
+	    String v = kg.getKey().toString();
+	    v = StringUtils.replace(v, "[", "");
+	    v = StringUtils.replace(v, "]", "");
+	    return "frontPage." + k + "_andOr=and&frontPage." + k + "_option=eq&frontPage." + k + "="
+		    + v;
+	}
+    }
 }

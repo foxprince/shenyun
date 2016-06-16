@@ -58,7 +58,7 @@
     </div><!-- /.box-header -->
     <div class="box-body pad">
       <div class="form-group">
-        <c:forEach var="item" items="${patientOptions}">
+        <c:forEach  var="item" items="${patientOptions}">
           <label><input type="checkbox" class="minimal" id="${item.name}" inputType="${item.inputType}" firstSelName="${item.name}_andOr" textName="${item.name}" lastSelName="${item.name}_option">${item.label}</label>
           <i style="margin:0px 10px">|</i>
         </c:forEach>

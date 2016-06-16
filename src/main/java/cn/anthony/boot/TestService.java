@@ -20,43 +20,50 @@ import cn.anthony.boot.domain.QInHospital;
 import cn.anthony.boot.domain.QPatient;
 import cn.anthony.boot.repository.PatientRepository;
 import cn.anthony.boot.service.PatientService;
+import cn.anthony.boot.service.TotalService;
 import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.RefactorUtil;
 
 @SpringBootApplication
 public class TestService implements CommandLineRunner {
-    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\待处理\\";
+    private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\已处理\\";
     private static final String MUL_DIR = "E:\\project\\神云系统\\data\\待处理\\";
     @Autowired
     private PatientRepository repository;
     @Autowired
     private PatientService service;
+    @Autowired
+    private TotalService tservice;
     private Set<String> s = new HashSet<String>();
 
     public static void main(String[] args) {
-	// System.setProperty("DB.TRACE", "true");
-	// System.setProperty("DEBUG.MONGO", "true");
+	//System.setProperty("DB.TRACE", "true");
+	//System.setProperty("DEBUG.MONGO", "true");
 	SpringApplication.run(TestService.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
 	System.out.println("run test");
-	// String id = "571888f2dbab72c294293a2c";
-	// Predicate pre = QPatient.patient.name.startsWith("周");
-	// pre = queryBinding(QPatient.patient.inRecords.any(), "contact",
-	// "李殿祥13611352590", pre);
-	// System.out.println(service.ditinctField());
-	// long t1 = System.currentTimeMillis();
-	// repository.deleteAll();
-	// long t2 = System.currentTimeMillis();
-	// System.out.println(t2 - t1);
-	// for (Patient p : repository.findAll(pre)) {
-	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
-	// System.out.println(p.name + ":" + p.operations.size());
-	// }
-	try {
-	    // processTool();
+	try {// String id = "571888f2dbab72c294293a2c";
+	     // Predicate pre = QPatient.patient.name.startsWith("周");
+	     // pre = queryBinding(QPatient.patient.inRecords.any(), "contact",
+	     // "李殿祥13611352590", pre);
+	    long t1 = System.currentTimeMillis();
+	    // repository.deleteAll();
+//	    for(KeyGroup e : service.keyGroup("frontRecords.outDiags.diag")){
+//		System.out.println(e);;
+//	    }
+	    //System.out.println(tservice.agg(1000,"frontRecords.age"));
+	    //processTool();
+	    long t2 = System.currentTimeMillis();
+	    System.out.println(t2 - t1);
+	    // for (Patient p : repository.findAll(pre)) {
+	    // System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
+	    // System.out.println(p.name + ":" + p.operations.size());
+	    // }
+
+	    
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -66,7 +73,8 @@ public class TestService implements CommandLineRunner {
 	Field f = RefactorUtil.getFieldByName(QInHospital.inHospital, key);
 	if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath")) {
 	    try {
-		pre = ((com.mysema.query.types.path.StringPath) f.get(QPatient.patient.inRecords.any())).eq(value).and(pre);
+		pre = ((com.mysema.query.types.path.StringPath) f.get(QPatient.patient.inRecords.any())).eq(value)
+			.and(pre);
 	    } catch (IllegalArgumentException | IllegalAccessException e) {
 		e.printStackTrace();
 	    }
@@ -75,7 +83,7 @@ public class TestService implements CommandLineRunner {
     }
 
     private void processTool() throws ParseException {
-	String srcDir = "E:\\project\\神云系统\\data\\已处理";
+	String srcDir = "E:\\project\\神云系统\\data\\待处理";
 	File dir = new File(srcDir);
 	long t1 = System.currentTimeMillis();
 	// 先处理首页文件，处理完移走
@@ -101,7 +109,7 @@ public class TestService implements CommandLineRunner {
 		process(file, filter);
 	    } else {
 		// try {
-		    pp(file);
+		pp(file);
 		// } catch (StringIndexOutOfBoundsException e) {
 		// System.out.println("==============================================================================");
 		// file.renameTo(new File(MUL_DIR + file.getName()));
