@@ -109,46 +109,86 @@
           </DIV>
           <DIV class="modal-body">
             <DIV class="container-fluid" id="checkboxes">
-              <DIV class="row">
-                <LABEL class="checkbox-inline"><INPUT id="name" type="checkbox" checked="" value="name">
-                  患者姓名 </LABEL> <LABEL class="checkbox-inline"><INPUT id="sex" type="checkbox" checked="" value="sex">
-                  性别 </LABEL> <LABEL class="checkbox-inline"><INPUT id="age" type="checkbox" checked="" value="age">
-                  年龄 </LABEL> <LABEL class="checkbox-inline"><INPUT id="marriageStatus" type="checkbox" checked=""
-                  value="marriageStatus"> 婚姻状态 </LABEL> <LABEL class="checkbox-inline"><INPUT id="nationality"
-                  type="checkbox" checked="" value="nationality"> 民族 </LABEL> <LABEL class="checkbox-inline"><INPUT
-                  id="country" type="checkbox" checked="" value="country"> 国别 </LABEL>
-              </DIV>
-              <DIV class="row">
-                <LABEL class="checkbox-inline"><INPUT id="dischargeDept" type="checkbox" checked=""
-                  value="dischargeDept"> 出院科室 </LABEL> <LABEL class="checkbox-inline"><INPUT id="dischargeWard"
-                  type="checkbox" checked="" value="dischargeWard"> 出院病房 </LABEL> <LABEL class="checkbox-inline"><INPUT
-                  id="dischargeTime" type="checkbox" checked="" value="dischargeTime"> 出院时间 </LABEL> <LABEL
-                  class="checkbox-inline"><INPUT id="KZR_DOCTOR_NAME" type="checkbox" checked=""
-                  value="KZR_DOCTOR_NAME"> 科主任 </LABEL> <LABEL class="checkbox-inline"><INPUT
-                  id="ZZ_DOCTOR_NAME" type="checkbox" checked="" value="ZZ_DOCTOR_NAME"> 主治医师 </LABEL> <LABEL
-                  class="checkbox-inline"><INPUT id="ZY_DOCTOR_NAME" type="checkbox" checked=""
-                  value="ZY_DOCTOR_NAME"> 住院医师 </LABEL>
-              </DIV>
-              <DIV class="row">
-                <LABEL class="checkbox-inline"><INPUT id="adminission_no" type="checkbox" checked=""
-                  value="adminission_no"> 病案号 </LABEL> <LABEL class="checkbox-inline"><INPUT id="numberOfTimes"
-                  type="checkbox" checked="" value="numberOfTimes"> 住院次数 </LABEL> <LABEL class="checkbox-inline"><INPUT
-                  id="admissionDept" type="checkbox" checked="" value="admissionDept"> 住院科室 </LABEL> <LABEL
-                  class="checkbox-inline"><INPUT id="admissionWard" type="checkbox" checked=""
-                  value="admissionWard"> 住院病房 </LABEL> <LABEL class="checkbox-inline"><INPUT id="admissionTime"
-                  type="checkbox" checked="" value="admissionTime"> 住院时间 </LABEL> <LABEL class="checkbox-inline"><INPUT
-                  id="mainDiag" type="checkbox" checked="" value="mainDiag"> 诊断信息 </LABEL>
-              </DIV>
-              <DIV class="row">
+              <form action="export" method="post" target="_blank">
+              <div class="box-body">
+  <div class="box box-info">
+    <div class="box-header">
+      <h4 class="box-title">基本条件</h4> <label><input id="patientCheckAll" type="checkbox" checked="true">全选</label>
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach  var="item" items="${patientOptions}">
+          <label><input type="checkbox" op="patient" class="minimal" name="fields" value="${item.name}" checked="true">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+      </div>
+    </div>
+    </div>
+
+    <div class="box box-primary">
+    <div class="box-header">
+      <h4 class="box-title">病案首页</h4> <label><input id="frontPageCheckAll" type="checkbox" checked="true">全选</label>
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach var="item" items="${frontPageOptions}">
+           <label><input type="checkbox" class="minimal" op="frontPage" name="fields" value="${item.name}" checked="true">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+       </div>
+    </div>
+    </div>
+
+    <div class="box box-warning">
+    <div class="box-header">
+      <h4 class="box-title">入院选项</h4> <label><input id="inHospitalCheckAll" type="checkbox" checked="true">全选</label>
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach var="item" items="${inOptions}">
+           <label><input type="checkbox" class="minimal" op="inHospital" name="fields" value="${item.name}" checked="true">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+      </div>
+    </div>
+    </div>
+  <div class="box box-danger">
+    <div class="box-header">
+      <h4 class="box-title">手术选项</h4> <label><input id="operationCheckAll" type="checkbox" checked="true">全选</label>
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach var="item" items="${operationOptions}">
+           <label><input type="checkbox" class="minimal" op="operation" name="fields" value="${item.name}" checked="true">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+      </div>
+    </div>
+    </div>
+  <div class="box box-success">
+    <div class="box-header">
+      <h4 class="box-title">出院选项</h4> <label><input id="outHospitalCheckAll" type="checkbox" checked="true">全选</label>
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach var="item" items="${outOptions}">
+           <label><input type="checkbox" class="minimal" op="outHospital" name="fields" value="${item.name}" checked="true">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+      </div>
+    </div>
+  </div>
+</div>
               
-              </DIV>          
+                       
             </DIV>
           </DIV>
           <DIV class="modal-footer">
-            <BUTTON class="btn btn-warning" onclick="confirmHandle()" type="button">Save changes</BUTTON>
-            <a class="btn btn-success" href="./export">导出EXCEL文件</a>
+            <input class="btn btn-success" type="submit" value="导出EXCEL文件"/>
+            
             <BUTTON class="btn btn-primary" type="button" data-dismiss="modal">关闭</BUTTON>
           </DIV>
+          </form>
         </DIV>
       </DIV>
     </DIV>
@@ -178,10 +218,54 @@
     	$('#checkboxes input:checked').each(function() {
     		selected.push($(this).attr('id'));
     	});
-    	//console.log('Seleced', selected);
-    	//console.log("/auth/index.php/Admin/MsgManage/ouputCsv/sort/adminission_no/order/desc.html");
     	window.open(href + '?fields=' + selected.join(','));
     }
+    
+    $("#patientCheckAll").click( 
+    	function(){ 
+    		if(this.checked){ 
+    			$("input[op='patient']").each(function(){this.checked=true;}); 
+    		}else{ 
+    			$("input[op='patient']").each(function(){this.checked=false;}); 
+    		} 
+    	} 
+    );
+    $("#frontPageCheckAll").click( 
+        	function(){ 
+        		if(this.checked){ 
+        			$("input[op='frontPage']").each(function(){this.checked=true;}); 
+        		}else{ 
+        			$("input[op='frontPage']").each(function(){this.checked=false;}); 
+        		} 
+        	} 
+        );
+    $("#inHospitalCheckAll").click( 
+        	function(){ 
+        		if(this.checked){ 
+        			$("input[op='inHospital']").each(function(){this.checked=true;}); 
+        		}else{ 
+        			$("input[op='inHospital']").each(function(){this.checked=false;}); 
+        		} 
+        	} 
+        );
+    $("#operationCheckAll").click( 
+        	function(){ 
+        		if(this.checked){ 
+        			$("input[op='operation']").each(function(){this.checked=true;}); 
+        		}else{ 
+        			$("input[op='operation']").each(function(){this.checked=false;}); 
+        		} 
+        	} 
+        );
+    $("#outHospitalCheckAll").click( 
+        	function(){ 
+        		if(this.checked){ 
+        			$("input[op='outHospital']").each(function(){this.checked=true;}); 
+        		}else{ 
+        			$("input[op='outHospital']").each(function(){this.checked=false;}); 
+        		} 
+        	} 
+        );
     </script>
 	
 </body>

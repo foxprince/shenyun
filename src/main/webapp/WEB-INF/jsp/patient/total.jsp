@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <c:import url="../include/head.jsp">
-  <c:param name="pageTitle" value="标准查询" />
+  <c:param name="pageTitle" value="标准统计" />
 </c:import>
 <body class="hold-transition skin-green-light sidebar-mini">
   <div class="wrapper">
@@ -121,7 +121,15 @@
           <div class="box">
             <div class="box-header">
               <div class="box-content">
-                <h1>所有${keyDesc}分布</h1>
+                <h1>所有${keyDesc}分布</h1> 
+          <c:forEach var="item" items="${whereOptions}">
+             <spring:eval expression="T(cn.anthony.boot.util.Constant).getKeyDesc(item.key)" var="keyDesc" />
+             <label><input type="hidden" class="opt" name="${item.key}" value="${item.value}" >${keyDesc}：${item.value}</label>
+            <i style="margin:0px 10px">|</i>
+          </c:forEach>
+                <form action="initFullTotal">
+                  <input type="submit" class="btn btn-success" value="按条件统计"/>
+                
               </div>
             </div>
             <div class="box-body">
@@ -129,6 +137,7 @@
                 <thead>
                   <tr>
                     <th>序号</th>
+                    <th>选为条件</th>
                     <c:forEach var="item" items="${columns}">
                       <th>${item}</th>
                     </c:forEach>
@@ -139,11 +148,13 @@
                   <c:forEach var="item" items="${keyCount}">
                     <tr>
                       <td></td>
+                      <spring:eval expression="T(cn.anthony.boot.util.ControllerUtil).getClauseString(item,key)" var="clausePara" />
+                      <td><input type="radio" name="clause" value="${clausePara}"/></td>
                       <c:forEach var="item2" items="${item.columnKey}">
                         <td>${item2}</td>
                       </c:forEach>
                       <td>
-                      <spring:eval expression="T(cn.anthony.boot.util.ControllerUtil).getSearchParaString(item,key)" var="searchPara" />
+                      <spring:eval expression="T(cn.anthony.boot.util.ControllerUtil).getSearchParaString(whereOptions,item,key)" var="searchPara" />
                       <a href="/patient/fullSearch?${searchPara} ">${item.count}</a>
                       </td>
                     </tr>
@@ -156,6 +167,7 @@
                 </tfoot>
               </table>
             </div>
+            </form>
             <!-- /.box-body -->
           </div>
         </div>

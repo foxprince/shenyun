@@ -76,10 +76,37 @@ public class ControllerUtil {
     public static Map<String, String> getProvinceMap() {
 	return provinceMap;
     }
-
-    public static String getSearchParaString(KeyGroup kg, String field) {
+    
+    public static String getClauseString(KeyGroup kg, String field) {
 	if (kg.getKey() instanceof Map) {
 	    StringBuilder sb = new StringBuilder();
+	    Map<String, Object> m = (Map<String, Object>) kg.getKey();
+	    for (Map.Entry<String, Object> entry : m.entrySet()) {
+		String k = entry.getKey();
+		k = k.replaceAll("operationDetails", "operationDetail");
+		String v = entry.getValue().toString();
+		v = StringUtils.replace(v, "[", "");
+		v = StringUtils.replace(v, "]", "");
+		sb.append("frontRecords." + k + ":" + v + ",");
+	    }
+	    return sb.toString();
+	} else {
+	    String k = field.substring(field.indexOf(".") >= 0 ? field.indexOf(".") + 1 : 0);
+	    k = k.replaceAll("operationDetails", "operationDetail");
+	    String v = kg.getKey().toString();
+	    v = StringUtils.replace(v, "[", "");
+	    v = StringUtils.replace(v, "]", "");
+	    return "frontRecords." + k + ":" + v;
+	}
+    }
+    public static String getSearchParaString(Map<String, Object> whereOptions,KeyGroup kg, String field) {
+	StringBuilder sb = new StringBuilder();
+	for(Map.Entry<String, Object> entry : whereOptions.entrySet()) {
+	    String k = entry.getKey();
+	    k = k.replaceAll("frontRecords", "frontPage");
+	    sb.append( k + "_andOr=and&" + k + "_option=eq&" + k + "=" + entry.getValue()+ "&");
+	}
+	if (kg.getKey() instanceof Map) {
 	    Map<String, Object> m = (Map<String, Object>) kg.getKey();
 	    for (Map.Entry<String, Object> entry : m.entrySet()) {
 		String k = entry.getKey();
@@ -97,8 +124,9 @@ public class ControllerUtil {
 	    String v = kg.getKey().toString();
 	    v = StringUtils.replace(v, "[", "");
 	    v = StringUtils.replace(v, "]", "");
-	    return "frontPage." + k + "_andOr=and&frontPage." + k + "_option=eq&frontPage." + k + "="
-		    + v;
+	    sb.append( "frontPage." + k + "_andOr=and&frontPage." + k + "_option=eq&frontPage." + k + "="
+		    + v);
 	}
+	return sb.toString();
     }
 }

@@ -470,9 +470,11 @@
               </p>
               <form class="search-form">
                 <div class="input-group">
+                   <a id="generatePdfBtn" onclick="test()" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a> 
+             
                   <input type="text" name="search" class="form-control" placeholder="Search">
                   <div class="input-group-btn">
-                    <button type="submit" name="submit" class="btn btn-warning btn-flat"><i class="fa fa-search"></i></button>
+                    <button  type="submit" name="submit" class="btn btn-warning btn-flat"><i class="fa fa-search"></i>ssss</button>
                   </div>
                 </div><!-- /.input-group -->
               </form>
@@ -664,5 +666,28 @@
     <script src="../../dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
+    <script>
+    function test() {
+      alert('test');
+    };
+    function generatePdf(id){
+      $(button#generatePdfBtn).html('生成中...');
+        $.get(
+            "pdf", 
+            {id:$id}, 
+            function(data){
+              if(data=='error'){
+                alert('未知错误，即将刷新浏览器，请稍后重试'+data);
+              }
+              else {
+                if(data==1)
+                  $(button#generatePdfBtn).html('点击下载');
+                else
+                  $(button#generatePdfBtn).html('取消');
+              }
+            }
+        );
+    }
+    </script>
   </body>
 </html>

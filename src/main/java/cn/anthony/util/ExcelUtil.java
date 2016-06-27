@@ -3,18 +3,18 @@ package cn.anthony.util;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtil {
     public static Workbook createWorkBook(List<Map<String, Object>> list, String[] keys, String columnNames[]) {
-	return createWorkBook(new HSSFWorkbook(), list, keys, columnNames);
+	return createWorkBook(new XSSFWorkbook(), list, keys, columnNames);
     }
 
     /**
@@ -27,11 +27,11 @@ public class ExcelUtil {
      * @param columnNames
      *            excel的列名
      */
-    public static Workbook createWorkBook(Workbook wb, List<Map<String, Object>> list, String[] keys,
+    public static Workbook createWorkBook(XSSFWorkbook wb, List<Map<String, Object>> list, String[] keys,
 	    String columnNames[]) {
 
 	// 创建第一个sheet（页），并命名
-	Sheet sheet = wb.createSheet(list.get(0).get("sheetName").toString());
+	XSSFSheet sheet = wb.createSheet(list.get(0).get("sheetName").toString());
 	// 手动设置列宽。第一个参数表示要为第几列设；，第二个参数表示列的宽度，n为列高的像素数。
 	for (int i = 0; i < keys.length; i++) {
 	    sheet.setColumnWidth((short) i, (short) (35.7 * 150));
@@ -86,7 +86,7 @@ public class ExcelUtil {
 	for (short i = 1; i < list.size(); i++) {
 	    // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
 	    // 创建一行，在页sheet上
-	    Row row1 = sheet.createRow((short) i);
+	    Row row1 = sheet.createRow(i);
 	    // 在row行上创建一个方格
 	    for (short j = 0; j < keys.length; j++) {
 		Cell cell = row1.createCell(j);

@@ -30,6 +30,7 @@
     <%@ include file="../include/topbar.jspf"%>
     <!-- left menu-->
     <%@ include file="../include/menu.jspf"%>
+  <form id="totalForm"  action="/total/initTotal">
     
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -48,24 +49,33 @@
     </div>
 <div class="box-body">
   
-  <form id="patientForm"  action="/total/initTotal">
     <div class="box box-primary">
-    <div class="box-header">
-      <h3 class="box-title">统计条件</h3>
-      <!-- tools box -->
-      <div class="pull-right box-tools">
-      <button class="btn btn-primary btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-      <button class="btn btn-primary btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-      </div><!-- /. tools -->
-    </div><!-- /.box-header -->
-    <div class="box-body pad">
-      <div class="form-group">
-        <c:forEach var="item" items="${totalOptions}">
-           <label><input type="checkbox" class="minimal" name="fields" value="${item.name}" >${item.label}</label>
-          <i style="margin:0px 10px">|</i>
-        </c:forEach>
-       </div>
+      <div class="box-header">
+        <h3 class="box-title">统计选项</h3>
+      </div><!-- /.box-header -->
+      <div class="box-body pad">
+        <div class="form-group">
+          <c:forEach var="item" items="${totalOptions}">
+             <label><input type="checkbox" class="minimal" name="fields" value="${item.name}" >${item.label}</label>
+            <i style="margin:0px 10px">|</i>
+          </c:forEach>
+         </div>
+      </div>
     </div>
+    
+    <div class="box box-info">
+      <div class="box-header">
+        <h3 class="box-title">统计条件</h3>
+      </div><!-- /.box-header -->
+      <div class="box-body pad">
+        <div class="form-group">
+          <c:forEach var="item" items="${whereOptions}">
+             <spring:eval expression="T(cn.anthony.boot.util.Constant).getKeyDesc(item.key)" var="keyDesc" />
+             <label><input type="hidden" class="opt" name="${item.key}" value="${item.value}" >${keyDesc}：${item.value}</label>
+            <i style="margin:0px 10px">|</i>
+          </c:forEach>
+         </div>
+      </div>
     </div>
 
 </div>
@@ -73,7 +83,8 @@
   
   
   <div class="pull-center">
-  <button type="submit" class="btn btn-info">提&nbsp;交</button></div>
+  <input type="hidden" name="clause" id="clause"/>
+  <button type="submit" class="btn btn-info" onclick="confirmHandle(); return false;">提&nbsp;交</button></div>
   </form>         
             
           
@@ -98,6 +109,16 @@
   <!-- AdminLTE for demo purposes -->
   <script src="../resources/dist/js/demo.js"></script>
   
-
+  <script>
+  function confirmHandle() {
+  	var selected = [];
+  	$('.opt').each(function() {
+  		selected.push($(this).attr('name')+":"+$(this).attr('value'));
+  	});
+  	$('#clause').val(selected.join(','));
+  	//alert($('#clause').val());
+  	$('#totalForm').submit();
+  }
+  </script>
 </body>
 </html>

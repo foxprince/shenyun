@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysema.query.annotations.QueryEntity;
@@ -25,6 +26,7 @@ public @Data class Patient extends GenericNoSQLEntity {
     public String name;
     public Integer age;
     public String sex;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date dateOfBirth;
     public String certNo;/* 身份证号码 */
     // 籍贯
@@ -154,6 +156,7 @@ public @Data class Patient extends GenericNoSQLEntity {
 	public Date diagDate;
 	public String signature;
 
+	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
 	    // sb.append(type + ":");

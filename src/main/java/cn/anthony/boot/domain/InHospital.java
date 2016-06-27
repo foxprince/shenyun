@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import cn.anthony.util.DateUtil;
-import cn.anthony.util.StringTools;
 import lombok.Data;
 
 @Data
@@ -22,6 +21,7 @@ public class InHospital {
     public String admissionNo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date inDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date takingDate;/* 病史采集日期 */
     public String takingFrom;/* 病史叙述人 */
     public String reliability;/* 可靠性 */

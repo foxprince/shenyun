@@ -2,6 +2,8 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import cn.anthony.util.DateUtil;
 import lombok.Data;
 
@@ -29,7 +31,9 @@ public class Operation {
     public String operationTitle;// 手术名称
     public String doctor;// 手术医师
     public String assistant;// 助手
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date beginTime;// 开始时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date endTime;// 结束时间
     public String anaesthetic;// 麻醉方法
     public String bloodLoss;// 失血量

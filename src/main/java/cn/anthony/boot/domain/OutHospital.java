@@ -2,6 +2,8 @@ package cn.anthony.boot.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import cn.anthony.util.DateUtil;
 import lombok.Data;
 
@@ -20,6 +22,7 @@ public class OutHospital {
      * 2.继续口服波立维抗血小板治疗 3.控制血糖 4.有情况及时就诊 备注： (注：出院记录打印时一式三份) 医生签名：
      */
     public String department;//科别
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date outDate;//出院时间
     public String inDescriotion;//入院时情况
     public String inDiagnosis;//入院诊断

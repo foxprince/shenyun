@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.lang.reflect.Field;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,8 @@ public class TestService implements CommandLineRunner {
     private Set<String> s = new HashSet<String>();
 
     public static void main(String[] args) {
-	//System.setProperty("DB.TRACE", "true");
-	//System.setProperty("DEBUG.MONGO", "true");
+	System.setProperty("DB.TRACE", "true");
+	System.setProperty("DEBUG.MONGO", "true");
 	SpringApplication.run(TestService.class, args);
     }
 
@@ -54,7 +56,8 @@ public class TestService implements CommandLineRunner {
 //	    for(KeyGroup e : service.keyGroup("frontRecords.outDiags.diag")){
 //		System.out.println(e);;
 //	    }
-	    //System.out.println(tservice.agg(1000,"frontRecords.age"));
+	    Map<String,Object> m = new HashMap<String,Object>(){{put("frontRecords.ZY_DOCTOR_NAME","段婉茹");}};
+	    //System.out.println(tservice.agg(1000,m,"frontRecords.mainDiag"));
 	    //processTool();
 	    long t2 = System.currentTimeMillis();
 	    System.out.println(t2 - t1);

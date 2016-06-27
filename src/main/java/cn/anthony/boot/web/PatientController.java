@@ -8,16 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,6 +59,7 @@ import cn.anthony.boot.domain.QSomatoscopy;
 import cn.anthony.boot.domain.SearchModel;
 import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.service.SearchModelService;
+import cn.anthony.boot.util.Constant;
 import cn.anthony.boot.util.ControllerUtil;
 import cn.anthony.util.DateUtil;
 import cn.anthony.util.ExcelUtil;
@@ -116,9 +119,8 @@ public class PatientController extends GenericController<Patient> {
     @RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
     public String listPage(@ModelAttribute("pageRequest") PatientSearch ps,
 	    @QuerydslPredicate(root = Patient.class) Predicate predicate, @PageableDefault Pageable pageable, Model m,
-	    @RequestParam MultiValueMap<String, String> parametersMap, HttpServletRequest request)
+	    @RequestParam MultiValueMap<String, String> parametersMap, HttpServletRequest request,HttpSession session)
 		    throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-	System.out.println("reqmap:" + parametersMap);
 	Map<String, List<String>> parameters = RefactorUtil.filterEmpty(parametersMap);
 	System.out.println("reqmap:" + parameters);
 	String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
@@ -164,6 +166,7 @@ public class PatientController extends GenericController<Patient> {
 
 	predicate = patientBinding(QPatient.patient.operations.any(), "operation.", parameters, predicate);
 	predicate = patientBinding(QPatient.patient.outRecords.any(), "outHospital.", parameters, predicate);
+	session.setAttribute("predicate", predicate);
 	System.out.println("predecate:" + predicate);
 	QPatient.patient.age.asc();
 
@@ -175,45 +178,57 @@ public class PatientController extends GenericController<Patient> {
 	if (ps.isNeedSave()) {
 	    searchModelService.create(new SearchModel(path.endsWith("fullSearch") ? "2" : "1", parameters, page));
 	}
+	//导出exel的选项
+	m.addAttribute("patientOptions", Constant.patientKeyMap.values());
+	m.addAttribute("frontPageOptions", Constant.frontPageKeyMap.values());
+	m.addAttribute("inOptions", Constant.inKeyMap.values());
+	m.addAttribute("operationOptions", Constant.operKeyMap.values());
+	m.addAttribute("outOptions", Constant.outKeyMap.values());
 	return getListView();
     }
 
     /**
-     * 试验成功
+     * 试验成功，正式方法
      * 
      * @param m
      * @return
      */
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public ModelAndView getExcel(String id, String fields) {
+    @RequestMapping(value = "/export")
+    public ModelAndView getExcel(String id, String[] fields,HttpSession session) {
 	String columnNames[] = { "名称" };// 列名
-	List<String> l = new ArrayList<String>();
-	StringTokenizer st = new StringTokenizer(fields, ",");
-	while (st.hasMoreTokens())
-	    l.add(st.nextToken());
-	String[] keys = new String[l.size()];
-	l.toArray(keys);
-	List<Map<String, Object>> list = createExcel(service.findAll(), l);
+	
+	Predicate predicate = (Predicate) session.getAttribute("predicate");
+	System.out.println("session predicate:"+predicate);
+	List<Map<String, Object>> list = createExcel(service.getRepository().findAll(predicate), Arrays.asList(fields));
 
 	Map<String, Object> m = new HashMap<String, Object>();
-	m.put("keys", keys);
-	m.put("columnNames", keys);
+	m.put("keys", fields);
+	m.put("columnNames", Constant.toNames(fields));
 	m.put("result", list);
 	return new ModelAndView(new PatientExcelView(), m);
     }
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
-    public ModelAndView getPdf(String id) {
+    @ResponseBody
+    public String getPdf(String id) {
 	Map<String, Patient> m = new HashMap<String, Patient>();
 	m.put("patient", service.findById(id));
-	return new ModelAndView(new PatientPdfView(), m);
+	//return new ModelAndView(new PatientPdfView(), m);
+	return "ok";
     }
 
     @RequestMapping(value = "/print", method = RequestMethod.GET)
     public String print() {
 	return "/patient/index-print";
     }
-
+    
+    /**
+     * 停用此方法，只作为测试用。
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/download")
     public String download(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	String fileName = "excel文件";
@@ -232,7 +247,7 @@ public class PatientController extends GenericController<Patient> {
 	response.reset();
 	response.setContentType("application/vnd.ms-excel;charset=utf-8");
 	response.setHeader("Content-Disposition",
-		"attachment;filename=" + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+		"attachment;filename=" + new String((fileName + ".xlsx").getBytes(), "iso-8859-1"));
 	ServletOutputStream out = response.getOutputStream();
 	BufferedInputStream bis = null;
 	BufferedOutputStream bos = null;
@@ -263,15 +278,16 @@ public class PatientController extends GenericController<Patient> {
 	listmap.add(map);
 	for (Patient patient : iterable) {
 	    Map<String, Object> mapValue = new HashMap<String, Object>();
-	    mapValue.putAll(RefactorUtil.getKeyValueMap(patient, fields));
+	    mapValue.putAll(RefactorUtil.getKeyValueMap(patient, fields,"patient."));
+	    //TODO  此处只取第一条纪录，没有考虑一个病人多个入院纪录的情况
 	    if (!ObjectUtils.isEmpty(patient.getFrontRecords()))
-		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getFrontRecords().get(0), fields));
+		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getFrontRecords().get(0), fields,"frontPage."));
 	    if (!ObjectUtils.isEmpty(patient.getInRecords()))
-		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getInRecords().get(0), fields));
+		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getInRecords().get(0), fields,"inHospital."));
 	    if (!ObjectUtils.isEmpty(patient.getOutRecords()))
-		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getOutRecords().get(0), fields));
+		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getOutRecords().get(0), fields,"outHospital."));
 	    if (!ObjectUtils.isEmpty(patient.getOperations()))
-		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getOperations().get(0), fields));
+		mapValue.putAll(RefactorUtil.getKeyValueMap(patient.getOperations().get(0), fields,"operation."));
 	    listmap.add(mapValue);
 	}
 	return listmap;

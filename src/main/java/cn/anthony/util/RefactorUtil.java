@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.ListPath;
 
+import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QPatient_Diag;
 import cn.anthony.boot.domain.QPatient_OperationDetail;
 import cn.anthony.boot.domain.QPatient_OutDiag;
@@ -29,6 +31,8 @@ import cn.anthony.boot.domain.QPatient_视力;
 import cn.anthony.boot.domain.QPatient_颅神经;
 import cn.anthony.boot.domain.QPatient_高级皮层功能;
 import cn.anthony.boot.domain.QSomatoscopy_SpecialExamination;
+import cn.anthony.boot.domain.Somatoscopy;
+import cn.anthony.boot.domain.Somatoscopy.SpecialExamination;
 
 public class RefactorUtil {
     public static Field getFieldByName(Object o, String name) {
@@ -83,15 +87,31 @@ public class RefactorUtil {
 	return m;
     }
 
-    public static Map<String, String> getKeyValueMap(Object o, List<String> keys) {
+    public static Map<String, String> getKeyValueMap(Object o, List<String> keys, String mappre) {
 	Field[] fields = o.getClass().getDeclaredFields();
 	Map<String, String> m = new LinkedHashMap<String, String>();
 	for (Field field : fields) {
 	    try {
 		field.setAccessible(true); // 设置些属性是可以访问的
 		Object val = field.get(o);// 得到此属性的值
-		if (!field.getName().startsWith("this$") && keys.contains(field.getName())) {
-		    m.put(field.getName(), StringTools.printString(val));
+		if (val instanceof List) {
+		    if (((List) val).size() > 0)
+			m.putAll(getKeyValueMap(((List) val).get(0), keys, mappre));
+		} else if (val instanceof Somatoscopy || val instanceof SpecialExamination
+			|| val instanceof Patient.高级皮层功能 || val instanceof Patient.颅神经 || val instanceof Patient.反射
+			|| val instanceof Patient.视力 || val instanceof Patient.眼底 || val instanceof Patient.动眼神经
+			|| val instanceof Patient.痛触觉 || val instanceof Patient.头部反射 || val instanceof Patient.听力
+			|| val instanceof Patient.Diag || val instanceof Patient.SevereDetail
+			|| val instanceof Patient.OperationDetail || val instanceof Patient.OutDiag) {
+		    m.putAll(getKeyValueMap(val, keys, mappre));
+		} else {
+		    if (!field.getName().startsWith("this$") && keys.contains(mappre + field.getName())) {
+			Class<?> c = field.getType();
+			String value = StringTools.printString(val);
+			if (c.getCanonicalName().equals("java.util.Date"))
+			    value = DateUtil.format(((Date) val), DateUtil.TIME_FORMAT);
+			m.put(mappre + field.getName(), value);
+		    }
 		}
 	    } catch (IllegalArgumentException | IllegalAccessException e) {
 		e.printStackTrace();

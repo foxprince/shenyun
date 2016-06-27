@@ -247,7 +247,11 @@ ${item.somatoscopy.sExamination.颅神经.听力.眼球震颤}<br/>
                           <div class="timeline-body">
                             <p><strong>初步诊断：</strong></p><pre>${item.firstDiag}</pre>
                             <p><strong>确定诊断：</strong></p><pre>${item.confirmDiag}</pre>
-                            <p><strong>补充诊断：</strong></p><pre>${item.supplyDiags}</pre>
+                            <p><strong>补充诊断：</strong></p><pre>
+                            <c:forEach var="sdiag" items="${item.supplyDiags}">
+                              ${sdiag}
+                            </c:forEach>
+                            </pre>
                             <p><strong>更正诊断：</strong></p><pre>${item.correctDiag}</pre>
                           </div>
                           <div class="timeline-footer">

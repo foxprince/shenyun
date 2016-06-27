@@ -6,7 +6,24 @@
 <c:import url="../include/head.jsp">
 	<c:param name="pageTitle" value="病人首页"/>
 </c:import>
-
+    <script>
+    function test(id) {
+    	$('#generatePdfBtn').html('生成中...');
+    	$.get(
+				"pdf", 
+				{id:id}, 
+				function(data){
+					if(data=='error'){
+						alert('未知错误，请稍后重试'+data);
+					}
+					else {
+						$('#generatePdfBtn').html('点击下载');
+					}
+				}
+		);
+    };
+    </script>
+    
 <body class="hold-transition skin-green-light sidebar-mini">
 	<div class="wrapper">
 	<!-- topbar -->
@@ -58,8 +75,9 @@
           <div class="row no-print">
             <div class="col-xs-12">
               <a href="./print?id=${patient.id}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> 打印</a>
-              <a href="./pdf?id=${patient.id}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a>
-            </div>
+              <%--<a id="generatePdf" onclick="generatePdf(${patient.id})" href="./pdf?id=${patient.id}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a> --%>
+              <a id="generatePdfBtn"  onclick="test('${patient.id}')" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a> 
+             </div>
           </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -81,11 +99,9 @@
                   <hr>
                   <strong><i class="fa fa-pencil margin-r-5"></i> 诊断</strong>
                   <p>
-                    <span class="label label-danger">UI Design</span>
-                    <span class="label label-success">Coding</span>
-                    <span class="label label-info">Javascript</span>
-                    <span class="label label-warning">PHP</span>
-                    <span class="label label-primary">Node.js</span>
+                    <span class="label label-success">${patient.frontRecords.get(0).mainDiag}</span>
+                    <span class="label label-primary">${patient.inRecords.get(0).confirmDiag.detail}</span>
+                    <span class="label label-warning">${patient.outRecords.get(0).outDiagnosis }</span>
                   </p>
                   <hr>
 
@@ -342,6 +358,7 @@
 	<%@ include file="../include/footer.jspf" %>
 	<%@ include file="../include/sidebar.jspf" %>
 	<%@ include file="../include/script.jspf" %>
+    
 	</div>
 </body>
 </html>

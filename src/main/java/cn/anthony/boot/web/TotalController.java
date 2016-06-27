@@ -2,10 +2,12 @@ package cn.anthony.boot.web;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import javax.annotation.Resource;
@@ -33,21 +35,22 @@ public class TotalController {
 	return new PatientSearch();
     }
 
-    @RequestMapping(value = { "/fullTotal" })
-    public String fullTotal(String[] fields, Model m) throws Exception {
-	List<KeyGroup> l = service.agg(10000, fields);
-	m.addAttribute("keyCount", l);
-	return "/patient/total";
-    }
+    // @RequestMapping(value = { "/fullTotal" })
+    // public String fullTotal(String[] fields, Model m) throws Exception {
+    // List<KeyGroup> l = service.agg(10000, fields);
+    // m.addAttribute("keyCount", l);
+    // return "/patient/total";
+    // }
 
     @RequestMapping(value = { "/initTotal" })
-    public String total(String[] fields, Model m) throws Exception {
-	List<KeyGroup> l = service.agg(10000, fields);
+    public String total(String[] fields, String clause,Model m) throws Exception {
+	Map<String,Object> clauseMap = extractMap(clause);
+	List<KeyGroup> l = service.agg(10000, clauseMap,fields);
 	Map<Object, Integer> map = new LinkedHashMap<Object, Integer>();
 	if (fields.length == 1 && fields[0].equals("frontRecords.age")) {
 	    map = sortedAgeGroup(l);
 	} else {
-	    map = toMap(service.agg(9, fields));
+	    map = toMap(service.agg(9, clauseMap,fields));
 	}
 	//饼图的标签
 	m.addAttribute("lables", getLables(map.keySet()));
@@ -65,13 +68,25 @@ public class TotalController {
 	// 仅对单子段统计有用
 	m.addAttribute("keyDesc", Constant.getKeyDesc(fields[0]));
 	m.addAttribute("key", fields[0]);
+	m.addAttribute("whereOptions", clauseMap);
 	return "/patient/total";
+    }
+
+    private Map<String, Object> extractMap(String clause) {
+	Map<String, Object> m = new HashMap<String, Object>();
+	if(clause!=null) {
+	StringTokenizer st = new StringTokenizer(clause,",");
+	while(st.hasMoreTokens()) {
+	    StringTokenizer st2 = new StringTokenizer(st.nextToken(),":");
+	    m.put(st2.nextToken(), st2.nextToken());
+	}}
+	return m;
     }
 
     private List<String> getLables(Set<Object> keySet) {
 	List<String> l = new ArrayList<String>();
-	for(Object o : keySet)
-	    l.add("\""+(o.toString().length()>10?o.toString().substring(0,10):o.toString())+"\"");
+	for (Object o : keySet)
+	    l.add("\"" + (o.toString().length() > 10 ? o.toString().substring(0, 10) : o.toString()) + "\"");
 	return l;
     }
 
@@ -87,8 +102,10 @@ public class TotalController {
     }
 
     @RequestMapping(value = { "/initFullTotal" })
-    public String initFullTotal(Model m) {
+    public String initFullTotal(String clause,Model m) {
 	m.addAttribute("totalOptions", Constant.totalKeyMap.values());
+	Map<String,Object> clauseMap = extractMap(clause);
+	m.addAttribute("whereOptions", clauseMap);
 	return "/patient/fullTotal";
     }
 

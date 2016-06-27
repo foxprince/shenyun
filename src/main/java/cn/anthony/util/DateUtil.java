@@ -46,9 +46,10 @@ public class DateUtil {
 	sb.append((minutes - hours * 60 - days * 24 * 60) + "分钟");
 	return sb.toString();
     }
+
     public static String format(Date date, String format) {
 	if (date != null) {
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 	    return DateConvertUtils.asLocalDateTime(date).format(formatter);
 	}
 	return null;
@@ -56,13 +57,14 @@ public class DateUtil {
 
     public static Date parse(String s) {
 	try {
-	    return DateUtils.parseDate(s, FULL_FORMAT, DATE_FORMAT, DATE_FORMAT_CN, TIME_FORMAT, TIME_FORMAT_CN, DAY_FORMAT, MONTH_FORMAT,
-		    TIME_FORMAT_SHORT_CN);
+	    return DateUtils.parseDate(s, FULL_FORMAT, DATE_FORMAT, DATE_FORMAT_CN, TIME_FORMAT, TIME_FORMAT_CN,
+		    DAY_FORMAT, MONTH_FORMAT, TIME_FORMAT_SHORT_CN);
 	} catch (ParseException e) {
 	    e.printStackTrace();
 	    return null;
 	}
     }
+
     /**
      * @Title:getMonthFirstDay
      * @Description: 得到当前月的第一天.

@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.unwi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -55,14 +56,26 @@ public class TotalService {
 	List<KeyGroup> keyCount = results.getMappedResults();
 	return keyCount;
     }
-
-    public List<KeyGroup> agg(int limit, String... keys) throws Exception {
+    
+    /**
+     * 
+     * @param limit 记录数
+     * @param cmap 查询条件
+     * @param keys groupby的分组列
+     * @return
+     * @throws Exception
+     */
+    public List<KeyGroup> agg(int limit, Map<String,Object> cmap,String... keys) throws Exception {
 	Criteria criteria = new Criteria();
-	List<Criteria> docCriterias = new ArrayList<Criteria>(keys.length);
 	for(int i=0;i<keys.length;i++) {
-	    docCriterias.add(Criteria.where(keys[i]).exists(true).ne(null));
+	    criteria.and(keys[i]).exists(true).ne(null);
 	}
-	criteria = criteria.andOperator(docCriterias.toArray(new Criteria[keys.length]));
+	if(cmap!=null&&cmap.size()>0){
+	List<Criteria> clauseCriterias = new ArrayList<Criteria>(cmap.size());
+	for(Map.Entry<String, Object> entry : cmap.entrySet()) {
+	    clauseCriterias.add(Criteria.where(entry.getKey()).is(entry.getValue()));
+	}
+	criteria = criteria.andOperator(clauseCriterias.toArray(new Criteria[cmap.size()]));}
 	Aggregation agg = newAggregation(match(criteria),project("frontRecords"), unwind("frontRecords"),
 		group(keys).count().as("count"), project("count").and("key").previousOperation(),
 		sort(Sort.Direction.DESC, "count"), limit(limit));

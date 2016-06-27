@@ -3,7 +3,7 @@ package cn.anthony.boot.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.util.ObjectUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.mysema.query.annotations.QueryEntity;
 
@@ -52,6 +52,7 @@ public class FrontPage {
     // 性别
     public String sex;
     // 出生日期 1943年04月21日
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date dateOfBirthday;
     // 年龄
     public Integer age;
@@ -122,12 +123,14 @@ public class FrontPage {
     //
     public String ResidenceStreet;
     // 入院时间 2015年02月13日18时
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date admissionTime;
     // 入院科别
     public String admissionDept;
     // 入院病房
     public String admissionWard;
     // 出院时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date dischargeTime;
     // 出院科别
     public String dischargeDept;
