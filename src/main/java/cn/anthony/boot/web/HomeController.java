@@ -18,6 +18,11 @@ public class HomeController {
 	vo.setTotalPatients(service.total());
 	return "main/index";
     }
+    
+    @RequestMapping(value = { "/auth/index.php/admin/login/index.html" })
+    public String oldIndex(@ModelAttribute HomeVO vo) {
+	return "redirect:/index";
+    }
 
     @RequestMapping(value = { "/tindex" })
     public String thymeLeafIndex() {

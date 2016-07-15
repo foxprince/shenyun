@@ -83,7 +83,7 @@ public class ControllerUtil {
 	    Map<String, Object> m = (Map<String, Object>) kg.getKey();
 	    for (Map.Entry<String, Object> entry : m.entrySet()) {
 		String k = entry.getKey();
-		k = k.replaceAll("operationDetails", "operationDetail");
+		//k = k.replaceAll("operationDetails", "operationDetail");
 		String v = entry.getValue().toString();
 		v = StringUtils.replace(v, "[", "");
 		v = StringUtils.replace(v, "]", "");
@@ -92,7 +92,7 @@ public class ControllerUtil {
 	    return sb.toString();
 	} else {
 	    String k = field.substring(field.indexOf(".") >= 0 ? field.indexOf(".") + 1 : 0);
-	    k = k.replaceAll("operationDetails", "operationDetail");
+	    //k = k.replaceAll("operationDetails", "operationDetail");
 	    String v = kg.getKey().toString();
 	    v = StringUtils.replace(v, "[", "");
 	    v = StringUtils.replace(v, "]", "");
@@ -104,6 +104,7 @@ public class ControllerUtil {
 	for(Map.Entry<String, Object> entry : whereOptions.entrySet()) {
 	    String k = entry.getKey();
 	    k = k.replaceAll("frontRecords", "frontPage");
+	    k = k.replaceAll("operationDetails", "operationDetail");
 	    sb.append( k + "_andOr=and&" + k + "_option=eq&" + k + "=" + entry.getValue()+ "&");
 	}
 	if (kg.getKey() instanceof Map) {

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,10 +34,9 @@ import cn.anthony.util.StringTools;
 
 public class PatientUtil {
     public static void main(String[] args) throws Exception {
-	File dir = new File("E:\\project\\神云系统\\data\\已处理");
-	process(dir, (File f) -> {
-	    return f.isDirectory() ? true : f.getName().compareTo("HospitalRecord_000413122500_1") >= 0;
-	});
+	File dir = new File("E:\\project\\神云系统\\pacs");
+	for(File f: getPacsFiles(dir,"184470"))
+	    System.out.println(f.getName());
 	// System.out.println(file.getAbsolutePath().replaceAll("\\", "/"));
 	// Patient p = (extractPatientFromFile(file));
 	// System.out.println(p.somatoscopy);
@@ -48,6 +48,29 @@ public class PatientUtil {
 	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy)));
 	// System.out.println("==================================================");
 	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy.sExamination)));
+    }
+
+    public static List<File> getPacsFiles(File dir,String patientNo) {
+	try {
+	    return processPacs(dir, (File f) -> {
+	        return f.isDirectory() && f.getName().indexOf("-"+patientNo+"-")>0;
+	    });
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+    private static List<File> processPacs(File dir, FileFilter filter) {
+	List<File> l = new ArrayList<File>();
+	File[] fs = dir.listFiles(filter);
+	for (int i = 0; i < fs.length; i++) {
+	    if (fs[i].isDirectory()) {
+		l.addAll(Arrays.asList(fs[i].listFiles((File pathname)-> {
+			return pathname.getName().endsWith(".jpg");
+		    })));
+	    }
+	}
+	return l;
     }
 
     public static void process(File dir, FileFilter filter) throws Exception {

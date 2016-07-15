@@ -76,6 +76,7 @@ public class Constant {
     private static final String DEFAULT_TYPE = "text";
     private static final String DATETIME_TYPE = "datetime-local";
     private static final String DATE_TYPE = "date";
+    public static final String PACS_DIR = "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 
     public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
 

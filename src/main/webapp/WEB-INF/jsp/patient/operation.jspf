@@ -20,7 +20,10 @@
                           术中诊断：${item.operataionDiagnosis}<br/>
                        医生：${item.doctor}<br/>
                           助手：${item.assistant}<br/>
-                          麻醉方法：${item.anaesthetic}</p>
+                          麻醉方法：${item.anaesthetic}<br/>
+                          失血量：${item.bloodLoss}<br/>
+                          输血量：${item.bloodTransfusion}
+                          </p>
                           </div>
                         </div>
                       </li>

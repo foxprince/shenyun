@@ -128,7 +128,7 @@
             <i style="margin:0px 10px">|</i>
           </c:forEach>
                 <form action="initFullTotal">
-                  <input type="submit" class="btn btn-success" value="按条件统计"/>
+                  <input type="submit" class="btn btn-success pull-right" value="按条件统计"/>
                 
               </div>
             </div>

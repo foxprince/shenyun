@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="pacs">
+                    <!-- The timeline -->
+                    <section class="invoice">
+          <!-- title row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <h2 class="page-header">
+                <i class="fa fa-globe"></i> PACS 影像参考
+                <small class="pull-right"></small>
+              </h2>
+            </div><!-- /.col -->
+          </div>
+          
+                      <div class='row margin-bottom'>
+                        <div class='col-sm-6'>
+                          <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1b.jpg' alt='Photo'>
+                        </div><!-- /.col -->
+                        <div class='col-sm-6'>
+                          <div class='row'>
+                            <div class='col-sm-6'>
+                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1c.jpg' alt='Photo'>
+                              <br>
+                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1d.jpg' alt='Photo'>
+                            </div><!-- /.col -->
+                            <div class='col-sm-6'>
+                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1e.jpg' alt='Photo'>
+                              <br>
+                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1f.jpg' alt='Photo'>
+                            </div><!-- /.col -->
+                          </div><!-- /.row -->
+                        </div><!-- /.col -->
+                      </div><!-- /.row -->
+        </section>
+                  </div><!-- /.tab-pane -->

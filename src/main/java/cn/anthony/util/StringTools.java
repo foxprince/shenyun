@@ -9,6 +9,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -322,7 +323,7 @@ public class StringTools {
 	sb.append("正常\n");
 	sb.append("\n");
 	sb.append("ddd");
-	System.out.println(split(sb, "\n"));
+	System.out.println(URLDecoder.decode("http%3A%2F%2Fwww.qingniancaijun.com.cn%2Findex.php%3Froute%3Dcommon%2Fhome%26amp%3Bsequence%3D0&response_type=code&scope=snsapi_userinfo&state=state&connect_redirect=1#wechat_redirect"));
 	// String[] ss = StringUtils.split(sb.toString(), c);
 	// System.out.println(ss.length + ":" + Arrays.asList(ss));
 	Map<String, List<String>> map = new HashMap<String, List<String>>() {
