@@ -72,13 +72,7 @@
                     </li>
                   </ul>
 
-          <div class="row no-print">
-            <div class="col-xs-12">
-              <a href="./print?id=${patient.id}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> 打印</a>
-              <%--<a id="generatePdf" onclick="generatePdf(${patient.id})" href="./pdf?id=${patient.id}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a> --%>
-              <a id="generatePdfBtn"  onclick="test('${patient.id}')" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> 导出PDF文件</a> 
-             </div>
-          </div>
+          <div class='row no-print'> <div class='col-xs-12'><a href='./print?id=${patient.id}' target='_blank' class='btn btn-default'><i class='fa fa-print'></i> 打印</a><a id='generatePdfBtn'  href="./zip?id=${patient.id }&patientNo=${ patient.pId}" class='btn btn-primary pull-right' style='margin-right: 5px;'><i class='fa fa-download'></i> 导出压缩文件</a> </div> </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 

@@ -323,7 +323,7 @@ public class StringTools {
 	sb.append("正常\n");
 	sb.append("\n");
 	sb.append("ddd");
-	System.out.println(URLDecoder.decode("http%3A%2F%2Fwww.qingniancaijun.com.cn%2Findex.php%3Froute%3Dcommon%2Fhome%26amp%3Bsequence%3D0&response_type=code&scope=snsapi_userinfo&state=state&connect_redirect=1#wechat_redirect"));
+	System.out.println(URLDecoder.decode("http%3A%2F%2Fweidian.com%2Fi%2F1914364180%3Fstring%3Db2M1b050MmFybWc2NnZiU1hnam1IR19hWWdybw%3D%3D&response_type=code&scope=snsapi_base&state=H5WXshare&connect_redirect=1#wechat_redirect"));
 	// String[] ss = StringUtils.split(sb.toString(), c);
 	// System.out.println(ss.length + ":" + Arrays.asList(ss));
 	Map<String, List<String>> map = new HashMap<String, List<String>>() {

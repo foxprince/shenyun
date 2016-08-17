@@ -1,5 +1,6 @@
 package cn.anthony.boot.util;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -76,7 +77,7 @@ public class Constant {
     private static final String DEFAULT_TYPE = "text";
     private static final String DATETIME_TYPE = "datetime-local";
     private static final String DATE_TYPE = "date";
-    public static final String PACS_DIR = "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
+    public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";//"E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 
     public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
 
@@ -111,7 +112,6 @@ public class Constant {
     }
 
     public static Map<String, CheckOption> patientKeyMap = new LinkedHashMap<String, CheckOption>();
-
     static {
 	defaultPut(patientKeyMap, "patient.age", "年龄");
 	defaultPut(patientKeyMap, "patient.sex", "性别");
@@ -420,6 +420,19 @@ public class Constant {
 	defaultPut(outKeyMap, "outHospital.dischargeOrder", "出院医嘱");
     };
 
+    public static Map<String,CheckOption> bloodKeyMap = new LinkedHashMap<String, CheckOption>(){{
+	putAll(patientKeyMap);
+    }};
+    static {
+	defaultPut(bloodKeyMap, "operation.operationTitle", "手术名称");
+	defaultPut(bloodKeyMap, "operation.doctor", "手术医师");
+	defaultPut(bloodKeyMap, "operation.assistant", "助手");
+	defaultPut(bloodKeyMap, DATETIME_TYPE, "operation.beginTime", "开始时间");
+	defaultPut(bloodKeyMap, DATETIME_TYPE, "operation.endTime", "结束时间");
+	defaultPut(bloodKeyMap, "operation.anaesthetic", "麻醉方法");
+	defaultPut(bloodKeyMap, "operation.bloodLoss", "失血量");
+	defaultPut(bloodKeyMap, "operation.bloodTransfusion", "输血量");
+    }
     public static Map<String, CheckOption> ALL_KEY_MAP = new LinkedHashMap<String, CheckOption>() {
 	{
 	    putAll(patientKeyMap);
@@ -429,7 +442,14 @@ public class Constant {
 	    putAll(outKeyMap);
 	}
     };
-
+    
+    public static String getJSArrayString(Collection<CheckOption> c) {
+	StringBuilder sb = new StringBuilder();
+	for(CheckOption o : c)
+	    sb.append("\""+o.getName()+"\",");
+	sb.deleteCharAt(sb.length()-1);
+	return sb.toString();
+    }
     public static String getAndOrString(String s) {
 	if (StringTools.checkNull(s) == null)
 	    return "与";

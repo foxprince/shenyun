@@ -97,7 +97,7 @@ public class HTTPUtil {
 	}
     }
 
-    public String get(String url) {
+    public static String get(String url) {
 	String s = null;
 	CloseableHttpClient httpclient = HttpClients.custom().build();
 	HttpGet httpget = new HttpGet(url);
@@ -182,5 +182,14 @@ public class HTTPUtil {
 	    param.add(new BasicNameValuePair((String) parmEntry.getKey(), (String) parmEntry.getValue()));
 	}
 	return param;
+    }
+    
+    public static String toGetString(String url, Map<String, String> paras) {
+	StringBuilder sb = new StringBuilder(url);
+	sb.append("&");
+	for (Map.Entry<String, String> entry : paras.entrySet()) {
+	    sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+	}
+	return sb.substring(0, sb.length() - 1);
     }
 }

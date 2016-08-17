@@ -21,7 +21,7 @@ public class HomeController {
     
     @RequestMapping(value = { "/auth/index.php/admin/login/index.html" })
     public String oldIndex(@ModelAttribute HomeVO vo) {
-	return "redirect:/index";
+	return "redirect:/login";
     }
 
     @RequestMapping(value = { "/tindex" })

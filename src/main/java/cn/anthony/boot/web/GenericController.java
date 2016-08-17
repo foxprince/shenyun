@@ -46,7 +46,11 @@ public abstract class GenericController<T> {
 	if (id == null) {
 	    return init(m);
 	} else {
-	    return getService().findById(id);
+	    T t = getService().findById(id);
+	    if(t==null)
+		return init(m);
+	    else
+		return t;
 	}
     }
 

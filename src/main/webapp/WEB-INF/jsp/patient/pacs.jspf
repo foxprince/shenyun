@@ -13,23 +13,15 @@
           </div>
           
                       <div class='row margin-bottom'>
+                        <spring:eval expression="T(cn.anthony.boot.util.PatientUtil).getPacsRelativeNames(patient.pId)" var="pacsFiles" />
+             
+                        <c:forEach var="item" items="${pacsFiles}">
                         <div class='col-sm-6'>
-                          <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1b.jpg' alt='Photo'>
-                        </div><!-- /.col -->
-                        <div class='col-sm-6'>
-                          <div class='row'>
-                            <div class='col-sm-6'>
-                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1c.jpg' alt='Photo'>
-                              <br>
-                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1d.jpg' alt='Photo'>
-                            </div><!-- /.col -->
-                            <div class='col-sm-6'>
-                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1e.jpg' alt='Photo'>
-                              <br>
-                              <img class='img-responsive' src='../resources/pacs/0511-333239-20141204/00002a1f.jpg' alt='Photo'>
-                            </div><!-- /.col -->
-                          </div><!-- /.row -->
-                        </div><!-- /.col -->
-                      </div><!-- /.row -->
+                          <a href="../resources/pacs/${item}" target="_blank"></a><img class='img-responsive' src='../resources/pacs/${item}' alt='Photo'></a>
+                        </div>
+                        </c:forEach>
+                        
+                        
+                      </div>
         </section>
                   </div><!-- /.tab-pane -->

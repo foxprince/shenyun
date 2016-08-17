@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -57,10 +58,12 @@ import cn.anthony.boot.domain.QPatient_颅神经;
 import cn.anthony.boot.domain.QPatient_高级皮层功能;
 import cn.anthony.boot.domain.QSomatoscopy;
 import cn.anthony.boot.domain.SearchModel;
+import cn.anthony.boot.service.CustomeOptionService;
 import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.service.SearchModelService;
 import cn.anthony.boot.util.Constant;
 import cn.anthony.boot.util.ControllerUtil;
+import cn.anthony.boot.util.PageUtil;
 import cn.anthony.util.DateUtil;
 import cn.anthony.util.ExcelUtil;
 import cn.anthony.util.QueryOption;
@@ -75,7 +78,9 @@ public class PatientController extends GenericController<Patient> {
     PatientService service;
     @Resource
     SearchModelService searchModelService;
-
+    @Resource
+    CustomeOptionService customeOptionService;
+    
     @Override
     public Patient init(Model m) {
 	return new Patient();
@@ -184,6 +189,8 @@ public class PatientController extends GenericController<Patient> {
 	m.addAttribute("inOptions", Constant.inKeyMap.values());
 	m.addAttribute("operationOptions", Constant.operKeyMap.values());
 	m.addAttribute("outOptions", Constant.outKeyMap.values());
+	m.addAttribute("bloodOptions", Constant.bloodKeyMap.values());
+	m.addAttribute("customeOptions", customeOptionService.findAll());
 	return getListView();
     }
 
@@ -206,6 +213,15 @@ public class PatientController extends GenericController<Patient> {
 	m.put("columnNames", Constant.toNames(fields));
 	m.put("result", list);
 	return new ModelAndView(new PatientExcelView(), m);
+    }
+    
+    @RequestMapping(value = "/zip")
+    public ModelAndView getZip(String id, String patientNo) {
+	Map<String, Object> m = new HashMap<String, Object>();
+	m.put("id", id);
+	m.put("patientNo", service.findById(id).getName()+"_"+patientNo);
+	m.put("file", new File(PageUtil.generateZip(id, patientNo)));
+	return new ModelAndView(new ZipView(), m);
     }
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)

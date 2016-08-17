@@ -59,12 +59,12 @@
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-laptop"></i>
-                <span>科研</span>
+                <span>配置</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!-- <li><a href="/resources/pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-                <li><a href="/resources/pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
+                <li><a href="/customeOption/list"><i class="fa fa-circle-o"></i> 导出选项</a></li>
+                <!-- <li><a href="/resources/pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
                 <li><a href="/resources/pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
                 <li><a href="/resources/pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
                 <li><a href="/resources/pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>

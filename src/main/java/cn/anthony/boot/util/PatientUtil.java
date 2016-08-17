@@ -35,8 +35,8 @@ import cn.anthony.util.StringTools;
 public class PatientUtil {
     public static void main(String[] args) throws Exception {
 	File dir = new File("E:\\project\\神云系统\\pacs");
-	for(File f: getPacsFiles(dir,"184470"))
-	    System.out.println(f.getName());
+	for(String f: getPacsRelativeNames("184470"))
+	    System.out.println(f);
 	// System.out.println(file.getAbsolutePath().replaceAll("\\", "/"));
 	// Patient p = (extractPatientFromFile(file));
 	// System.out.println(p.somatoscopy);
@@ -50,14 +50,38 @@ public class PatientUtil {
 	// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy.sExamination)));
     }
 
+    public static List<File> getPacsFiles(String patientNo) {
+	return getPacsFiles(new File(Constant.PACS_DIR), patientNo);
+    }
+    
+    public static List<String> getPacsRelativeNames(String patientNo) {
+	List<String> l = new ArrayList<String>();
+	for(File f : getPacsFiles(new File(Constant.PACS_DIR), patientNo)) {
+	    String path = f.getAbsolutePath();
+	    int i = StringUtils.lastIndexOf(path, "\\", path.lastIndexOf("\\")-1)+1;
+	    l.add(path.substring(i).replace("\\", "/"));
+	}
+	return l;
+    }
+    
     public static List<File> getPacsFiles(File dir,String patientNo) {
 	try {
 	    return processPacs(dir, (File f) -> {
 	        return f.isDirectory() && f.getName().indexOf("-"+patientNo+"-")>0;
 	    });
 	} catch (Exception e) {
-	    e.printStackTrace();
-	    return null;
+	    return new ArrayList<File>();
+	}
+    }
+    
+    public static List<File> getPacsDirs(File dir,String patientNo) {
+	try {
+	    File[] fs = dir.listFiles((File f) -> {
+	        return f.isDirectory() && f.getName().indexOf("-"+patientNo+"-")>0;
+	    });
+	    return Arrays.asList(fs);
+	} catch (Exception e) {
+	    return new ArrayList<File>();
 	}
     }
     private static List<File> processPacs(File dir, FileFilter filter) {

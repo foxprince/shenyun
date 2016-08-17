@@ -43,8 +43,19 @@ public @Data class Patient extends GenericNoSQLEntity {
     // 出生地
     public String birthplace;
     
-    public List<File> getPacsFile() {
+    public List<File> getPacsFiles() {
 	return PatientUtil.getPacsFiles(new File(Constant.PACS_DIR), getpId());
+    }
+    
+    /**
+     * 只返回 子目录及文件名
+     * @return
+     */
+    public List<String> getPacsFilesName() {
+	List<String> l = new ArrayList<String>();
+	for(File f :getPacsFiles())
+	    l.add(f.getAbsolutePath().substring(f.getAbsolutePath().indexOf("dicom")+5));
+	return l;
     }
     
     public List<FrontPage> frontRecords = new ArrayList<FrontPage>();// 首页纪录

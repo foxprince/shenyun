@@ -5,9 +5,7 @@
 <%@ attribute name="url" required="true" rtexprvalue="true"%>
 <%@ attribute name="formCommand" required="false" rtexprvalue="true"%>
 <c:set var="commandName" value="${formCommand}"/>
-<s:eval var="pageUrl" expression="T(cn.anthony.util.HttpUtil).toGetString(url,param)"  />
-       
-
+<s:eval var="pageUrl" expression="T(cn.anthony.util.http.HTTPUtil).toGetString(url,param)"  />
 <c:url var="firstUrl" value="${pageUrl}&page=0" />
 <c:url var="lastUrl" value="${pageUrl}&page=${totalPages-1}" />
 <c:url var="prevUrl" value="${pageUrl}&page=${currentIndex - 1}" />
