@@ -9,7 +9,6 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -317,13 +316,71 @@ public class StringTools {
 	l.toArray(a);
 	return a;
     }
-
+    
+    public static String secToTime(int time,boolean pre) {  
+        String timeStr = null;  
+        int hour = 0;  
+        int minute = 0;  
+        int second = 0;  
+        if (time <= 0)  
+            return "00:00";  
+        else {  
+            minute = time / 60;  
+            if (minute < 60) {  
+                second = time % 60;  
+                timeStr = (pre?"00:":"")+unitFormat(minute) + ":" + unitFormat(second);  
+            } else {  
+                hour = minute / 60;  
+                if (hour > 99)  
+                    return "99:59:59";  
+                minute = minute % 60;  
+                second = time - hour * 3600 - minute * 60;  
+                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":" + unitFormat(second);  
+            }  
+        }  
+        return timeStr;  
+    }  
+  
+    public static String unitFormat(int i) {  
+        String retStr = null;  
+        if (i >= 0 && i < 10)  
+            retStr = "0" + Integer.toString(i);  
+        else  
+            retStr = "" + i;  
+        return retStr;  
+    }
+    
+    public static String second2m(double s,boolean pre) {
+	return secToTime((int)s,pre);
+    }
+    public static void caluMarathon(int full) {
+	double x = (2*3600+58*60+150)/42.195;
+	double y = x-5;
+	String sx = second2m(x,false);
+	String sy = second2m(y,false);
+	double z = x*5;
+	System.out.println(x);
+	StringBuilder sb = new StringBuilder();
+	sb.append(sx+"\n");
+	sb.append("05KM:\t"+second2m(z,true)+"\t"+second2m(z,true)+"\t"+sx+"\n");
+	for(int i =2;i<8;i++) {
+	    z += 5*y;
+	    sb.append(i*5+"KM:\t"+second2m(z,true)+"\t"+second2m(5*y,true)+"\t"+sy+"\n");
+	}
+	z += 5*x;
+	sb.append("40KM:\t"+second2m(z,true)+"\t"+second2m(5*x,true)+"\t"+sx+"\n");
+	z += 2.195*x;
+	sb.append("END :\t"+second2m(z,true)+"\t"+second2m(2.195*x,true)+"\t"+sx+"\n");
+	System.out.println(sb.toString());
+    }
+    
     public static void main(String[] args) {
+	caluMarathon(1);
 	StringBuilder sb = new StringBuilder();
 	sb.append("正常\n");
 	sb.append("\n");
 	sb.append("ddd");
-	System.out.println(URLDecoder.decode("http%3A%2F%2Fweidian.com%2Fi%2F1914364180%3Fstring%3Db2M1b050MmFybWc2NnZiU1hnam1IR19hWWdybw%3D%3D&response_type=code&scope=snsapi_base&state=H5WXshare&connect_redirect=1#wechat_redirect"));
+	//System.out.println(URLDecoder.decode("http%3A%2F%2Fwww.xuxian.com%2Findex.php%3Fcontroller%3Dgame_bargain%26action%3Dindex&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect"));
 	// String[] ss = StringUtils.split(sb.toString(), c);
 	// System.out.println(ss.length + ":" + Arrays.asList(ss));
 	Map<String, List<String>> map = new HashMap<String, List<String>>() {
