@@ -59,7 +59,13 @@ public class PatientService extends GenericService<Patient> {
     public PatientRepository getRepository() {
 	return repository;
     }
-
+    
+    public Patient findByPid(String pId) {
+	List<Patient> l = repository.findByPId(pId);
+	if(l!=null&&l.size()>0)
+	    return l.get(0);
+	return null;
+    }
     public Page<Patient> find(Predicate predicate, Pageable pageable) {
 	return repository.findAll(predicate, pageable);
     }

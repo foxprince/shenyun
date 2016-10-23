@@ -514,4 +514,11 @@ public class Constant {
 	}
     };
 
+    public static String getExtendTypeDesc(String type) {
+	if(type.equalsIgnoreCase("cxz"))
+	    return "出血组";
+	else if(type.equalsIgnoreCase("icu"))
+	    return "ICU";
+	return null;
+    }
 }

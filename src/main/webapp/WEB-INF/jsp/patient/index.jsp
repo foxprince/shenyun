@@ -94,8 +94,8 @@
                   <strong><i class="fa fa-pencil margin-r-5"></i> 诊断</strong>
                   <p>
                     <span class="label label-success">${patient.frontRecords.get(0).mainDiag}</span>
-                    <span class="label label-primary">${patient.inRecords.get(0).confirmDiag.detail}</span>
-                    <span class="label label-warning">${patient.outRecords.get(0).outDiagnosis }</span>
+                    <%-- <span class="label label-primary">${patient.inRecords.get(0).confirmDiag.detail}</span>
+                    <span class="label label-warning">${patient.outRecords.get(0).outDiagnosis }</span> --%>
                   </p>
                   <hr>
 
@@ -116,6 +116,9 @@
                   <li><a href="#outHospital" data-toggle="tab">出院纪录</a></li>
                   <li><a href="#pacs" data-toggle="tab">PACS影像</a></li>
                   <li><a href="#dsa" data-toggle="tab">DSA影像</a></li>
+                  <c:forEach var="item" items="${patient.extendMap}">
+                    <li><a href="#${item.key }" data-toggle="tab">${item.value.typeDesc}</a></li>
+                  </c:forEach>
                 </ul>
                 <div class="tab-content">
                   <%@ include file="front.jspf" %>
@@ -125,6 +128,30 @@
                   <%@ include file="pacs.jspf" %>
                   <%@ include file="dsa.jspf" %>
                   
+                  <c:forEach var="item" items="${patient.extendMap}">
+                    <div class="tab-pane" id="${item.key }">
+                    <!-- The timeline -->
+                    <section class="invoice">
+                      <!-- title row -->
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <h2 class="page-header">
+                            <i class="fa fa-globe"></i> ${item.value.typeDesc}
+                            <small class="pull-right"></small>
+                          </h2>
+                        </div><!-- /.col -->
+                      </div>
+                      <div class='row margin-bottom'>
+                        <spring:eval expression="T(cn.anthony.util.RefactorUtil).getObjectParaMap(item.value)" var="fieldsMap" />
+                        <ul>
+                        <c:forEach var="item2" items="${fieldsMap}">
+                            <li><p><strong>${item2.key }：</strong></p> <pre>${item2.value }</pre></li>
+                        </c:forEach>
+                        </ul>
+                      </div>
+                    </section>
+                  </div><!-- /.tab-pane -->
+                  </c:forEach>
                 </div><!-- /.tab-content -->
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->

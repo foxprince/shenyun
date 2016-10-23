@@ -4,7 +4,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public interface PageRequest {
+import lombok.Data;
+
+@Data
+public class PageRequest {
     @NotNull(message = "Please enter ")
     @Min(value = 1, message = "Please addresss.")
     @Max(100000)

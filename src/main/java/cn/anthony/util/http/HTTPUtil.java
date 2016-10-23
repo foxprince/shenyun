@@ -192,4 +192,14 @@ public class HTTPUtil {
 	}
 	return sb.substring(0, sb.length() - 1);
     }
+    
+    public static String toGetStringExcludePage(String url, Map<String, String> paras) {
+	StringBuilder sb = new StringBuilder(url);
+	sb.append("&");
+	for (Map.Entry<String, String> entry : paras.entrySet()) {
+	    if(!entry.getKey().equalsIgnoreCase("page"))
+		sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+	}
+	return sb.substring(0, sb.length() - 1);
+    }
 }

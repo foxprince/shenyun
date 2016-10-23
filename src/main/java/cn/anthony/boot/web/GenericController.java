@@ -47,7 +47,7 @@ public abstract class GenericController<T> {
 	    return init(m);
 	} else {
 	    T t = getService().findById(id);
-	    if(t==null)
+	    if (t == null)
 		return init(m);
 	    else
 		return t;
@@ -91,13 +91,14 @@ public abstract class GenericController<T> {
      * @throws EntityNotFound
      */
     @RequestMapping(value = { "/add", "/edit" }, method = RequestMethod.POST)
-    public String edit(@ModelAttribute T t, final RedirectAttributes redirectAttributes, HttpServletRequest request, BindingResult result)
-	    throws EntityNotFound {
+    public String edit(@ModelAttribute T t, final RedirectAttributes redirectAttributes, HttpServletRequest request,
+	    BindingResult result) throws EntityNotFound {
 	if (result.hasErrors()) {
 	    return getFormView();
 	} else {
 	    getService().update(t);
-	    redirectAttributes.addFlashAttribute("message", (request.getServletPath().endsWith("add") ? "添加" : "修改") + updateHint(t));
+	    redirectAttributes.addFlashAttribute("message",
+		    (request.getServletPath().endsWith("add") ? "添加" : "修改") + updateHint(t));
 	    return "redirect:list";
 	}
     }
@@ -111,7 +112,8 @@ public abstract class GenericController<T> {
      * @throws EntityNotFound
      */
     @RequestMapping(value = { "/edit.json", "/add.json" }, method = RequestMethod.POST)
-    public @ResponseBody ValidationResponse processFormAjaxJson(@ModelAttribute @Valid T t, BindingResult result) throws EntityNotFound {
+    public @ResponseBody ValidationResponse processFormAjaxJson(@ModelAttribute @Valid T t, BindingResult result)
+	    throws EntityNotFound {
 	validate(t, result);
 	ValidationResponse res = new ValidationResponse();
 	if (!result.hasErrors()) {
@@ -146,6 +148,7 @@ public abstract class GenericController<T> {
 	return getListView();
     }
 
+
     /**
      * 根据关联id列出列表
      * 
@@ -159,7 +162,16 @@ public abstract class GenericController<T> {
 	return getListView();
     }
 
+    @RequestMapping(value = { "/listPage" }, params = { "relateId" })
+    public String listPage(int page, int size, Model m, @RequestParam(required = false) String... relateId) {
+	listByRelate(m, page, size, relateId);
+	return getListView();
+    }
+
     protected void listByRelate(Model m, String... relateId) {
+    }
+
+    protected void listByRelate(Model m, int page, int size, String... relateId) {
     }
 
     /**
@@ -173,7 +185,8 @@ public abstract class GenericController<T> {
     protected abstract String getFormView();
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public ModelAndView delete(@RequestParam String id, final RedirectAttributes redirectAttributes, SessionStatus status) throws EntityNotFound {
+    public ModelAndView delete(@RequestParam String id, final RedirectAttributes redirectAttributes,
+	    SessionStatus status) throws EntityNotFound {
 	ModelAndView mav = new ModelAndView("redirect:list");
 	T t = getService().delete(id);
 	status.setComplete();
@@ -217,6 +230,7 @@ public abstract class GenericController<T> {
 	    System.out.println("**" + session.getAttribute(s));
 	}
     }
+
     String updateHint(T t) {
 	return "成功";
     }

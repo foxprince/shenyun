@@ -16,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.ListPath;
 
+import cn.anthony.boot.domain.ExtendObject;
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QPatient_Diag;
 import cn.anthony.boot.domain.QPatient_OperationDetail;
@@ -69,7 +70,10 @@ public class RefactorUtil {
 		}
 	}
     }
-
+    
+    public static void main(String[] args) {
+	System.out.println(getObjectParaMap(new ExtendObject.出血组()));
+    }
     public static Map<String, String> getObjectParaMap(Object o) {
 	Field[] fields = o.getClass().getDeclaredFields();
 	Map<String, String> m = new LinkedHashMap<String, String>();

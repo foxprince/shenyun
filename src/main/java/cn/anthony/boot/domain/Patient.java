@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,7 +25,8 @@ import lombok.Data;
 
 @QueryEntity
 @Document(collection = "patient")
-public @Data class Patient extends GenericNoSQLEntity {
+@Data
+public class Patient extends GenericNoSQLEntity {
     private static final long serialVersionUID = -9199964027188332358L;
     public String pId;/* 病案号 */
     public String name;
@@ -42,22 +45,27 @@ public @Data class Patient extends GenericNoSQLEntity {
     public String country;
     // 出生地
     public String birthplace;
-    
+    // 数据来源
+    public String source;
+    // 扩展属性
+    public Map<String, ExtendObject> extendMap = new TreeMap<String, ExtendObject>();
+
     public List<File> getPacsFiles() {
 	return PatientUtil.getPacsFiles(new File(Constant.PACS_DIR), getpId());
     }
-    
+
     /**
      * 只返回 子目录及文件名
+     * 
      * @return
      */
     public List<String> getPacsFilesName() {
 	List<String> l = new ArrayList<String>();
-	for(File f :getPacsFiles())
-	    l.add(f.getAbsolutePath().substring(f.getAbsolutePath().indexOf("dicom")+5));
+	for (File f : getPacsFiles())
+	    l.add(f.getAbsolutePath().substring(f.getAbsolutePath().indexOf("dicom") + 5));
 	return l;
     }
-    
+
     public List<FrontPage> frontRecords = new ArrayList<FrontPage>();// 首页纪录
     public List<InHospital> inRecords = new ArrayList<InHospital>();/* 入院纪录 */
     public List<Operation> operations = new ArrayList<Operation>();/* 手术纪录 */
@@ -78,6 +86,7 @@ public @Data class Patient extends GenericNoSQLEntity {
     transient public 痛触觉 痛触觉;
     transient public 头部反射 头部反射;
     transient public 听力 听力;
+
     @Data
     public static class OperationDetail {
 	public String code, checkDate, title, chief, assistant1, assistant2, oclass, nnis, qkyh, mzfs, asa, mzDoc;
@@ -117,16 +126,19 @@ public @Data class Patient extends GenericNoSQLEntity {
 	    this.outTime = DateUtil.parse(outTime);
 	    this.minutes = (this.outTime.getTime() - this.inTime.getTime()) / (60 * 1000);
 	}
-	
+
 	public String getInTimeDesc() {
 	    return DateUtil.format(inTime, DateUtil.TIME_FORMAT);
 	}
+
 	public String getOutTimeDesc() {
 	    return DateUtil.format(outTime, DateUtil.TIME_FORMAT);
 	}
+
 	public String getDuration() {
 	    return DateUtil.getDHM(minutes);
 	}
+
 	public SevereDetail() {
 	    super();
 	}

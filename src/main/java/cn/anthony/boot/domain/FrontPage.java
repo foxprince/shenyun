@@ -23,12 +23,17 @@ public class FrontPage {
     }
 
     public String getPatientclassDesc() {
-	System.out.println("patient class:"+Constant.PAY_TYPE_MAP.get(patientclass));
-	return Constant.PAY_TYPE_MAP.get(patientclass);
+	if (patientclass != null)
+	    return Constant.PAY_TYPE_MAP.get(patientclass);
+	else
+	    return "";
     }
 
     public String getAdmissionwayDesc() {
-	return Constant.ENTRY_MAP.get(admissionway);
+	if (admissionway != null)
+	    return Constant.ENTRY_MAP.get(admissionway);
+	else
+	    return "";
     }
 
     // 医疗机构

@@ -71,6 +71,21 @@
                 <li><a href="/resources/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li> -->
               </ul>
             </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-laptop"></i>
+                <span>导入</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="/import/list?type=cxz"><i class="fa fa-circle-o"></i> 出血组</a></li>
+                <li><a href="/import/list?type=icu"><i class="fa fa-circle-o"></i> ICU组</a></li>
+                <li><a href="/resources/pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+                <li><a href="/resources/pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
+                <li><a href="/resources/pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
+                <li><a href="/resources/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
+              </ul>
+            </li>
           </ul>
         </section>
         <!-- /.sidebar -->
