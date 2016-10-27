@@ -120,7 +120,11 @@ public class PatientController extends GenericController<Patient> {
     PatientSearch initPageRquest() {
 	return new PatientSearch();
     }
-
+    @RequestMapping(value = { "/", "/index" },params="pId")
+    public String index(String pId,Model m) {
+	m.addAttribute("patient", service.findByPid(pId));
+	return getIndexView();
+    }
     @RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
     public String listPage(@ModelAttribute("pageRequest") PatientSearch ps,
 	    @QuerydslPredicate(root = Patient.class) Predicate predicate, @PageableDefault Pageable pageable, Model m,

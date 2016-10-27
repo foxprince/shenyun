@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <c:import url="../include/head.jsp">
-  <c:param name="pageTitle" value="数据导入" />
+  <c:param name="pageTitle" value="${typeDesc}数据导入" />
 </c:import>
 <body class="hold-transition skin-green-light sidebar-mini">
   <div class="wrapper">
@@ -30,18 +30,14 @@
           <div class="box-header with-border">
             <h3 class="box-title">导入数据</h3>
             <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button class="btn btn-box-tool" data-widget="remove">
-                <i class="fa fa-remove"></i>
-              </button>
+              <button class="btn btn-box-tool" data-widget="collapse"> <i class="fa fa-minus"></i> </button>
+              <button class="btn btn-box-tool" data-widget="remove"> <i class="fa fa-remove"></i> </button>
             </div>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <form action="/import/uploadFile" method="post" enctype="multipart/form-data" id="excelform">
                     <label style="font-size:16px; font-weight:bold;">上传文件：</label><br />
@@ -49,7 +45,7 @@
                     <input type="file" name="uploadfile" />
                     <input type="hidden" name="type" value="${type}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <button type="button" id="exceluploadbtn" onclick="excelupload()" style="font-size:16px; background-color:#06F; padding:15px 68px; border-width:1px; color:#FFF;">上传</button>
+                    <button type="button" id="exceluploadbtn" onclick="excelupload()" style="font-size:16px; background-color:#06F; padding:15px 20px; border-width:1px; color:#FFF;">上传并导入</button>
                     </p>
                   </form>
                   <span id="upload-file-message"></span>
@@ -57,7 +53,7 @@
                 <!-- /.form-group -->
               </div>
               <!-- /.col -->
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label style="font-size:16px; font-weight:bold;">导入结果：</label> <br/>
                   <p style="display:inline-block; border-style:solid; border-width:3px; border-color:#5C0; padding:20px;">
@@ -71,7 +67,25 @@
             <!-- /.row -->
           </div>
           <!-- /.box-body -->
+          <div class="callout callout-success">
+                    <h4>标准格式示例:</h4>
+                    <p><a href="../resources/excelTemplate/${type }.xls">${typeDesc}标准格式文件参考</a></p>
+                  </div>
         </div>
+        <div class="box box-solid">
+                <div class="box-header with-border">
+                  <i class="fa fa-text-width"></i>
+                  <h3 class="box-title">格式要求</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <ul>
+                    <li>列数不能比标准格式少，可以多。</li>
+                    <li>日期列必须调整单元格格式为日期。</li>
+                    <li>删除多余行。</li><li>一个文件只应包含一个sheet。除第一个至之外的sheet会被忽略。</li>
+                    <li>请勿使用任何数学格式。</li>
+                  </ul>
+                </div><!-- /.box-body -->
+              </div>
         <!-- /.box -->
         <div class="row">
           <div class="col-xs-12">
@@ -184,7 +198,7 @@
   			}
 			function excelupload(){ 
 				  $('#exceluploadbtn').attr('disabled','disabled');
-				  $('#exceluploadbtn').html('上传中...');
+				  $('#exceluploadbtn').html('上传并导入中...');
 				  $.ajax({
 						url : "/import/uploadFile",
 						type : "POST",
@@ -198,14 +212,16 @@
 							$('#exceluploadbtn').html('上传成功，导入中...');
 							$("#upload-file-message").text( "上传成功");
 							$('#exceluploadbtn').removeAttr('disabled');
-							$('#exceluploadbtn').html('再传一个');
+							$('#exceluploadbtn').html('处理完成。再传一个');
 							//updateTable();
 							var result = "";
 							result += "文件名："+data.srcName+"<br/>";
 							result += "记录总数："+data.total+"<br/>";
 							result += "成功总数："+data.success+"<br/>";
 							result += "新增数："+data.insertTotal+"<br/>";
+							result += data.insertList+"<br/>";
 							result += "修改数："+data.updateTotal+"<br/>";
+							result += data.updateList+"<br/>";
 							$("#importResult").html(result);
 						},
 						error : function() {

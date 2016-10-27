@@ -151,10 +151,10 @@ public class ImportController extends GenericController<ImportModel> {
 				fp.setHomeAddress(l.get(21));
 				p.addFront(fp);
 				insertTotal++;
-				insertList.add(l.get(12));
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(l.get(12));
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type, new ExtendObject.出血组(l.get(5), l.get(6), l.get(7), l.get(10),
 				    l.get(15), l.get(16), l.get(17), l.get(21)));
@@ -192,10 +192,10 @@ public class ImportController extends GenericController<ImportModel> {
 				fp.setHomeAddress(l.get(10));
 				p.addFront(fp);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type,
 				    new ExtendObject.ICU(l.get(1), l.get(2), l.get(3), pId, l.get(5), l.get(6),
@@ -242,16 +242,16 @@ public class ImportController extends GenericController<ImportModel> {
 				op.setBeginTime(DateUtil.parse(l.get(8)));
 				p.addOperation(op);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type,
 				    new ExtendObject.Ldz(l.get(1), l.get(2), l.get(3), pId, l.get(5), l.get(6),
 					    l.get(7), l.get(8), l.get(9), l.get(10), l.get(11), l.get(12), l.get(13),
 					    l.get(14), l.get(15), l.get(16), l.get(17), l.get(18), l.get(19), l.get(20),
-					    l.get(21), l.get(22), l.get(23), l.get(24), l.get(25), l.get(26)));
+					    l.get(21), l.get(22), l.get(23)));
 			    patientServ.create(p);
 			    success++;
 			}
@@ -291,12 +291,12 @@ public class ImportController extends GenericController<ImportModel> {
 				op.setBeginTime(DateUtil.parse(l.get(7)));
 				p.addOperation(op);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
-			    p.getExtendMap().put(type, new ExtendObject.Xrz(l.get(0), l.get(1), l.get(2), l.get(3), pId,
+			    p.getExtendMap().put(type, new ExtendObject.Xrz(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4),
 				    l.get(5), l.get(6), l.get(7), l.get(8), l.get(9), l.get(10), l.get(11), l.get(12),
 				    l.get(13), l.get(14), l.get(15), l.get(16), l.get(17), l.get(18), l.get(19),
 				    l.get(20), l.get(21), l.get(22), l.get(23), l.get(24), l.get(25), l.get(26)));
@@ -339,13 +339,13 @@ public class ImportController extends GenericController<ImportModel> {
 				op.setBeginTime(DateUtil.parse(l.get(7)));
 				p.addOperation(op);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type,
-				    new ExtendObject.Gnz(l.get(0), l.get(1), l.get(2), l.get(3), pId, l.get(5),
+				    new ExtendObject.Gnz(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4), l.get(5),
 					    l.get(6), l.get(7), l.get(8), l.get(9), l.get(10), l.get(11), l.get(12),
 					    l.get(13), l.get(14), l.get(15), l.get(16), l.get(17), l.get(18), l.get(19),
 					    l.get(20), l.get(21), l.get(22), l.get(23), l.get(24), l.get(25), l.get(26),
@@ -389,13 +389,13 @@ public class ImportController extends GenericController<ImportModel> {
 				op.setBeginTime(DateUtil.parse(l.get(7)));
 				p.addOperation(op);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type,
-				    new ExtendObject.Zlz(l.get(0), l.get(1), l.get(2), l.get(3), pId, l.get(5),
+				    new ExtendObject.Zlz(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4), l.get(5),
 					    l.get(6), l.get(7), l.get(8), l.get(9), l.get(10), l.get(11), l.get(12),
 					    l.get(13), l.get(14), l.get(15), l.get(16), l.get(17), l.get(18), l.get(19),
 					    l.get(20), l.get(21), l.get(22), l.get(23), l.get(24), l.get(25), l.get(26),
@@ -438,10 +438,10 @@ public class ImportController extends GenericController<ImportModel> {
 				op.setBeginTime(DateUtil.parse(l.get(9)));
 				p.addOperation(op);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type,
 				    new ExtendObject.Jzz(l.get(1), l.get(2), l.get(3), pId, l.get(5), l.get(6),
@@ -482,10 +482,10 @@ public class ImportController extends GenericController<ImportModel> {
 				fp.setHomeAddress(l.get(12));
 				p.addFront(fp);
 				insertTotal++;
-				insertList.add(pId);
+				insertList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    } else {
 				updateTotal++;
-				updateList.add(pId);
+				updateList.add("<a href='/patient/?pId="+pId+"'>"+p.getName()+"</a>");
 			    }
 			    p.getExtendMap().put(type, new ExtendObject.Bflz(l.get(1), l.get(2), l.get(3), l.get(4),
 				    l.get(5), l.get(6), l.get(7), l.get(8), l.get(9), l.get(10), l.get(11), l.get(12),

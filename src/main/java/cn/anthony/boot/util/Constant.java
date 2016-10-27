@@ -11,7 +11,7 @@ import lombok.Data;
 public class Constant {
     @Data
     public static class CheckOption {
-	String inputType = "text", name, label,value;
+	String inputType = "text", name, label, value;
 
 	public CheckOption(String type, String name, String label) {
 	    super();
@@ -27,7 +27,7 @@ public class Constant {
 	    this.label = label;
 	    this.value = value;
 	}
-	
+
     }
 
     public static void main(String[] args) {
@@ -77,7 +77,7 @@ public class Constant {
     private static final String DEFAULT_TYPE = "text";
     private static final String DATETIME_TYPE = "datetime-local";
     private static final String DATE_TYPE = "date";
-    public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";//"E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
+    public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 
     public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
 
@@ -112,6 +112,7 @@ public class Constant {
     }
 
     public static Map<String, CheckOption> patientKeyMap = new LinkedHashMap<String, CheckOption>();
+
     static {
 	defaultPut(patientKeyMap, "patient.age", "年龄");
 	defaultPut(patientKeyMap, "patient.sex", "性别");
@@ -420,9 +421,12 @@ public class Constant {
 	defaultPut(outKeyMap, "outHospital.dischargeOrder", "出院医嘱");
     };
 
-    public static Map<String,CheckOption> bloodKeyMap = new LinkedHashMap<String, CheckOption>(){{
-	putAll(patientKeyMap);
-    }};
+    public static Map<String, CheckOption> bloodKeyMap = new LinkedHashMap<String, CheckOption>() {
+	{
+	    putAll(patientKeyMap);
+	}
+    };
+
     static {
 	defaultPut(bloodKeyMap, "operation.operationTitle", "手术名称");
 	defaultPut(bloodKeyMap, "operation.doctor", "手术医师");
@@ -433,6 +437,7 @@ public class Constant {
 	defaultPut(bloodKeyMap, "operation.bloodLoss", "失血量");
 	defaultPut(bloodKeyMap, "operation.bloodTransfusion", "输血量");
     }
+
     public static Map<String, CheckOption> ALL_KEY_MAP = new LinkedHashMap<String, CheckOption>() {
 	{
 	    putAll(patientKeyMap);
@@ -442,14 +447,15 @@ public class Constant {
 	    putAll(outKeyMap);
 	}
     };
-    
+
     public static String getJSArrayString(Collection<CheckOption> c) {
 	StringBuilder sb = new StringBuilder();
-	for(CheckOption o : c)
-	    sb.append("\""+o.getName()+"\",");
-	sb.deleteCharAt(sb.length()-1);
+	for (CheckOption o : c)
+	    sb.append("\"" + o.getName() + "\",");
+	sb.deleteCharAt(sb.length() - 1);
 	return sb.toString();
     }
+
     public static String getAndOrString(String s) {
 	if (StringTools.checkNull(s) == null)
 	    return "与";
@@ -515,10 +521,25 @@ public class Constant {
     };
 
     public static String getExtendTypeDesc(String type) {
-	if(type.equalsIgnoreCase("cxz"))
+	switch (type) {
+	case "cxz":
 	    return "出血组";
-	else if(type.equalsIgnoreCase("icu"))
-	    return "ICU";
-	return null;
+	case "icu":
+	    return "ICU组";
+	case "bflz":
+	    return "病房李组";
+	case "jzz":
+	    return "脊柱组";
+	case "ldz":
+	    return "颅底组";
+	case "xrz":
+	    return "小儿组";
+	case "gnz":
+	    return "功能组";
+	case "zlz":
+	    return "肿瘤组";
+	default:
+	    return type;
+	}
     }
 }

@@ -140,13 +140,12 @@ public class ExtendObject {
 	public String 本市;
 	public String 就诊途径;
 	public String 患者电话;
-	public String 手术光盘号;
-	public String 是否愿意住高间;
-	public String 是否入住了高间;
+	//public String 手术光盘号;
+	//public String 是否愿意住高间;
+	//public String 是否入住了高间;
 	public Ldz(String 患者姓名, String 性别, String 年龄, String 病案号, String 入院诊断, String 确定诊断, String 入院日期, String 手术日期,
 		String 手术名称, String 手术医生, String 出院日期, String 转入日期, String 转出日期, String 二次手术日期名称, String 三次手术日期名称,
-		String 主管医生, String 收治医生, String 病理诊断, String 家庭住址, String 外阜, String 本市, String 就诊途径, String 患者电话,
-		String 手术光盘号, String 是否愿意住高间, String 是否入住了高间) {
+		String 主管医生, String 收治医生, String 病理诊断, String 家庭住址, String 外阜, String 本市, String 就诊途径, String 患者电话) {
 	    super();this.type = "ldz";
 	    this.患者姓名 = 患者姓名;
 	    this.性别 = 性别;
@@ -171,9 +170,6 @@ public class ExtendObject {
 	    this.本市 = 本市;
 	    this.就诊途径 = 就诊途径;
 	    this.患者电话 = 患者电话;
-	    this.手术光盘号 = 手术光盘号;
-	    this.是否愿意住高间 = 是否愿意住高间;
-	    this.是否入住了高间 = 是否入住了高间;
 	}
     }
     @Data //小儿组
@@ -393,8 +389,8 @@ public class ExtendObject {
 	public String 手术方式;
 	public String 所属类别;
 	public String 术中时段;
-	public String 术中用时分钟;
-	public String 出血毫升;
+	public String 术中用时;
+	public String 出血;
 	public String 术者;
 	public String 补充;
 	public String 列1;
@@ -432,8 +428,8 @@ public class ExtendObject {
 	    this.手术方式 = 手术方式;
 	    this.所属类别 = 所属类别;
 	    this.术中时段 = 术中时段;
-	    this.术中用时分钟 = 术中用时;
-	    this.出血毫升 = 出血;
+	    this.术中用时 = 术中用时;
+	    this.出血 = 出血;
 	    this.术者 = 术者;
 	    this.补充 = 补充;
 	    this.列1 = 列1;
@@ -458,7 +454,7 @@ public class ExtendObject {
 	public String 床号;
 	public String 分组;
 	public String 病历号;
-	public String DSA号;
+	public String dSA号;
 	public String 主管医生;
 	public String 性别;
 	public String 年龄;
@@ -529,7 +525,7 @@ public class ExtendObject {
 	public String 重要功能区分级;
 	public String 大小分级;
 	public String 深静脉引流分级;
-	public String SpetzlerMartin分级;
+	public String spetzlerMartin分级;
 	public String 合并症;
 	public String 治疗;
 	public String 癫痫药物;
@@ -624,7 +620,7 @@ public class ExtendObject {
 	    this.床号 = 床号;
 	    this.分组 = 分组;
 	    this.病历号 = 病历号;
-	    DSA号 = dSA号;
+	    dSA号 = dSA号;
 	    this.主管医生 = 主管医生;
 	    this.性别 = 性别;
 	    this.年龄 = 年龄;
@@ -695,7 +691,7 @@ public class ExtendObject {
 	    this.重要功能区分级 = 重要功能区分级;
 	    this.大小分级 = 大小分级;
 	    this.深静脉引流分级 = 深静脉引流分级;
-	    SpetzlerMartin分级 = spetzlerMartin分级;
+	    this.spetzlerMartin分级 = spetzlerMartin分级;
 	    this.合并症 = 合并症;
 	    this.治疗 = 治疗;
 	    this.癫痫药物 = 癫痫药物;

@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -189,12 +190,18 @@ public class ExcelUtil {
     private static String getStringCellValue(Cell cell) {
 	String strCell = "";
 	if (cell != null) {
+	    final DataFormatter df = new DataFormatter();
+	    strCell = df.formatCellValue(cell);
+	    /*
 	    switch (cell.getCellType()) {
 	    case Cell.CELL_TYPE_STRING:
 		strCell = cell.getStringCellValue();
 		break;
 	    case Cell.CELL_TYPE_NUMERIC:
-		strCell = String.valueOf(cell.getNumericCellValue());
+		if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell))
+		    strCell = DateUtil.format(org.apache.poi.ss.usermodel.DateUtil.getJavaDate(cell.getNumericCellValue()),"yyyy-MM-dd");
+		else
+		    strCell = String.valueOf(cell.getNumericCellValue());
 		break;
 	    case Cell.CELL_TYPE_BOOLEAN:
 		strCell = String.valueOf(cell.getBooleanCellValue());
@@ -206,10 +213,8 @@ public class ExcelUtil {
 		strCell = "";
 		break;
 	    }
+	    */
 	}
-	//截取小数点之前的部分
-	if(strCell.indexOf(".")>0)
-	    strCell = strCell.substring(0,strCell.indexOf("."));
 	return strCell;
     }
 

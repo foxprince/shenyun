@@ -80,10 +80,12 @@
               <ul class="treeview-menu">
                 <li><a href="/import/list?type=cxz"><i class="fa fa-circle-o"></i> 出血组</a></li>
                 <li><a href="/import/list?type=icu"><i class="fa fa-circle-o"></i> ICU组</a></li>
-                <li><a href="/resources/pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-                <li><a href="/resources/pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-                <li><a href="/resources/pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-                <li><a href="/resources/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
+                <li><a href="/import/list?type=bflz"><i class="fa fa-circle-o"></i> 病房李组</a></li>
+                <li><a href="/import/list?type=jzz"><i class="fa fa-circle-o"></i> 脊柱组</a></li>
+                <li><a href="/import/list?type=ldz"><i class="fa fa-circle-o"></i> 颅底组</a></li>
+                <li><a href="/import/list?type=xrz"><i class="fa fa-circle-o"></i> 小儿组</a></li>
+                <li><a href="/import/list?type=gnz"><i class="fa fa-circle-o"></i> 功能组</a></li>
+                <li><a href="/import/list?type=zlz"><i class="fa fa-circle-o"></i> 肿瘤组</a></li>
               </ul>
             </li>
           </ul>

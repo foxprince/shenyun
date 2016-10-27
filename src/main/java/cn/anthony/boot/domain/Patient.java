@@ -246,7 +246,10 @@ public class Patient extends GenericNoSQLEntity {
     }
 
     public String getFormatDateOfBirth() {
-	return new SimpleDateFormat("yyyy年MM月dd日").format(dateOfBirth);
+	if(dateOfBirth!=null)
+	    return new SimpleDateFormat("yyyy年MM月dd日").format(dateOfBirth);
+	else
+	    return "";
     }
 
     public String getActualAge() {
