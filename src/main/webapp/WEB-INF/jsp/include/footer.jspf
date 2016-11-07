@@ -1,5 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-	  <footer class="main-footer">
+  <script>
+  /* $(document).ready(function() {
+	  setNavigation();//set menu active
+	} ); */
+  $(function () {
+      setNavigation();//set menu active
+  });
+  function setNavigation() {
+      var path = window.location.href;
+      path = path.replace(/\/$/, "");
+      path = decodeURIComponent(path);
+      $(".sidebar-menu .treeview").each(function () {
+          var navi = $(this).attr('navi');
+          if (path.indexOf(navi)!=-1) {
+              $(this).addClass('active');
+              $(".sidebar-menu .treeview>ul>li>a ").each(function () {
+                if (path.indexOf($(this).attr('href'))!=-1)
+                  $(this).parent().addClass('active');
+              });
+          }
+      });
+  }
+    </script> 
+    <footer class="main-footer">
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.3.0
         </div>

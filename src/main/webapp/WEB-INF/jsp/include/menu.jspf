@@ -31,7 +31,7 @@
                 <i class="fa fa-th"></i> <span>病人</span> 
               </a>
             </li>
-            <li class="treeview">
+            <li class="treeview" navi="search">
               <a href="#">
                 <i class="fa fa-table"></i> <span>查询</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -42,7 +42,7 @@
                 <li><a href="/searchModel/list"><i class="fa fa-database"></i> 查询历史</a></li>
               </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview" navi="total">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
                 <span>统计</span>
@@ -56,7 +56,7 @@
                 <li><a href="/total/initFullTotal"><i class="fa fa-circle-o"></i> 高级统计</a></li>
               </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview" navi="customeOption">
               <a href="#">
                 <i class="fa fa-laptop"></i>
                 <span>配置</span>
@@ -71,9 +71,9 @@
                 <li><a href="/resources/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li> -->
               </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview" navi="import">
               <a href="#">
-                <i class="fa fa-laptop"></i>
+                <i class="glyphicon glyphicon-import"></i>
                 <span>导入</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>

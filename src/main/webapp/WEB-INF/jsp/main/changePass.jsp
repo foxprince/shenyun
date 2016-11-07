@@ -71,12 +71,13 @@
 		</div><!--/fluid-row-->
 				
 		<hr>
-		<!-- footer -->
+		<%@ include file="../include/script.jspf" %>
+    <!-- footer -->
 		<%@ include file="../include/footer.jspf" %>
 		
 	</div><!--/.fluid-container-->
 	
-	<%@ include file="../include/script.jspf" %>
+	
 <script>
 <!--
 function check_input(){

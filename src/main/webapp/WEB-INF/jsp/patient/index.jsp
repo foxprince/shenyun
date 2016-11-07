@@ -160,10 +160,10 @@
       </div><!-- /.content-wrapper -->
       
 	
-	<%@ include file="../include/footer.jspf" %>
 	<%@ include file="../include/sidebar.jspf" %>
 	<%@ include file="../include/script.jspf" %>
-    
+    <%@ include file="../include/footer.jspf" %>
+  
 	</div>
 </body>
 </html>
