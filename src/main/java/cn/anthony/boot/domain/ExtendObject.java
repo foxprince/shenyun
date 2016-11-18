@@ -58,12 +58,12 @@ public class ExtendObject {
 	public String 联系人;
 	public String 电话;
 	public String 地址;
-	public String ICU治疗原因;
+	public String iCU治疗原因;
 	public String 出院诊断;
 	public String 既往病史;
 	public String 脑疝呼吸;
-	public String HH评分;
-	public String GCS评分;
+	public String hH评分;
+	public String gCS评分;
 	public String 并发症;
 	public String 手术时间;
 	public String 手术名称;
@@ -71,13 +71,13 @@ public class ExtendObject {
 	public String 降颅内压;
 	public String 体温;
 	public String 镇静药;
-	public String SWI;
+	public String sWI;
 	public String 血管痉挛;
 	public String 癫痫;
 	public String 围手术期高血压;
 	public String 内科问题;
 	public String 营养支持;
-	public String ICU住院天数;
+	public String iCU住院天数;
 	public ICU(String 姓名, String 性别, String 年龄, String 住院号, String 影像号, String 入院日期, String 出生日期, String 联系人,
 		String 电话, String 地址, String iCU治疗原因, String 出院诊断, String 既往病史, String 脑疝呼吸, String hH评分, String gCS评分,
 		String 并发症, String 手术时间, String 手术名称, String 脑室穿刺, String 降颅内压, String 体温, String 镇静药, String sWI,
@@ -93,12 +93,12 @@ public class ExtendObject {
 	    this.联系人 = 联系人;
 	    this.电话 = 电话;
 	    this.地址 = 地址;
-	    this.ICU治疗原因 = iCU治疗原因;
+	    this.iCU治疗原因 = iCU治疗原因;
 	    this.出院诊断 = 出院诊断;
 	    this.既往病史 = 既往病史;
 	    this.脑疝呼吸 = 脑疝呼吸;
-	    this.HH评分 = hH评分;
-	    this.GCS评分 = gCS评分;
+	    this.hH评分 = hH评分;
+	    this.gCS评分 = gCS评分;
 	    this.并发症 = 并发症;
 	    this.手术时间 = 手术时间;
 	    this.手术名称 = 手术名称;
@@ -106,13 +106,13 @@ public class ExtendObject {
 	    this.降颅内压 = 降颅内压;
 	    this.体温 = 体温;
 	    this.镇静药 = 镇静药;
-	    this.SWI = sWI;
+	    this.sWI = sWI;
 	    this.血管痉挛 = 血管痉挛;
 	    this.癫痫 = 癫痫;
 	    this.围手术期高血压 = 围手术期高血压;
 	    this.内科问题 = 内科问题;
 	    this.营养支持 = 营养支持;
-	    this.ICU住院天数 = iCU住院天数;
+	    this.iCU住院天数 = iCU住院天数;
 	}
     }
     @Data //颅底组
