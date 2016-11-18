@@ -4,3 +4,4 @@
 /.project
 .settings
 pacs/
+.DS_Store
