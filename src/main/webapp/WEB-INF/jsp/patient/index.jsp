@@ -119,6 +119,7 @@
                   <c:forEach var="item" items="${patient.extendMap}">
                     <li><a href="#${item.key }" data-toggle="tab">${item.value.typeDesc}</a></li>
                   </c:forEach>
+                  <li><a href="#remark" data-toggle="tab">备注</a></li>
                 </ul>
                 <div class="tab-content">
                   <%@ include file="front.jspf" %>
@@ -141,6 +142,7 @@
                           </h2>
                         </div><!-- /.col -->
                       </div>
+                      
                       <div class='row margin-bottom'>
                         <spring:eval expression="T(cn.anthony.util.RefactorUtil).getObjectParaMap(item.value)" var="fieldsMap" />
                         <ul>
@@ -152,6 +154,8 @@
                     </section>
                   </div><!-- /.tab-pane -->
                   </c:forEach>
+                  
+                  <%@ include file="remark.jspf" %>
                 </div><!-- /.tab-content -->
               </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->

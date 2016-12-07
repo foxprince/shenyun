@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="remark">
+                    <div class="row modal-body">
+	                     <form:form class="form-inline form-search" modelAttribute="remark" id="remarkForm" action="/patient/addRemark"  method="post">
+	                      <div class="form-group">  
+	                      <label class="">内容：</label>
+	                      <form:textarea path="content" placeholder="内容"/>
+	                      <label class="">标签：</label>
+	                      <form:input class="form-control" path="labels" placeholder="labels"/>
+	                      <label class="">医生：</label>
+	                      <form:input class="form-control" path="doctor" placeholder="医生"/>
+	                      <input type="hidden" name="patientId" value="${patient.id }" />
+	                      <button type="submit" class="btn btn-outline btn-primary btn-lg">添加</button>
+	                      </div>
+	                    </form:form>
+	                </div>
+	                <div>
+                    <ul class="timeline timeline-inverse">
+                      <c:forEach var="item" items="${patient.remarks}">
+                      <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+                        <div class="timeline-item">
+                          <span class="time"><i class="fa fa-clock-o"></i> ${item.ctime}</span>
+                          <h3 class="timeline-header">${item.label }</h3>
+                          <div class="timeline-body"><p>
+                          ${item.content}<br/>
+                          </p>
+                          </div>
+                          <div class="timeline-footer"></div>
+                          <div>
+                          <a lass="btn btn-block btn-warning" href="/patient/delRemark?patientId=${patient.id}&remarkId=${item.id }">删除</a>
+                          </div>
+                        </div>
+                      </li>
+                      </c:forEach>
+                    </ul>
+                    </div>
+                  </div><!-- /.tab-pane -->
+                  
