@@ -6,24 +6,6 @@
 <c:import url="../include/head.jsp">
 	<c:param name="pageTitle" value="病人首页"/>
 </c:import>
-    <script>
-    function test(id) {
-    	$('#generatePdfBtn').html('生成中...');
-    	$.get(
-				"pdf", 
-				{id:id}, 
-				function(data){
-					if(data=='error'){
-						alert('未知错误，请稍后重试'+data);
-					}
-					else {
-						$('#generatePdfBtn').html('点击下载');
-					}
-				}
-		);
-    };
-    </script>
-    
 <body class="hold-transition skin-green-light sidebar-mini">
 	<div class="wrapper">
 	<!-- topbar -->
@@ -167,7 +149,88 @@
 	<%@ include file="../include/sidebar.jspf" %>
 	<%@ include file="../include/script.jspf" %>
     <%@ include file="../include/footer.jspf" %>
-  
+	<script>
+	$(document).ready(function() {
+		alert('11add');
+		$('#btn_add_remark').click(function(e){    
+	    	$.get("/patient/delRemark", 
+		    	function(data){
+					if(data){
+						var divId=$(this).attr('ref');
+				        $('#'+divId).fadeOut('slow');
+					}
+					else {
+						alert('未知错误，请稍后重试'+data);
+					}
+				}	
+			);
+	    });
+	});	
+	$('#btn_add_remark').click(function(e){    
+    	alert('aaaa');
+		$.get("/patient/addRemark", 
+            success: function (json) {
+            	alert(json);
+            	if (json.id!='') {
+                    var newRemark;
+              		newRemark+='<div class="row" id="remark_'+json.id+'">';
+            		newRemark+='	<div class="col-md-12">';
+            		newRemark+='		<!-- Box Comment -->';
+            		newRemark+='		<div class="box box-widget">';
+            		newRemark+='			<div class="box-header with-border">';
+            		newRemark+='				<div class="user-block">';
+            		newRemark+='					<span class="username">'+json.doctor+'</span> <span class="description">'+json.ctime+'</span>';
+            		newRemark+='				</div>';
+            		newRemark+='				<!-- /.user-block -->';
+            		newRemark+='				<div class="box-tools">';
+            		newRemark+='					<button class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">';
+            		newRemark+='						<i class="fa fa-circle-o"></i>';
+            		newRemark+='					</button>';
+            		newRemark+='					<button class="btn btn-box-tool" data-widget="collapse">';
+            		newRemark+='						<i class="fa fa-minus"></i>';
+            		newRemark+='					</button>';
+            		newRemark+='					<button class="btn btn-box-tool" data-widget="remove">';
+            		newRemark+='						<i class="fa fa-times"></i>';
+            		newRemark+='					</button>';
+            		newRemark+='					<button class="btn btn-danger" id="btn_remark" ref="remark_'+json.id+'">删除</button>';
+            		newRemark+='				</div>';
+            		newRemark+='				<!-- /.box-tools -->';
+            		newRemark+='			</div>';
+            		newRemark+='			<!-- /.box-header -->';
+            		newRemark+='			<div class="box-body">';
+            		newRemark+='				<p>'+json.content+'</p>';
+            		newRemark+='			</div>';
+            		newRemark+='			<!-- /.box-body -->';
+            		newRemark+='			<div class="box-footer box-comments">';
+            		newRemark+='				<div class="box-comment">';
+            		newRemark+='					<!-- User image -->';
+            		newRemark+='					<div class="comment-text">';
+            		newRemark+='						<span class="username"> 添加人：'+json.operator+' <span class="text-muted pull-right">'+json.ctime+'</span>';
+            		newRemark+='						</span>';
+            		newRemark+='					</div>';
+            		newRemark+='					<!-- /.comment-text -->';
+            		newRemark+='				</div>';
+            		newRemark+='				<!-- /.box-comment -->';
+            		newRemark+='			</div>';
+            		newRemark+='		</div>';
+            		newRemark+='		<!-- /.box -->';
+            		newRemark+='	</div>';
+            		newRemark+='	<!-- /.col -->';
+            		newRemark+='</div>';
+                    $(newRemark).hide().prependTo($('#remark_parent')).fadeIn('slow');
+                    alert('添加成功。');
+                }
+                else
+                    alert('添加失败。');
+            },
+            error: function (XmlHttpRequest, textStatus, errorThrown) {
+                console.log(XmlHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        );
+	});
+	</script>
 	</div>
 </body>
 </html>

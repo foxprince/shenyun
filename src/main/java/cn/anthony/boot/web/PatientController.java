@@ -328,16 +328,16 @@ public class PatientController extends GenericController<Patient> {
 
 	@RequestMapping(value = { "/addRemark" })
 	@ResponseBody
-	public boolean addRemark(String patientId, Remark remark, Model m) {
+	public Remark addRemark(String patientId, Remark remark, Model m) {
 		Patient p = service.findById(patientId);
 		p.getRemarks().add(remark);
 		try {
 			service.update(p);
 		} catch (EntityNotFound e) {
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		System.out.println(remark);
+		return remark;
 	}
 
 	@RequestMapping(value = { "/delRemark" })

@@ -1,28 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="tab-pane" id="remark">
 	<div class="row modal-body">
-		<form:form class="form-inline form-search" modelAttribute="remark"
-			id="remarkForm" action="/patient/addRemark" method="post">
-			<div class="form-group">
-				<label class="">内容：</label>
-				<form:textarea path="content" placeholder="内容" />
-				<label class="">标签：</label>
-				<form:input class="form-control" path="labels" placeholder="labels" />
-				<label class="">医生：</label>
-				<form:input class="form-control" path="doctor" placeholder="医生" />
-				<input type="hidden" name="patientId" value="${patient.id }" />
-				<button type="submit" class="btn btn-outline btn-primary btn-lg">添加</button>
+		<div class="box-header">
+			<div class="box-content col-sm-12 bg-green">
+				<div class="row modal-body">
+					<form:form id="remarkForm" class="form-inline form-search" action="/patient/addRemark" method="post">
+						<div class="form-group">
+							备注：
+							<textarea id="title" name="content" placeholder="备注" class="form-control"></textarea>
+							标签：<input id="title" name="label" placeholder="标签" class="form-control" type="text" value="" /> 
+							医生：<input id="title" name="doctor" placeholder="医生名称" class="form-control" type="text" value="" />
+							添加人：<input id="title" name="operator" placeholder="助理名称" class="form-control" type="text" value="" />
+							<button id="btn_add_remark" class="btn btn-outline btn-primary btn-lg">添加</button>
+						</div>
+					</form:form>
+				</div>
 			</div>
-		</form:form>
+		</div>
+	</div>
+	<div id="remark_parent">
+		<c:forEach var="item" items="${patient.remarks}">
+		<div class="row" id="remark_${item.id}">
+			<div class="col-md-12">
+				<!-- Box Comment -->
+				<div class="box box-widget">
+					<div class="box-header with-border">
+						<div class="user-block">
+							<span class="username">${item.doctor}</span> <span class="description">${item.ctime}</span>
+						</div>
+						<!-- /.user-block -->
+						<div class="box-tools">
+							<button class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">
+								<i class="fa fa-circle-o"></i>
+							</button>
+							<button class="btn btn-box-tool" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+							<button class="btn btn-box-tool" data-widget="remove">
+								<i class="fa fa-times"></i>
+							</button>
+							<button class="btn btn-danger" id="btn_remark" ref="remark_${item.id}">删除</button>
+						</div>
+						<!-- /.box-tools -->
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<p>${item.content }</p>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer box-comments">
+						<div class="box-comment">
+							<!-- User image -->
+							<div class="comment-text">
+								<span class="username"> 添加人：${item.operator } <span class="text-muted pull-right">${item.ctime }</span>
+								</span>
+							</div>
+							<!-- /.comment-text -->
+						</div>
+						<!-- /.box-comment -->
+					</div>
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		</c:forEach>
 	</div>
 	<div>
 		<ul class="timeline timeline-inverse">
 			<c:forEach var="item" items="${patient.remarks}">
 				<li><i class="fa fa-envelope bg-blue"></i>
 					<div class="timeline-item">
-						<span class="time"><i class="fa fa-clock-o"></i>
-							${item.ctime}</span>
+						<span class="time"><i class="fa fa-clock-o"></i> ${item.ctime}</span>
 						<h3 class="timeline-header">${item.label }</h3>
 						<div class="timeline-body">
 							<p>
@@ -31,8 +80,7 @@
 						</div>
 						<div class="timeline-footer"></div>
 						<div>
-							<a lass="btn btn-block btn-warning"
-								href="/patient/delRemark?patientId=${patient.id}&remarkId=${item.id }">删除</a>
+							<button class="btn btn-block btn-warning" id="btn_del_remark" remarkId=${item.id }">删除</button>
 						</div>
 					</div></li>
 			</c:forEach>

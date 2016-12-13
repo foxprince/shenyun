@@ -611,8 +611,8 @@ public class Patient extends GenericNoSQLEntity {
 	}
 
 	public void delRemark(String remarkId) {
-//		for(Remark remark:remarks)
-//			if(remark.getId().equalsIgnoreCase(remarkId))
-//				remarks.remove(remark);
+		for(Remark remark:remarks)
+			if(remark.getId().equalsIgnoreCase(remarkId))
+				remarks.remove(remark);
 	}
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import lombok.Data;
 
-@Data public class Remark  {
+@Data public class Remark extends GenericNoSQLEntity {
 	private String label,content,doctor,operator;
 	private List<String> filenames;
 	public Remark() {
