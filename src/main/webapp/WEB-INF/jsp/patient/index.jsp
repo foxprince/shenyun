@@ -149,37 +149,51 @@
 	<%@ include file="../include/sidebar.jspf" %>
 	<%@ include file="../include/script.jspf" %>
     <%@ include file="../include/footer.jspf" %>
+	<script src="../resources/plugins/jquery-validation/jquery.validate.min.js"></script>
+	<script src="../resources/plugins/jquery-validation/messages_zh.js"></script>
 	<script>
 	$(document).ready(function() {
-		alert('11add');
-		$('#btn_add_remark').click(function(e){    
-	    	$.get("/patient/delRemark", 
-		    	function(data){
-					if(data){
-						var divId=$(this).attr('ref');
-				        $('#'+divId).fadeOut('slow');
-					}
-					else {
-						alert('未知错误，请稍后重试'+data);
-					}
-				}	
-			);
-	    });
-	});	
-	$('#btn_add_remark').click(function(e){    
-    	alert('aaaa');
-		$.get("/patient/addRemark", 
-            success: function (json) {
-            	alert(json);
+	});
+	$("#remarkForm").validate({
+		rules : {
+			content : "required",
+			doctor : "required",
+			operator : "required"
+		}
+	});
+	function delRemark(ref){
+		$.get("/patient/delRemark?patientId=${patient.id}",
+			{remarkId:ref},
+			function(data){
+				if(data){
+					var divId="remark_"+ref;
+			        $('#'+divId).fadeOut('slow');
+				}else{
+					alert('删除失败。');
+				}
+				return true;
+			}
+		);
+		return false;
+	}
+	function addReamrk(){    
+		if($("#remarkForm").valid()){
+		$.ajax({
+			type: "POST",
+            url: "/patient/addRemark",
+            data: $('#remarkForm').serialize(),
+            dataType: "json",
+		    success: function (json) {
             	if (json.id!='') {
-                    var newRemark;
+                    var newRemark="";
               		newRemark+='<div class="row" id="remark_'+json.id+'">';
             		newRemark+='	<div class="col-md-12">';
             		newRemark+='		<!-- Box Comment -->';
             		newRemark+='		<div class="box box-widget">';
             		newRemark+='			<div class="box-header with-border">';
             		newRemark+='				<div class="user-block">';
-            		newRemark+='					<span class="username">'+json.doctor+'</span> <span class="description">'+json.ctime+'</span>';
+            		newRemark+='				<img class="img-circle img-sm" src="/resources/dist/img/user3-128x128.jpg" alt="user image">';
+            		newRemark+='					<span class="username">'+json.doctor+'</span>';
             		newRemark+='				</div>';
             		newRemark+='				<!-- /.user-block -->';
             		newRemark+='				<div class="box-tools">';
@@ -192,7 +206,7 @@
             		newRemark+='					<button class="btn btn-box-tool" data-widget="remove">';
             		newRemark+='						<i class="fa fa-times"></i>';
             		newRemark+='					</button>';
-            		newRemark+='					<button class="btn btn-danger" id="btn_remark" ref="remark_'+json.id+'">删除</button>';
+            		newRemark+='					<button class="btn btn-danger" id="btn_remark" onclick=delRemark("'+json.id+'") ref="'+json.id+'">删除</button>';
             		newRemark+='				</div>';
             		newRemark+='				<!-- /.box-tools -->';
             		newRemark+='			</div>';
@@ -204,6 +218,7 @@
             		newRemark+='			<div class="box-footer box-comments">';
             		newRemark+='				<div class="box-comment">';
             		newRemark+='					<!-- User image -->';
+            		newRemark+='					<img class="img-circle img-sm" src="/resources/dist/img/user5-128x128.jpg" alt="user image">';
             		newRemark+='					<div class="comment-text">';
             		newRemark+='						<span class="username"> 添加人：'+json.operator+' <span class="text-muted pull-right">'+json.ctime+'</span>';
             		newRemark+='						</span>';
@@ -228,8 +243,9 @@
                 console.log(textStatus);
                 console.log(errorThrown);
             }
-        );
-	});
+		});}
+		return false;
+	}	
 	</script>
 	</div>
 </body>

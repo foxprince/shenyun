@@ -139,6 +139,24 @@
       </div>
     </div>
   </div>
+  <div class="box box-info">
+    <div class="box-header">
+      <h3 class="box-title">备注选项</h3>
+      <!-- tools box -->
+      <div class="pull-right box-tools">
+      <button class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+      </div><!-- /. tools -->
+    </div><!-- /.box-header -->
+    <div class="box-body pad">
+      <div class="form-group">
+        <c:forEach var="item" items="${remarkOptions}">
+           <label><input type="checkbox" class="minimal" id="${item.name}" inputType="${item.inputType}" firstSelName="${item.name}_andOr" textName="${item.name}" lastSelName="${item.name}_option">${item.label}</label>
+          <i style="margin:0px 10px">|</i>
+        </c:forEach>
+      </div>
+    </div>
+  </div>
 </div>
   </div>
   <html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/fullSearch">

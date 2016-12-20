@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -168,7 +169,6 @@ public class PatientController extends GenericController<Patient> {
 		predicate = patientBinding(QPatient_痛触觉.痛触觉, "inHospital", parameters, predicate);
 		predicate = patientBinding(QPatient_眼底.眼底, "inHospital", parameters, predicate);
 		predicate = patientBinding(QPatient_视力.视力, "inHospital", parameters, predicate);
-
 		predicate = patientBinding(QPatient.patient.frontRecords.any(), "frontPage.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.frontRecords.any().outDiags.any(), "frontPage.outDiag.", parameters,
 				predicate);
@@ -179,10 +179,10 @@ public class PatientController extends GenericController<Patient> {
 
 		predicate = patientBinding(QPatient.patient.operations.any(), "operation.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.outRecords.any(), "outHospital.", parameters, predicate);
+		predicate = patientBinding(QPatient.patient.remarks.any(), "remark.", parameters, predicate);
 		session.setAttribute("predicate", predicate);
 		System.out.println("predecate:" + predicate);
 		QPatient.patient.age.asc();
-
 		Page<Patient> page = service.find(predicate, pageable);
 		if (page.getContent().size() == 1)
 			return "redirect:" + getIndexView() + "?id=" + page.getContent().get(0).getId();
@@ -330,13 +330,15 @@ public class PatientController extends GenericController<Patient> {
 	@ResponseBody
 	public Remark addRemark(String patientId, Remark remark, Model m) {
 		Patient p = service.findById(patientId);
+		remark.setId(UUID.randomUUID().toString());
+		if(p.getRemarks()==null)
+			p.setRemarks(new ArrayList<Remark>());
 		p.getRemarks().add(remark);
 		try {
 			service.update(p);
 		} catch (EntityNotFound e) {
 			e.printStackTrace();
 		}
-		System.out.println(remark);
 		return remark;
 	}
 

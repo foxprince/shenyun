@@ -4,7 +4,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +73,10 @@ public class Patient extends GenericNoSQLEntity {
 	public List<Operation> operations = new ArrayList<Operation>();/* 手术纪录 */
 	public List<OutHospital> outRecords = new ArrayList<OutHospital>();/* 出院纪录 */
 	public List<Remark> remarks = new ArrayList<Remark>();/* 备注 */
-
+	public List<Remark> getRemarks() {
+		Collections.reverse(remarks);
+		return remarks;
+	}
 	transient public Diag firstDiag;
 	transient public OutDiag outDiag;
 	transient public SevereDetail severeDetail;
@@ -611,8 +616,8 @@ public class Patient extends GenericNoSQLEntity {
 	}
 
 	public void delRemark(String remarkId) {
-		for(Remark remark:remarks)
-			if(remark.getId().equalsIgnoreCase(remarkId))
-				remarks.remove(remark);
+		for(Iterator<Remark> iter = remarks.iterator();iter.hasNext();)
+			if(iter.next().getId().equalsIgnoreCase(remarkId))
+		        iter.remove();
 	}
 }

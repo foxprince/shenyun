@@ -420,6 +420,15 @@ public class Constant {
 		defaultPut(outKeyMap, "outHospital.operationDesc", "手术名称及伤口愈合情况");
 		defaultPut(outKeyMap, "outHospital.dischargeOrder", "出院医嘱");
 	};
+	
+	public static Map<String, CheckOption> remarkKeyMap = new LinkedHashMap<String, CheckOption>();
+
+	static {
+		defaultPut(remarkKeyMap, "remark.content", "备注内容");
+		defaultPut(remarkKeyMap, "remark.doctor", "医生");
+		defaultPut(remarkKeyMap, "remark.operator", "录入者");
+		defaultPut(remarkKeyMap, "remark.label", "标签");
+	};
 
 	public static Map<String, CheckOption> bloodKeyMap = new LinkedHashMap<String, CheckOption>() {
 		{

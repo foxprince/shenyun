@@ -4,16 +4,20 @@
 		<div class="box-header">
 			<div class="box-content col-sm-12 bg-green">
 				<div class="row modal-body">
-					<form:form id="remarkForm" class="form-inline form-search" action="/patient/addRemark" method="post">
+					<form id="remarkForm" class="form-inline form-search" action="/patient/addRemark" method="post">
 						<div class="form-group">
 							备注：
 							<textarea id="title" name="content" placeholder="备注" class="form-control"></textarea>
 							标签：<input id="title" name="label" placeholder="标签" class="form-control" type="text" value="" /> 
+						</div>
+						<div class="form-group">
 							医生：<input id="title" name="doctor" placeholder="医生名称" class="form-control" type="text" value="" />
 							添加人：<input id="title" name="operator" placeholder="助理名称" class="form-control" type="text" value="" />
-							<button id="btn_add_remark" class="btn btn-outline btn-primary btn-lg">添加</button>
+							<input type="hidden" name="patientId" value="${patient.id }"/>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button id="btn_add_remark" class="btn btn-outline btn-primary btn-lg" onclick="return addReamrk()">添加</button>
 						</div>
-					</form:form>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -23,10 +27,11 @@
 		<div class="row" id="remark_${item.id}">
 			<div class="col-md-12">
 				<!-- Box Comment -->
-				<div class="box box-widget">
+				<div class="box box-widget box-primary direct-chat direct-chat-primary">
 					<div class="box-header with-border">
 						<div class="user-block">
-							<span class="username">${item.doctor}</span> <span class="description">${item.ctime}</span>
+							<img class="img-circle img-sm" src="/resources/dist/img/user3-128x128.jpg" alt="user image">
+							<span class="username">${item.doctor}</span> 
 						</div>
 						<!-- /.user-block -->
 						<div class="box-tools">
@@ -39,7 +44,7 @@
 							<button class="btn btn-box-tool" data-widget="remove">
 								<i class="fa fa-times"></i>
 							</button>
-							<button class="btn btn-danger" id="btn_remark" ref="remark_${item.id}">删除</button>
+							<button class="btn btn-danger" id="btn_remark" ref="${item.id}" onclick="return delRemark('${item.id}')" >删除</button>
 						</div>
 						<!-- /.box-tools -->
 					</div>
@@ -51,8 +56,9 @@
 					<div class="box-footer box-comments">
 						<div class="box-comment">
 							<!-- User image -->
+							<img class="img-circle img-sm" src="/resources/dist/img/user5-128x128.jpg" alt="user image">
 							<div class="comment-text">
-								<span class="username"> 添加人：${item.operator } <span class="text-muted pull-right">${item.ctime }</span>
+								<span class="username"> 添加人：${item.operator } <span class="text-muted pull-right">${item.formatCtime }</span>
 								</span>
 							</div>
 							<!-- /.comment-text -->
@@ -65,26 +71,6 @@
 			<!-- /.col -->
 		</div>
 		</c:forEach>
-	</div>
-	<div>
-		<ul class="timeline timeline-inverse">
-			<c:forEach var="item" items="${patient.remarks}">
-				<li><i class="fa fa-envelope bg-blue"></i>
-					<div class="timeline-item">
-						<span class="time"><i class="fa fa-clock-o"></i> ${item.ctime}</span>
-						<h3 class="timeline-header">${item.label }</h3>
-						<div class="timeline-body">
-							<p>
-								${item.content}<br />
-							</p>
-						</div>
-						<div class="timeline-footer"></div>
-						<div>
-							<button class="btn btn-block btn-warning" id="btn_del_remark" remarkId=${item.id }">删除</button>
-						</div>
-					</div></li>
-			</c:forEach>
-		</ul>
 	</div>
 </div>
 <!-- /.tab-pane -->
