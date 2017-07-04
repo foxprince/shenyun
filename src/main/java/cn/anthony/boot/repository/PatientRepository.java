@@ -18,35 +18,26 @@ import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QPatient;
 
 public interface PatientRepository
-	extends PagingAndSortingRepository<Patient, String>, QueryDslPredicateExecutor<Patient>, QuerydslBinderCustomizer<QPatient> {
-    @Override
-    default public void customize(QuerydslBindings bindings, QPatient p) {
-	// bindings.bind(p.name).first((path, value) -> path.contains(value));
-//	bindings.bind(p.age).all(new MultiValueBinding<NumberPath<Integer>, Integer>() {
-//	    @Override
-//	    public Predicate bind(NumberPath<Integer> path, Collection<? extends Integer> value) {
-//		return null;// path.between(p.minAge, p.maxAge);
-//	    }
-//	});
-	// bindings.bind(String.class).first((StringPath path, String value) ->
-	// path.containsIgnoreCase(value));
-	bindings.bind(String.class).first(new SingleValueBinding<StringPath, String>() {
-	    @Override
-	    public Predicate bind(StringPath path, String value) {
-		return path.containsIgnoreCase(value);
-	    }
-	});
-    }
+		extends PagingAndSortingRepository<Patient, String>, QueryDslPredicateExecutor<Patient>, QuerydslBinderCustomizer<QPatient> {
+	@Override
+	default public void customize(QuerydslBindings bindings, QPatient p) {
+		bindings.bind(String.class).first(new SingleValueBinding<StringPath, String>() {
+			@Override
+			public Predicate bind(StringPath path, String value) {
+				return path.containsIgnoreCase(value);
+			}
+		});
+	}
 
-    List<Patient> findByPId(String pId);
+	List<Patient> findByPId(String pId);
 
-    // @Query("select from Patient p where p.name like ?1")
-    Page<Patient> findByNameLike(String name, Pageable request);
+	// @Query("select from Patient p where p.name like ?1")
+	Page<Patient> findByNameLike(String name, Pageable request);
 
-    @Query("{ $or : [ { $where: '?0 == null' } , { field : ?0 } ] }")
-    List<Patient> findAll(String query);
+	@Query("{ $or : [ { $where: '?0 == null' } , { field : ?0 } ] }")
+	List<Patient> findAll(String query);
 
-    @Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
-    List<Patient> findAllIn(String query, Pageable pageable);
+	@Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
+	List<Patient> findAllIn(String query, Pageable pageable);
 
 }

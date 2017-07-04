@@ -17,7 +17,7 @@
              
                         <c:forEach var="item" items="${pacsFiles}">
                         <div class='col-sm-6'>
-                          <a href="../resources/pacs/${item}" target="_blank"></a><img class='img-responsive' src='../resources/pacs/${item}' alt='Photo'></a>
+                          <a href="../resources/pacs/${item}"  data-fancybox="pacs" data-caption="${item}"><img class='img-responsive' src='../resources/pacs/${item}' alt='Photo'></a>
                         </div>
                         </c:forEach>
                         

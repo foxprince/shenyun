@@ -185,7 +185,8 @@
             dataType: "json",
 		    success: function (json) {
             	if (json.id!='') {
-                    var newRemark="";
+                    var	succAlert="";
+            		var newRemark="";
               		newRemark+='<div class="row" id="remark_'+json.id+'">';
             		newRemark+='	<div class="col-md-12">';
             		newRemark+='		<!-- Box Comment -->';
@@ -233,10 +234,24 @@
             		newRemark+='	<!-- /.col -->';
             		newRemark+='</div>';
                     $(newRemark).hide().prependTo($('#remark_parent')).fadeIn('slow');
-                    alert('添加成功。');
+        			succAlert+='<div class="alert alert-success alert-dismissable">';
+                    succAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                    succAlert+='<h4>	<i class="icon fa fa-check"></i> 添加成功!</h4>';
+                    succAlert+='备注信息添加成功。';
+                  	succAlert+='</div>';
+                  	$(succAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
+        			//alert('添加成功。');
                 }
-                else
-                    alert('添加失败。');
+                else {
+                	var	failAlert="";
+                	failAlert+='<div class="alert alert-warning alert-dismissable">';
+                	failAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                	failAlert+='<h4><i class="icon fa fa-warning"></i> 添加失败!</h4>';
+                	failAlert+='添加失败，请填写完整信息。';
+                	failAlert+='</div>';
+                	$(failAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
+                	//alert('添加失败。');
+                }
             },
             error: function (XmlHttpRequest, textStatus, errorThrown) {
                 console.log(XmlHttpRequest);

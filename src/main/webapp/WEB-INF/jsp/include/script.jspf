@@ -30,6 +30,8 @@
     <script src="../resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="../resources/plugins/fastclick/fastclick.min.js"></script>
+    <!-- fancybox -->
+    <script src="../resources/plugins/fancybox/jquery.fancybox.min.js"></script>
     <!-- AdminLTE App -->
     <script src="../resources/dist/js/app.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

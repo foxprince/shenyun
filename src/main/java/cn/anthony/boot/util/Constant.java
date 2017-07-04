@@ -3,12 +3,18 @@ package cn.anthony.boot.util;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
+
+import org.springframework.stereotype.Component;
 
 import cn.anthony.util.StringTools;
 import lombok.Data;
 
+@Component
+@Data
 public class Constant {
+	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// = "E:\\project\\神云系统\\pacs\\";
 	@Data
 	public static class CheckOption {
 		String inputType = "text", name, label, value;
@@ -77,7 +83,7 @@ public class Constant {
 	private static final String DEFAULT_TYPE = "text";
 	private static final String DATETIME_TYPE = "datetime-local";
 	private static final String DATE_TYPE = "date";
-	public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
+	//public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 
 	public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
 
