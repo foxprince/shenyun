@@ -10,7 +10,6 @@ import cn.anthony.boot.service.GenericService;
 @Controller
 @RequestMapping(value = "/remark")
 public class RemarkController extends GenericController<Remark> {
-
 	@Override
 	public Remark init(Model m) {
 		return new Remark();
@@ -39,5 +38,4 @@ public class RemarkController extends GenericController<Remark> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

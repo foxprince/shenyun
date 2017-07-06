@@ -2,14 +2,16 @@ package cn.anthony.boot;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,14 +19,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.mysema.query.types.Predicate;
 
+import cn.anthony.boot.domain.FrontPage;
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QInHospital;
 import cn.anthony.boot.domain.QPatient;
 import cn.anthony.boot.repository.PatientRepository;
 import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.service.TotalService;
-import cn.anthony.boot.util.Constant;
 import cn.anthony.boot.util.PatientUtil;
+import cn.anthony.util.ExcelUtil;
 import cn.anthony.util.RefactorUtil;
 
 @SpringBootApplication
@@ -40,39 +43,43 @@ public class TestService implements CommandLineRunner {
 	private Set<String> s = new HashSet<String>();
 
 	public static void main(String[] args) {
-		System.setProperty("DB.TRACE", "true");
-		System.setProperty("DEBUG.MONGO", "true");
+		//System.setProperty("DB.TRACE", "true");
+		//System.setProperty("DEBUG.MONGO", "true");
 		SpringApplication.run(TestService.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("run test");
-		System.out.println(Constant.PACS_DIR);
-		
-		try {// String id = "571888f2dbab72c294293a2c";
-				// Predicate pre = QPatient.patient.name.startsWith("周");
-				// pre = queryBinding(QPatient.patient.inRecords.any(),
-				// "contact",
-				// "李殿祥13611352590", pre);
+		try {
 			long t1 = System.currentTimeMillis();
-			// repository.deleteAll();
-			// for(KeyGroup e : service.keyGroup("frontRecords.outDiags.diag")){
-			// System.out.println(e);;
-			// }
-			Map<String, Object> m = new HashMap<String, Object>() {
-				{
-					put("frontRecords.ZY_DOCTOR_NAME", "段婉茹");
+			InputStream is2 = new FileInputStream("/Users/zj/Documents/project/shenyun/2015患者信息（高清玲）.xlsx");
+			Map<Integer, List<String>> map = ExcelUtil.readExcelContent(is2);
+			int t = 0;
+			for (int i = 1; i <= map.size(); i++) {
+				List<String> l = (map.get(i));
+				Patient p = new Patient();
+				p.setSource("gql");
+				p.setName(l.get(3));
+				p.setpId(l.get(4));
+				FrontPage fp = new FrontPage();
+				try {
+					fp.setAdmissionTime(DateUtils.parseDate(l.get(0), "MM/dd/yy"));
+					fp.setDischargeTime(DateUtils.parseDate(l.get(10), "MM/dd/yy"));
+				} catch (Exception e) {
 				}
-			};
-			// System.out.println(tservice.agg(1000,m,"frontRecords.mainDiag"));
-			// processTool();
+				fp.setREGISTER_DIAGNOSIS(l.get(6));
+				fp.setMainDiag(l.get(7));
+				fp.setZY_DOCTOR_NAME(l.get(5));
+				p.addFront(fp);
+				service.create(p);
+				t++;
+				System.out.println(p.getName()+","+l.get(0)+":"+fp.getAdmissionTimeDesc()+","+l.get(10)+":"+fp.getDischargeTimeDesc());
+			}
+			System.out.println(t);
 			long t2 = System.currentTimeMillis();
 			System.out.println(t2 - t1);
-			// for (Patient p : repository.findAll(pre)) {
-			// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
-			// System.out.println(p.name + ":" + p.operations.size());
-			// }
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

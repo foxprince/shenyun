@@ -10,26 +10,22 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 // from Spring configuration”。
 // @EnableMongoRepositories
 public class Application extends SpringBootServletInitializer {
-
-    // @Override
-    // protected SpringApplicationBuilder configure(SpringApplicationBuilder
-    // application) {
-    // return application.sources(Application.class);
-    // }
-
-    public static void main(String[] args) {
-	// SpringApplication.run(Application.class, args);
-	// Enable MongoDB logging in general
-	System.setProperty("DEBUG.MONGO", "true");
-	// Enable DB operation tracing
-	System.setProperty("DB.TRACE", "true");
-	SpringApplication app = new SpringApplication(Application.class);
-	// app.setWebEnvironment(true);
-	// app.setApplicationContextClass(AnnotationConfigEmbeddedWebApplicationContext.class);
-	// app.setShowBanner(false);
-	// app.setSources(sources);
-	app.run(args);
-    }
-
-
+	// @Override
+	// protected SpringApplicationBuilder configure(SpringApplicationBuilder
+	// application) {
+	// return application.sources(Application.class);
+	// }
+	public static void main(String[] args) {
+		// SpringApplication.run(Application.class, args);
+		// Enable MongoDB logging in general
+		System.setProperty("DEBUG.MONGO", "true");
+		// Enable DB operation tracing
+		System.setProperty("DB.TRACE", "true");
+		SpringApplication app = new SpringApplication(Application.class);
+		// app.setWebEnvironment(true);
+		// app.setApplicationContextClass(AnnotationConfigEmbeddedWebApplicationContext.class);
+		// app.setShowBanner(false);
+		// app.setSources(sources);
+		app.run(args);
+	}
 }

@@ -13,15 +13,15 @@ import cn.anthony.boot.repository.CustomeOptionRepository;
 
 @Service
 public class CustomeOptionService extends GenericService<CustomeOption> {
-    @Resource
-    protected CustomeOptionRepository repository;
+	@Resource
+	protected CustomeOptionRepository repository;
 
-    @Override
-    public CustomeOptionRepository getRepository() {
-	return repository;
-    }
+	@Override
+	public CustomeOptionRepository getRepository() {
+		return repository;
+	}
 
-    public Page<CustomeOption> find(Predicate predicate, Pageable pageable) {
-	return repository.findAll(predicate, pageable);
-    }
+	public Page<CustomeOption> find(Predicate predicate, Pageable pageable) {
+		return repository.findAll(predicate, pageable);
+	}
 }

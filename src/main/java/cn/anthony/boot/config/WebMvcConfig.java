@@ -14,23 +14,21 @@ import com.google.gson.GsonBuilder;
  * MVC的特性，并只是添加其他的MVC配置(拦截器，formatters，视图控制器等)，
  * 你可以添加自己的WebMvcConfigurerAdapter类型的@Bean（不使用@EnableWebMvc注解）。
  */
-
 // @Configuration
 // @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-	converters.add(createGsonHttpMessageConverter());
-	super.configureMessageConverters(converters);
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(createGsonHttpMessageConverter());
+		super.configureMessageConverters(converters);
+	}
 
-    }
-
-    private GsonHttpMessageConverter createGsonHttpMessageConverter() {
-	Gson gson = new GsonBuilder()// .excludeFieldsWithoutExposeAnnotation()//
-				     // 不导出实体中没有用@Expose注解的属性
-		.setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-	GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
-	gsonConverter.setGson(gson);
-	return gsonConverter;
-    }
+	private GsonHttpMessageConverter createGsonHttpMessageConverter() {
+		Gson gson = new GsonBuilder()// .excludeFieldsWithoutExposeAnnotation()//
+				// 不导出实体中没有用@Expose注解的属性
+				.setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+		GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
+		gsonConverter.setGson(gson);
+		return gsonConverter;
+	}
 }

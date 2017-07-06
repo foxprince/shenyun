@@ -98,5 +98,4 @@ public class SearchModelController extends GenericController<SearchModel> {
 			return fullSearchForm(m);
 		}
 	}
-
 }

@@ -9,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class SearchModelSearch extends SearchModel {
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date searchBegin;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date searchEnd;
-    Integer size,page ;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date searchBegin;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date searchEnd;
+	Integer size, page;
 }

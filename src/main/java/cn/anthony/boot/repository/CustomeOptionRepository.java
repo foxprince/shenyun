@@ -10,11 +10,10 @@ import com.mysema.query.types.path.StringPath;
 import cn.anthony.boot.domain.CustomeOption;
 import cn.anthony.boot.domain.QCustomeOption;
 
-public interface CustomeOptionRepository
-	extends PagingAndSortingRepository<CustomeOption, String>, QueryDslPredicateExecutor<CustomeOption>, QuerydslBinderCustomizer<QCustomeOption> {
-    @Override
-    default public void customize(QuerydslBindings bindings, QCustomeOption p) {
-	bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
-    }
-
+public interface CustomeOptionRepository extends PagingAndSortingRepository<CustomeOption, String>,
+		QueryDslPredicateExecutor<CustomeOption>, QuerydslBinderCustomizer<QCustomeOption> {
+	@Override
+	default public void customize(QuerydslBindings bindings, QCustomeOption p) {
+		bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
+	}
 }

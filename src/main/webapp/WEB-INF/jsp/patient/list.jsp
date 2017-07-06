@@ -4,6 +4,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="html" tagdir="/WEB-INF/tags/html/"%>
 <%@ taglib prefix="ajax" tagdir="/WEB-INF/tags/ajax/"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+
 <!DOCTYPE html>
 <html>
 <c:import url="../include/head.jsp">
@@ -18,10 +20,10 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>病人列表</h1>
+        <h1>${source}病人列表</h1>
         <ol class="breadcrumb">
           <li><a href="/"><i class="fa fa-dashboard"></i> 主页</a></li>
-          <li class="active"><a href="./list">病人列表</a></li>
+          <li class="active"><a href="./list?source=${source}">病人列表</a></li>
         </ol>
       </section>
       <!-- Main content -->
@@ -34,6 +36,7 @@
                   <html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/listPage">
                     <div class="row">
                       <html:inputField labelCss="col-sm-4" css="col-sm-4" name="name" label="病人姓名" />
+                      <input type="hidden" name="source" value="${source}"/>
                       <div class="col-sm-4">
                         <button type="submit" class="btn btn-primary pull-left">搜</button>
                       </div>
@@ -50,18 +53,15 @@
                 <table id="example11" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>病案号</th>
-                      <th>姓名</th>
-                      <th>实际年龄</th>
-                      <th>入院年龄</th>
-                      <th>性别</th>
-                      <th>首页数</th>
-                      <th>入院数</th>
-                      <th>手术数</th>
-                      <th>出院数</th>
-                      <th>主要诊断</th>
-                      <th>住院医师</th>
-                      <th>主诊医师</th>
+                      <th>病案号<img class="sortImg" onclick="clickSort(this)" sort="pId" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>姓名<img class="sortImg" onclick="clickSort(this)" sort="name" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>入院年龄<img class="sortImg" onclick="clickSort(this)" sort="age" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>性别<img class="sortImg" onclick="clickSort(this)" sort="sex" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>入院时间<img class="sortImg" onclick="clickSort(this)" sort="frontRecords.admissionTime" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>出院时间<img class="sortImg" onclick="clickSort(this)" sort="frontRecords.dischargeTime" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>主要诊断<img class="sortImg" onclick="clickSort(this)" sort="frontRecords.mainDiag" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>住院医师<img class="sortImg" onclick="clickSort(this)" sort="frontRecords.ZY_DOCTOR_NAME" src="../resources/dist/img/sort_asc.png"/></th>
+                      <th>主诊医师<img class="sortImg" onclick="clickSort(this)" sort="frontRecords.ZZHEN_DOCTOR_NAME" src="../resources/dist/img/sort_asc.png"/></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -69,13 +69,10 @@
                       <tr>
                         <td>${item.pId}</td>
                         <td><a href="./?id=${item.id} ">${item.name}</a></td>
-                        <td>${item.actualAge}</td>
                         <td>${item.age}</td>
                         <td>${item.sexDesc}</td>
-                        <td>${fn:length(item.frontRecords)}</td>
-                        <td>${fn:length(item.inRecords)}</td>
-                        <td>${fn:length(item.operations)}</td>
-                        <td>${fn:length(item.outRecords)}</td>
+                        <td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.minInDate}" /></td>
+                        <td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.maxOutDate}" /></td>
                         <td>${item.frontRecords.get(0).mainDiag}</td>
                         <td>${item.frontRecords.get(0).ZY_DOCTOR_NAME}</td>
                         <td>${item.frontRecords.get(0).ZZHEN_DOCTOR_NAME}</td>
@@ -84,7 +81,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th colspan="12"></th>
+                      <th colspan="10"></th>
                     </tr>
                   </tfoot>
                 </table>
@@ -250,7 +247,19 @@
   <!-- AdminLTE for demo purposes -->
   <script src="../resources/dist/js/demo.js"></script>
   <script>
-    <spring:eval expression="T(cn.anthony.boot.util.Constant).getJSArrayString(bloodOptions)" var="keyDesc" />
+  $(function () {
+	  var sort = getParams("sort");
+	  if(sort!=null){	  
+		  var array = sort.split(",");
+		  $(".sortImg").each(function(){
+		      if(array[0]==$(this).attr("sort")) {
+		      	$(this).attr("src","../resources/dist/img/sort_"+array[1]+".png");
+		      	$(this).parent().addClass("bg-green-active");
+		      }
+		  });
+	  }
+    });	
+  	<spring:eval expression="T(cn.anthony.boot.util.Constant).getJSArrayString(bloodOptions)" var="keyDesc" />
     var bloodOptions=new Array(${keyDesc});
     Array.prototype.contains = function ( needle ) {
     	  for (i in this) {
@@ -262,6 +271,14 @@
         var url="./download";
         window.open(url);
     };
+    function getParams(key) {
+    	var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+    	var r = window.location.search.substr(1).match(reg);
+    	if (r != null) {
+    		return unescape(r[2]);
+    	}
+    	return null;
+    }
     function confirmHandle() {
     	var selected = [];
     	var href = "./export";
@@ -270,7 +287,18 @@
     	});
     	window.open(href + '?fields=' + selected.join(','));
     }
-    
+    function clickSort(item){
+    	$sorting = $(item).attr("sort");
+    	if($(item).attr("src")=="../resources/dist/img/sort_asc.png") {
+			$sorting +=",desc";
+			$(item).attr("src","../resources/dist/img/sort_desc.png");
+		}
+		else {
+			$sorting +=",asc";
+			$(item).attr("src","../resources/dist/img/sort_asc.png");
+		}
+		window.location.href="listPage?source="+getParams("source")+"&sort="+$sorting;
+	}
     $("#patientCheckAll").click( 
     	function(){ 
     		if(this.checked){ 

@@ -73,10 +73,35 @@ public class Patient extends GenericNoSQLEntity {
 	public List<Operation> operations = new ArrayList<Operation>();/* 手术纪录 */
 	public List<OutHospital> outRecords = new ArrayList<OutHospital>();/* 出院纪录 */
 	public List<Remark> remarks = new ArrayList<Remark>();/* 备注 */
+
 	public List<Remark> getRemarks() {
 		Collections.reverse(remarks);
 		return remarks;
 	}
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public Date getMinInDate() {
+		Date d = Calendar.getInstance().getTime();
+		for (FrontPage in : frontRecords)
+			if (in.getAdmissionTime() != null) {
+				if (in.getAdmissionTime().before(d))
+					d = in.getAdmissionTime();
+			} else
+				return null;
+		return d;
+	}
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public Date getMaxOutDate() {
+		Date d = null;
+		for (FrontPage out : frontRecords)
+			if (d == null)
+				d = out.getDischargeTime();
+			else if (out.getDischargeTime() != null && out.getDischargeTime().after(d))
+				d = out.getDischargeTime();
+		return d;
+	}
+
 	transient public Diag firstDiag;
 	transient public OutDiag outDiag;
 	transient public SevereDetail severeDetail;
@@ -97,8 +122,8 @@ public class Patient extends GenericNoSQLEntity {
 	public static class OperationDetail {
 		public String code, checkDate, title, chief, assistant1, assistant2, oclass, nnis, qkyh, mzfs, asa, mzDoc;
 
-		public OperationDetail(String code, String checkDate, String title, String chief, String assistant1,
-				String assistant2, String oclass, String nnis, String qkyh, String mzfs, String asa, String mzDoc) {
+		public OperationDetail(String code, String checkDate, String title, String chief, String assistant1, String assistant2,
+				String oclass, String nnis, String qkyh, String mzfs, String asa, String mzDoc) {
 			super();
 			this.code = code;
 			this.checkDate = checkDate;
@@ -116,7 +141,6 @@ public class Patient extends GenericNoSQLEntity {
 
 		public OperationDetail() {
 		}
-
 	}
 
 	@Data
@@ -204,9 +228,8 @@ public class Patient extends GenericNoSQLEntity {
 		}
 	}
 
-	public Patient(String pId, String name, Integer age, String sex, Date dateOfBirth, String certNo,
-			List<FrontPage> frontRecords, List<InHospital> inRecords, List<Operation> operations,
-			List<OutHospital> outRecords, boolean active, String activeDesc) {
+	public Patient(String pId, String name, Integer age, String sex, Date dateOfBirth, String certNo, List<FrontPage> frontRecords,
+			List<InHospital> inRecords, List<Operation> operations, List<OutHospital> outRecords, boolean active, String activeDesc) {
 		super();
 		this.pId = pId;
 		this.name = name;
@@ -245,10 +268,13 @@ public class Patient extends GenericNoSQLEntity {
 	}
 
 	public String getSexDesc() {
-		if (sex.equalsIgnoreCase("1"))
-			return "男";
+		if (sex != null)
+			if (sex.equalsIgnoreCase("1"))
+				return "男";
+			else
+				return "女";
 		else
-			return "女";
+			return "--";
 	}
 
 	public String getFormatDateOfBirth() {
@@ -290,7 +316,7 @@ public class Patient extends GenericNoSQLEntity {
 			operations = new LinkedList<Operation>();
 		operations.add(in);
 	}
-	
+
 	public void addRemark(Remark in) {
 		if (remarks == null)
 			remarks = new LinkedList<Remark>();
@@ -339,8 +365,8 @@ public class Patient extends GenericNoSQLEntity {
 		public String 光感右侧;
 		public String 失明右侧;
 
-		public 视力(String 粗测, String 视力左侧, String 指数距离左侧, String 指动距离左侧, String 光感左侧, String 失明左侧, String 视力右侧,
-				String 指数距离右侧, String 指动距离右侧, String 光感右侧, String 失明右侧) {
+		public 视力(String 粗测, String 视力左侧, String 指数距离左侧, String 指动距离左侧, String 光感左侧, String 失明左侧, String 视力右侧, String 指数距离右侧,
+				String 指动距离右侧, String 光感右侧, String 失明右侧) {
 			super();
 			this.粗测 = 粗测;
 			this.视力左侧 = 视力左侧;
@@ -405,9 +431,9 @@ public class Patient extends GenericNoSQLEntity {
 		public String 调节反射右侧;
 		public String 辐辏反射右侧;
 
-		public 动眼神经(String 眼睑下垂左侧, String 眼球突出左侧, String 眼球下陷左侧, String 瞳孔大小左侧, String 瞳孔形状左侧, String 直接对光反射左侧,
-				String 间接对光反射左侧, String 调节反射左侧, String 辐辏反射左侧, String 眼睑下垂右侧, String 眼球突出右侧, String 眼球下陷右侧,
-				String 瞳孔大小右侧, String 瞳孔形状右侧, String 直接对光反射右侧, String 间接对光反射右侧, String 调节反射右侧, String 辐辏反射右侧) {
+		public 动眼神经(String 眼睑下垂左侧, String 眼球突出左侧, String 眼球下陷左侧, String 瞳孔大小左侧, String 瞳孔形状左侧, String 直接对光反射左侧, String 间接对光反射左侧,
+				String 调节反射左侧, String 辐辏反射左侧, String 眼睑下垂右侧, String 眼球突出右侧, String 眼球下陷右侧, String 瞳孔大小右侧, String 瞳孔形状右侧,
+				String 直接对光反射右侧, String 间接对光反射右侧, String 调节反射右侧, String 辐辏反射右侧) {
 			super();
 			this.眼睑下垂左侧 = 眼睑下垂左侧;
 			this.眼球突出左侧 = 眼球突出左侧;
@@ -476,9 +502,8 @@ public class Patient extends GenericNoSQLEntity {
 		public String 面肌抽搐右侧;
 		public String 味觉右侧;
 
-		public 头部反射(String 粗测, String 皱额左侧, String 闭目左侧, String 鼻唇沟左侧, String 口角偏左侧, String 鼓腮左侧, String 面肌抽搐左侧,
-				String 味觉左侧, String 皱额右侧, String 闭目右侧, String 鼻唇沟右侧, String 口角偏右侧, String 鼓腮右侧, String 面肌抽搐右侧,
-				String 味觉右侧) {
+		public 头部反射(String 粗测, String 皱额左侧, String 闭目左侧, String 鼻唇沟左侧, String 口角偏左侧, String 鼓腮左侧, String 面肌抽搐左侧, String 味觉左侧,
+				String 皱额右侧, String 闭目右侧, String 鼻唇沟右侧, String 口角偏右侧, String 鼓腮右侧, String 面肌抽搐右侧, String 味觉右侧) {
 			super();
 			this.粗测 = 粗测;
 			this.皱额左侧 = 皱额左侧;
@@ -567,13 +592,12 @@ public class Patient extends GenericNoSQLEntity {
 		public 反射() {
 		}
 
-		public 反射(String 腹壁反射, String 左侧腹壁反射上, String 右侧腹壁反射上, String 左侧腹壁反射中, String 右侧腹壁反射中, String 左侧腹壁反射下,
-				String 右侧腹壁反射下, String 提睾反射左侧, String 提睾反射右侧, String 肛门反射左侧, String 肛门反射右侧, String 肱二头肌左侧,
-				String 肱三头肌左侧, String 桡骨膜左侧, String 膝反射左侧, String 踝反射左侧, String 髌痉挛左侧, String 踝痉挛左侧, String 肱二头肌右侧,
-				String 肱三头肌右侧, String 桡骨膜右侧, String 膝反射右侧, String 踝反射右侧, String 髌痉挛右侧, String 踝痉挛右侧, String hoffmann左侧,
-				String babinski左侧, String chaddock左侧, String oppenheim左侧, String gordon左侧, String 其他左侧,
-				String hoffmann右侧, String babinski右侧, String chaddock右侧, String oppenheim右侧, String gordon右侧,
-				String 其他右侧) {
+		public 反射(String 腹壁反射, String 左侧腹壁反射上, String 右侧腹壁反射上, String 左侧腹壁反射中, String 右侧腹壁反射中, String 左侧腹壁反射下, String 右侧腹壁反射下,
+				String 提睾反射左侧, String 提睾反射右侧, String 肛门反射左侧, String 肛门反射右侧, String 肱二头肌左侧, String 肱三头肌左侧, String 桡骨膜左侧, String 膝反射左侧,
+				String 踝反射左侧, String 髌痉挛左侧, String 踝痉挛左侧, String 肱二头肌右侧, String 肱三头肌右侧, String 桡骨膜右侧, String 膝反射右侧, String 踝反射右侧,
+				String 髌痉挛右侧, String 踝痉挛右侧, String hoffmann左侧, String babinski左侧, String chaddock左侧, String oppenheim左侧,
+				String gordon左侧, String 其他左侧, String hoffmann右侧, String babinski右侧, String chaddock右侧, String oppenheim右侧,
+				String gordon右侧, String 其他右侧) {
 			super();
 			this.腹壁反射 = 腹壁反射;
 			this.左侧腹壁反射上 = 左侧腹壁反射上;
@@ -616,8 +640,8 @@ public class Patient extends GenericNoSQLEntity {
 	}
 
 	public void delRemark(String remarkId) {
-		for(Iterator<Remark> iter = remarks.iterator();iter.hasNext();)
-			if(iter.next().getId().equalsIgnoreCase(remarkId))
-		        iter.remove();
+		for (Iterator<Remark> iter = remarks.iterator(); iter.hasNext();)
+			if (iter.next().getId().equalsIgnoreCase(remarkId))
+				iter.remove();
 	}
 }

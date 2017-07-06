@@ -13,14 +13,14 @@ import cn.anthony.boot.repository.SearchModelRepository;
 
 @Service
 public class SearchModelService extends GenericService<SearchModel> {
-    @Resource
-    protected SearchModelRepository repository;
+	@Resource
+	protected SearchModelRepository repository;
 
-    public SearchModelRepository getRepository() {
-	return repository;
-    }
+	public SearchModelRepository getRepository() {
+		return repository;
+	}
 
-    public Page<SearchModel> find(Predicate predicate, Pageable pageable) {
-	return repository.findAll(predicate, pageable);
-    }
+	public Page<SearchModel> find(Predicate predicate, Pageable pageable) {
+		return repository.findAll(predicate, pageable);
+	}
 }

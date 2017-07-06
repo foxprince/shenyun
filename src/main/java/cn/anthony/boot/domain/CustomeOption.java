@@ -10,21 +10,17 @@ import lombok.Data;
 @Document
 @Data
 public class CustomeOption extends GenericNoSQLEntity {
+	public String name;
+	public String[] fields;
 
-    
-    public String name;
-    public String[] fields;
-    
-    public CustomeOption() {
-	
-    }
-    
-    public String getArrayString() {
-	StringBuilder sb = new StringBuilder();
-	for(String o : fields)
-	    sb.append(o+"-");
-	sb.deleteCharAt(sb.length()-1);
-	return sb.toString();
-    }
+	public CustomeOption() {
+	}
 
+	public String getArrayString() {
+		StringBuilder sb = new StringBuilder();
+		for (String o : fields)
+			sb.append(o + "-");
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
 }

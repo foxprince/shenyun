@@ -41,22 +41,18 @@ import cn.anthony.boot.repository.UserRepository;
  */
 @Controller
 class UserController {
+	@Autowired
+	private UserRepository repository;
 
-    @Autowired
-    private UserRepository repository;
-
-    @RequestMapping(value = "/usertest", method = RequestMethod.GET)
+	@RequestMapping(value = "/usertest", method = RequestMethod.GET)
 	String index(Model model, //
-	    @QuerydslPredicate(root = User.class) Predicate predicate, //
+			@QuerydslPredicate(root = User.class) Predicate predicate, //
 			@PageableDefault(sort = { "lastname", "firstname" }) Pageable pageable, //
 			@RequestParam MultiValueMap<String, String> parameters) {
-
 		ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
 		builder.replaceQueryParam("page", new Object[0]);
-
 		model.addAttribute("baseUri", builder.build().toUri());
 		model.addAttribute("users", repository.findAll(predicate, pageable));
-
 		return "index";
 	}
 }

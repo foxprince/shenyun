@@ -39,5 +39,4 @@ public interface PatientRepository
 
 	@Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
 	List<Patient> findAllIn(String query, Pageable pageable);
-
 }

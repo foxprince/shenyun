@@ -33,34 +33,33 @@ import lombok.Data;
 @Data
 @Document
 public class User {
-
 	private @Id String username;
 	private String firstname, lastname, email, nationality;
 	private @JsonIgnore String password;
-
 	private @JsonUnwrapped Address address;
 	private Picture picture;
 
 	public static class Address {
 		String city, street, zip;
 		SevereDetail severeDetail;
+
 		public static class SevereDetail {
 			public String name;
-			Date inTime,outTime;
+			Date inTime, outTime;
 			Long minutes;
 
 			public SevereDetail(String name, String inTime, String outTime) {
-			    super();
-			    this.name = name;
-			    this.inTime = DateUtil.parse(inTime);
-			    this.outTime = DateUtil.parse(outTime);
-			    this.minutes = (this.outTime.getTime()-this.inTime.getTime())/(60*1000);
+				super();
+				this.name = name;
+				this.inTime = DateUtil.parse(inTime);
+				this.outTime = DateUtil.parse(outTime);
+				this.minutes = (this.outTime.getTime() - this.inTime.getTime()) / (60 * 1000);
 			}
 
 			public SevereDetail() {
-			    super();
+				super();
 			}
-		    }
+		}
 	}
 
 	public static class Picture {

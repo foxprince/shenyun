@@ -21,7 +21,6 @@ public class GenericNoSQLEntity implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat
 	protected Date ctime;
-
 	@JsonIgnore
 	@Transient
 	protected Boolean create = false;

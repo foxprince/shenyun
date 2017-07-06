@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class ExtendObject {
-
 	public String type = "";
 
 	public ExtendObject() {
@@ -44,7 +43,6 @@ public class ExtendObject {
 
 		public 出血组() {
 		}
-
 	}
 
 	@Data
@@ -80,10 +78,10 @@ public class ExtendObject {
 		public String 营养支持;
 		public String iCU住院天数;
 
-		public ICU(String 姓名, String 性别, String 年龄, String 住院号, String 影像号, String 入院日期, String 出生日期, String 联系人,
-				String 电话, String 地址, String iCU治疗原因, String 出院诊断, String 既往病史, String 脑疝呼吸, String hH评分, String gCS评分,
-				String 并发症, String 手术时间, String 手术名称, String 脑室穿刺, String 降颅内压, String 体温, String 镇静药, String sWI,
-				String 血管痉挛, String 癫痫, String 围手术期高血压, String 内科问题, String 营养支持, String iCU住院天数) {
+		public ICU(String 姓名, String 性别, String 年龄, String 住院号, String 影像号, String 入院日期, String 出生日期, String 联系人, String 电话, String 地址,
+				String iCU治疗原因, String 出院诊断, String 既往病史, String 脑疝呼吸, String hH评分, String gCS评分, String 并发症, String 手术时间, String 手术名称,
+				String 脑室穿刺, String 降颅内压, String 体温, String 镇静药, String sWI, String 血管痉挛, String 癫痫, String 围手术期高血压, String 内科问题,
+				String 营养支持, String iCU住院天数) {
 			super();
 			this.type = "icu";
 			this.姓名 = 姓名;
@@ -148,9 +146,9 @@ public class ExtendObject {
 		// public String 手术光盘号;
 		// public String 是否愿意住高间;
 		// public String 是否入住了高间;
-		public Ldz(String 患者姓名, String 性别, String 年龄, String 病案号, String 入院诊断, String 确定诊断, String 入院日期, String 手术日期,
-				String 手术名称, String 手术医生, String 出院日期, String 转入日期, String 转出日期, String 二次手术日期名称, String 三次手术日期名称,
-				String 主管医生, String 收治医生, String 病理诊断, String 家庭住址, String 外阜, String 本市, String 就诊途径, String 患者电话) {
+		public Ldz(String 患者姓名, String 性别, String 年龄, String 病案号, String 入院诊断, String 确定诊断, String 入院日期, String 手术日期, String 手术名称,
+				String 手术医生, String 出院日期, String 转入日期, String 转出日期, String 二次手术日期名称, String 三次手术日期名称, String 主管医生, String 收治医生,
+				String 病理诊断, String 家庭住址, String 外阜, String 本市, String 就诊途径, String 患者电话) {
 			super();
 			this.type = "ldz";
 			this.患者姓名 = 患者姓名;
@@ -209,10 +207,9 @@ public class ExtendObject {
 		public String 手机;
 		public String 随访时间;
 
-		public Xrz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间,
-				String 手术名称, String 术者, String 造影时间, String 造影, String 造影术者, String 入院诊断, String 诊断1, String 诊断2,
-				String 诊断3, String 诊断4, String 病理, String 抢救病例, String 讨论病历, String 疑难病例, String 补充, String 家庭住址,
-				String 电话, String 手机, String 随访时间) {
+		public Xrz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间, String 手术名称,
+				String 术者, String 造影时间, String 造影, String 造影术者, String 入院诊断, String 诊断1, String 诊断2, String 诊断3, String 诊断4, String 病理,
+				String 抢救病例, String 讨论病历, String 疑难病例, String 补充, String 家庭住址, String 电话, String 手机, String 随访时间) {
 			super();
 			this.type = "xrz";
 			this.床号 = 床号;
@@ -277,10 +274,10 @@ public class ExtendObject {
 		public String 手机;
 		public String 随访时间;
 
-		public Gnz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间,
-				String 手术名称, String 术者, String 造影时间, String 造影, String 造影术者, String 入院诊断, String 诊断1, String 诊断2,
-				String 诊断3, String 诊断4, String 部位, String 病理, String 级别类型, String 抢救病例, String 讨论病历, String 疑难病例,
-				String 补充, String 家庭住址, String 电话, String 手机, String 随访时间) {
+		public Gnz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间, String 手术名称,
+				String 术者, String 造影时间, String 造影, String 造影术者, String 入院诊断, String 诊断1, String 诊断2, String 诊断3, String 诊断4, String 部位,
+				String 病理, String 级别类型, String 抢救病例, String 讨论病历, String 疑难病例, String 补充, String 家庭住址, String 电话, String 手机,
+				String 随访时间) {
 			super();
 			this.type = "gnz";
 			this.床号 = 床号;
@@ -348,10 +345,10 @@ public class ExtendObject {
 		public String 手机;
 		public String 随访时间;
 
-		public Zlz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间,
-				String 手术名称, String 术者, String 肿瘤部位, String 肿瘤类型, String 肿瘤级别, String 手术切除, String 造影时间, String 造影,
-				String 造影术者, String 入院诊断, String 诊断1, String 诊断2, String 诊断3, String 诊断4, String 抢救病例, String 讨论病历,
-				String 疑难病例, String 补充, String 家庭住址, String 电话, String 手机, String 随访时间) {
+		public Zlz(String 床号, String 住院号, String 姓名, String 性别, String 年龄, String 住院时间, String 出院时间, String 手术时间, String 手术名称,
+				String 术者, String 肿瘤部位, String 肿瘤类型, String 肿瘤级别, String 手术切除, String 造影时间, String 造影, String 造影术者, String 入院诊断,
+				String 诊断1, String 诊断2, String 诊断3, String 诊断4, String 抢救病例, String 讨论病历, String 疑难病例, String 补充, String 家庭住址,
+				String 电话, String 手机, String 随访时间) {
 			super();
 			this.type = "zlz";
 			this.床号 = 床号;
@@ -385,7 +382,6 @@ public class ExtendObject {
 			this.手机 = 手机;
 			this.随访时间 = 随访时间;
 		}
-
 	}
 
 	@Data // 脊柱组
@@ -424,11 +420,10 @@ public class ExtendObject {
 		public String 随访6个月;
 		public String 随访1年;
 
-		public Jzz(String 姓名, String 住院号, String 性别, String 年龄, String 家庭住址, String 家庭固话, String 手机, String 住院时间,
-				String 手术时间, String 出院时间, String 诊断, String 病理, String 手术方式, String 所属类别, String 术中时段, String 术中用时,
-				String 出血, String 术者, String 补充, String 列1, String 预案, String 视频, String 存储, String 术后影像, String 病历,
-				String 术前评分, String 术后评分, String 术中固定, String 耗材厂家, String 耗材明细, String 随访3个月, String 随访6个月,
-				String 随访1年) {
+		public Jzz(String 姓名, String 住院号, String 性别, String 年龄, String 家庭住址, String 家庭固话, String 手机, String 住院时间, String 手术时间,
+				String 出院时间, String 诊断, String 病理, String 手术方式, String 所属类别, String 术中时段, String 术中用时, String 出血, String 术者, String 补充,
+				String 列1, String 预案, String 视频, String 存储, String 术后影像, String 病历, String 术前评分, String 术后评分, String 术中固定, String 耗材厂家,
+				String 耗材明细, String 随访3个月, String 随访6个月, String 随访1年) {
 			super();
 			this.type = "jzz";
 			this.姓名 = 姓名;
@@ -611,30 +606,26 @@ public class ExtendObject {
 		public String 随访时间点最后一次术后或诊断动脉瘤后;
 		public String 目前主诉和最明显不适;
 
-		public Bflz(String 姓名, String 床号, String 分组, String 病历号, String dSA号, String 主管医生, String 性别, String 年龄,
-				String 入院日期, String 确定诊断时间, String 出院日期, String 联系地址, String 联系电话1, String 联系电话2, String 入院目的,
-				String 确定诊断1, String 病变部位1, String 更正诊断, String 更正病变部位, String 确定诊断2, String 病变部位2, String 确定诊断3,
-				String 病变部位3, String 治疗方法, String 耗材, String 介入日, String 血管造影日, String 外科手术日, String 影像资料,
-				String 出院复查时间, String 是否通知, String 随访复查, String 再次复查时间, String 脑动静脉畸形, String 临床主要症状和体征, String 脑出血,
-				String 头痛, String 头痛部位, String 疼痛时间, String 疼痛频率, String 疼痛的性质, String 严重程度, String 头痛伴随症状,
-				String 有无癫痫发作, String 癫痫初次发作时间, String 癫痫发作形式, String 癫痫发作频率, String 癫痫发作诱发因素, String 癫痫是否服药,
-				String 神经功能缺失, String 神经功能缺失的表现, String 其他症状, String 影像学表现单一部位, String 影像学表现多个病变, String 影像学表现大小,
-				String 影像学表现供血情况, String 穿支动脉供血, String 脉络膜前动脉供血情况, String 脉络膜后内侧动脉供血情况, String 脉络膜后外侧动脉供血情况,
-				String 影像学表现静脉引流, String 影像学表现深静脉引流, String 其他血管异常软膜动脉瘘, String 其他血管异常动脉瘤, String 其他血管异常静脉瘤或扩张,
-				String 其他血管异常引流静脉狭窄, String 其他血管异常静脉窦狭窄, String 其他血管异常静脉窦变异, String 其他血管异常硬脑膜动静脉瘘, String 其他血管异常静脉畸形,
-				String 其他血管异常海绵状血管瘤, String 其他血管异常毛细血管扩张症, String 重要功能区分级, String 大小分级, String 深静脉引流分级,
-				String spetzlerMartin分级, String 合并症, String 治疗, String 癫痫药物, String 头痛药物, String 介入栓塞序号, String 栓塞时间,
-				String 介入术者, String 超选及栓塞动脉途径, String 栓塞用材料, String 并发症1, String 并发症2, String 并发症3, String 术中出血原因,
-				String 出血处理, String 再次栓塞, String 开颅手术序号, String 开颅手术时间, String 开刀术者, String 开颅目的, String 开颅并发症脑出血,
-				String 开颅并发症神经功能障碍, String 再次开颅手术, String 放疗时间, String 放疗序号, String 再次放疗, String 患者的最终治疗途径,
-				String 合并症动脉瘤处理与否, String 合并症硬脑膜动静脉瘘的处理, String 合并症软膜动静脉瘘的处理, String 合并症其他, String 近期影像学治疗结果,
-				String 近期临床治疗结果, String 远期影像学治疗结果3月以上随访, String 远期临床结果6个月以上随访, String 再次治疗序号, String 再次治疗时间,
-				String 再次治疗术者, String 再次治疗途径, String 再次治疗期间重大临床症状和体征, String 再次治疗期间脑出血, String 再次治疗期间头痛,
-				String 再次治疗期间癫痫, String 再次治疗期间神经功能缺失, String 再次治疗期间其他症状, String 动脉瘤, String 临床表现, String 蛛网膜下腔出血,
-				String 本次为第几次出血, String 本次出血时间, String 未破裂动脉瘤临床表现, String 未破裂动脉瘤症状出现或偶然发现时间, String 主诉及最明显不适,
-				String 治疗方式, String 介入治疗方式, String 支架种类, String 密网支架种类, String 介入伴随治疗, String 介入术中意外, String 栓塞动脉瘤结果,
-				String 介入血管结果, String 介入并发症, String 术后短期治疗随访结果, String 动脉瘤病史, String 随访时间点最后一次术后或诊断动脉瘤后,
-				String 目前主诉和最明显不适) {
+		public Bflz(String 姓名, String 床号, String 分组, String 病历号, String dSA号, String 主管医生, String 性别, String 年龄, String 入院日期,
+				String 确定诊断时间, String 出院日期, String 联系地址, String 联系电话1, String 联系电话2, String 入院目的, String 确定诊断1, String 病变部位1,
+				String 更正诊断, String 更正病变部位, String 确定诊断2, String 病变部位2, String 确定诊断3, String 病变部位3, String 治疗方法, String 耗材, String 介入日,
+				String 血管造影日, String 外科手术日, String 影像资料, String 出院复查时间, String 是否通知, String 随访复查, String 再次复查时间, String 脑动静脉畸形,
+				String 临床主要症状和体征, String 脑出血, String 头痛, String 头痛部位, String 疼痛时间, String 疼痛频率, String 疼痛的性质, String 严重程度,
+				String 头痛伴随症状, String 有无癫痫发作, String 癫痫初次发作时间, String 癫痫发作形式, String 癫痫发作频率, String 癫痫发作诱发因素, String 癫痫是否服药,
+				String 神经功能缺失, String 神经功能缺失的表现, String 其他症状, String 影像学表现单一部位, String 影像学表现多个病变, String 影像学表现大小, String 影像学表现供血情况,
+				String 穿支动脉供血, String 脉络膜前动脉供血情况, String 脉络膜后内侧动脉供血情况, String 脉络膜后外侧动脉供血情况, String 影像学表现静脉引流, String 影像学表现深静脉引流,
+				String 其他血管异常软膜动脉瘘, String 其他血管异常动脉瘤, String 其他血管异常静脉瘤或扩张, String 其他血管异常引流静脉狭窄, String 其他血管异常静脉窦狭窄, String 其他血管异常静脉窦变异,
+				String 其他血管异常硬脑膜动静脉瘘, String 其他血管异常静脉畸形, String 其他血管异常海绵状血管瘤, String 其他血管异常毛细血管扩张症, String 重要功能区分级, String 大小分级,
+				String 深静脉引流分级, String spetzlerMartin分级, String 合并症, String 治疗, String 癫痫药物, String 头痛药物, String 介入栓塞序号, String 栓塞时间,
+				String 介入术者, String 超选及栓塞动脉途径, String 栓塞用材料, String 并发症1, String 并发症2, String 并发症3, String 术中出血原因, String 出血处理,
+				String 再次栓塞, String 开颅手术序号, String 开颅手术时间, String 开刀术者, String 开颅目的, String 开颅并发症脑出血, String 开颅并发症神经功能障碍, String 再次开颅手术,
+				String 放疗时间, String 放疗序号, String 再次放疗, String 患者的最终治疗途径, String 合并症动脉瘤处理与否, String 合并症硬脑膜动静脉瘘的处理, String 合并症软膜动静脉瘘的处理,
+				String 合并症其他, String 近期影像学治疗结果, String 近期临床治疗结果, String 远期影像学治疗结果3月以上随访, String 远期临床结果6个月以上随访, String 再次治疗序号,
+				String 再次治疗时间, String 再次治疗术者, String 再次治疗途径, String 再次治疗期间重大临床症状和体征, String 再次治疗期间脑出血, String 再次治疗期间头痛, String 再次治疗期间癫痫,
+				String 再次治疗期间神经功能缺失, String 再次治疗期间其他症状, String 动脉瘤, String 临床表现, String 蛛网膜下腔出血, String 本次为第几次出血, String 本次出血时间,
+				String 未破裂动脉瘤临床表现, String 未破裂动脉瘤症状出现或偶然发现时间, String 主诉及最明显不适, String 治疗方式, String 介入治疗方式, String 支架种类, String 密网支架种类,
+				String 介入伴随治疗, String 介入术中意外, String 栓塞动脉瘤结果, String 介入血管结果, String 介入并发症, String 术后短期治疗随访结果, String 动脉瘤病史,
+				String 随访时间点最后一次术后或诊断动脉瘤后, String 目前主诉和最明显不适) {
 			super();
 			this.type = "bflz";
 			this.姓名 = 姓名;
@@ -779,6 +770,5 @@ public class ExtendObject {
 			this.随访时间点最后一次术后或诊断动脉瘤后 = 随访时间点最后一次术后或诊断动脉瘤后;
 			this.目前主诉和最明显不适 = 目前主诉和最明显不适;
 		}
-
 	}
 }

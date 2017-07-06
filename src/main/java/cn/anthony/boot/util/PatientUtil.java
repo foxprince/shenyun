@@ -59,15 +59,17 @@ public class PatientUtil {
 		List<String> l = new ArrayList<String>();
 		for (File f : getPacsFiles(new File(Constant.PACS_DIR), patientNo)) {
 			String path = f.getAbsolutePath();
-			l.add(path.substring(path.indexOf(Constant.PACS_DIR)+Constant.PACS_DIR.length()));
-			//int i = StringUtils.lastIndexOf(path, "\\", path.lastIndexOf("\\") - 1) + 1;
-			//l.add(path.substring(i).replace("\\", "/"));
+			l.add(path.substring(path.indexOf(Constant.PACS_DIR) + Constant.PACS_DIR.length()));
+			// int i = StringUtils.lastIndexOf(path, "\\",
+			// path.lastIndexOf("\\") - 1) + 1;
+			// l.add(path.substring(i).replace("\\", "/"));
 		}
 		return l;
 	}
-	
+
 	/**
 	 * 病案号的pacs文件夹格式：***-patientNo-***
+	 * 
 	 * @param dir
 	 * @param patientNo
 	 * @return
@@ -100,7 +102,7 @@ public class PatientUtil {
 			if (fs[i].isDirectory()) {
 				l.addAll(Arrays.asList(fs[i].listFiles((File pathname) -> {
 					String name = pathname.getName().toLowerCase();
-					return name.endsWith(".jpg")||name.endsWith(".png")||name.endsWith(".jpeg")||name.endsWith(".bmp");
+					return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".bmp");
 				})));
 			}
 		}

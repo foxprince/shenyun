@@ -28,67 +28,69 @@ import cn.anthony.boot.domain.Patient;
 
 @Service
 public class TotalService {
-    @Autowired
-    private MongoOperations mongoTemplate;
+	@Autowired
+	private MongoOperations mongoTemplate;
 
-    public List<KeyGroup> keyGroup(String key) throws Exception {
-	String reduce = "function(doc, aggr){ aggr.count += 1; }";
-	Query query = Query.query(Criteria.where(key).exists(true));
-	// query.with(new Sort(new Sort.Order(Sort.Direction.ASC,
-	// "count"))).limit(1);
-	DBObject result = mongoTemplate.getCollection("patient").group(new BasicDBObject(key, 1),
-		query.getQueryObject(), new BasicDBObject("count", 0), reduce);
-	List<BasicDBObject> list = new ArrayList<BasicDBObject>(result.toMap().values());
-	list.sort((p1, p2) -> ((Double) p2.get("count")).compareTo((Double) p1.get("count")));
-	List<KeyGroup> l = new ArrayList<KeyGroup>();
-	// for (BasicDBObject e : list) {
-	// l.add(new KeyGroup(e.getString(key),e.getInt("count")));
-	// }
-	return l;
-    }
-
-    private List<KeyGroup> aggOne(int limit, String key) throws Exception {
-	Aggregation agg = newAggregation(match(Criteria.where(key).exists(true)), project("frontRecords"),
-		unwind("frontRecords"), group(key).count().as("count"), project("count").and("key").previousOperation(),
-		sort(Sort.Direction.DESC, "count"), limit(limit));
-
-	AggregationResults<KeyGroup> results = mongoTemplate.aggregate(agg, Patient.class, KeyGroup.class);
-	List<KeyGroup> keyCount = results.getMappedResults();
-	return keyCount;
-    }
-    
-    /**
-     * 
-     * @param limit 记录数
-     * @param cmap 查询条件
-     * @param keys groupby的分组列
-     * @return
-     * @throws Exception
-     */
-    public List<KeyGroup> agg(int limit, Map<String,Object> cmap,String... keys) throws Exception {
-	Criteria criteria = new Criteria();
-	for(int i=0;i<keys.length;i++) {
-	    criteria.and(keys[i]).exists(true).ne(null);
+	public List<KeyGroup> keyGroup(String key) throws Exception {
+		String reduce = "function(doc, aggr){ aggr.count += 1; }";
+		Query query = Query.query(Criteria.where(key).exists(true));
+		// query.with(new Sort(new Sort.Order(Sort.Direction.ASC,
+		// "count"))).limit(1);
+		DBObject result = mongoTemplate.getCollection("patient").group(new BasicDBObject(key, 1), query.getQueryObject(),
+				new BasicDBObject("count", 0), reduce);
+		List<BasicDBObject> list = new ArrayList<BasicDBObject>(result.toMap().values());
+		list.sort((p1, p2) -> ((Double) p2.get("count")).compareTo((Double) p1.get("count")));
+		List<KeyGroup> l = new ArrayList<KeyGroup>();
+		// for (BasicDBObject e : list) {
+		// l.add(new KeyGroup(e.getString(key),e.getInt("count")));
+		// }
+		return l;
 	}
-	if(cmap!=null&&cmap.size()>0){
-	List<Criteria> clauseCriterias = new ArrayList<Criteria>(cmap.size());
-	for(Map.Entry<String, Object> entry : cmap.entrySet()) {
-	    clauseCriterias.add(Criteria.where(entry.getKey()).is(entry.getValue()));
+
+	private List<KeyGroup> aggOne(int limit, String key) throws Exception {
+		Aggregation agg = newAggregation(match(Criteria.where(key).exists(true)), project("frontRecords"), unwind("frontRecords"),
+				group(key).count().as("count"), project("count").and("key").previousOperation(), sort(Sort.Direction.DESC, "count"),
+				limit(limit));
+		AggregationResults<KeyGroup> results = mongoTemplate.aggregate(agg, Patient.class, KeyGroup.class);
+		List<KeyGroup> keyCount = results.getMappedResults();
+		return keyCount;
 	}
-	criteria = criteria.andOperator(clauseCriterias.toArray(new Criteria[cmap.size()]));}
-	Aggregation agg = newAggregation(match(criteria),project("frontRecords"), unwind("frontRecords"),
-		group(keys).count().as("count"), project("count").and("key").previousOperation(),
-		sort(Sort.Direction.DESC, "count"), limit(limit));
-	if(keys[0].indexOf("operationDetails")>0)
-	    agg = newAggregation(match(criteria),project("frontRecords","frontRecords.operationDetails"), unwind("frontRecords"),
-			unwind("frontRecords.operationDetails"),
-			group(keys).count().as("count"), project("count").and("key").previousOperation(),
-			sort(Sort.Direction.DESC, "count"), limit(limit));
-	AggregationResults<KeyGroup> results = mongoTemplate.aggregate(agg, Patient.class, KeyGroup.class);
-	List<KeyGroup> keyCount = results.getMappedResults();
-//	for (KeyGroup e : keyCount) {
-//	    System.out.println(e.getKey() + "," + e.toString());
-//	}
-	return keyCount;
-    }
+
+	/**
+	 * 
+	 * @param limit
+	 *            记录数
+	 * @param cmap
+	 *            查询条件
+	 * @param keys
+	 *            groupby的分组列
+	 * @return
+	 * @throws Exception
+	 */
+	public List<KeyGroup> agg(int limit, Map<String, Object> cmap, String... keys) throws Exception {
+		Criteria criteria = new Criteria();
+		for (int i = 0; i < keys.length; i++) {
+			criteria.and(keys[i]).exists(true).ne(null);
+		}
+		if (cmap != null && cmap.size() > 0) {
+			List<Criteria> clauseCriterias = new ArrayList<Criteria>(cmap.size());
+			for (Map.Entry<String, Object> entry : cmap.entrySet()) {
+				clauseCriterias.add(Criteria.where(entry.getKey()).is(entry.getValue()));
+			}
+			criteria = criteria.andOperator(clauseCriterias.toArray(new Criteria[cmap.size()]));
+		}
+		Aggregation agg = newAggregation(match(criteria), project("frontRecords"), unwind("frontRecords"),
+				group(keys).count().as("count"), project("count").and("key").previousOperation(), sort(Sort.Direction.DESC, "count"),
+				limit(limit));
+		if (keys[0].indexOf("operationDetails") > 0)
+			agg = newAggregation(match(criteria), project("frontRecords", "frontRecords.operationDetails"), unwind("frontRecords"),
+					unwind("frontRecords.operationDetails"), group(keys).count().as("count"),
+					project("count").and("key").previousOperation(), sort(Sort.Direction.DESC, "count"), limit(limit));
+		AggregationResults<KeyGroup> results = mongoTemplate.aggregate(agg, Patient.class, KeyGroup.class);
+		List<KeyGroup> keyCount = results.getMappedResults();
+		// for (KeyGroup e : keyCount) {
+		// System.out.println(e.getKey() + "," + e.toString());
+		// }
+		return keyCount;
+	}
 }

@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class HomeVO {
-    private Long totalPatients;
+	private Long totalPatients;
 }

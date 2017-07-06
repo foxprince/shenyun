@@ -252,7 +252,6 @@ public class FrontPage {
 	public Integer afterminutes;
 	// 重症监护室名称、代码 进重症监护室时间 出重症监护室时间
 	// 出重症监护室时间
-
 	public List<Patient.SevereDetail> severeDetails;
 	// public String SEVERENAME1;
 	// // -
@@ -335,5 +334,4 @@ public class FrontPage {
 
 	public FrontPage() {
 	}
-
 }

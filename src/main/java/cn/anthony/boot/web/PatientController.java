@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -132,11 +133,12 @@ public class PatientController extends GenericController<Patient> {
 
 	@RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
 	public String listPage(@ModelAttribute("pageRequest") PatientSearch ps,
-			@QuerydslPredicate(root = Patient.class) Predicate predicate, @PageableDefault Pageable pageable, Model m,
+			@QuerydslPredicate(root = Patient.class) Predicate predicate,
+			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable, Model m,
 			@RequestParam MultiValueMap<String, String> parametersMap, HttpServletRequest request, HttpSession session)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Map<String, List<String>> parameters = RefactorUtil.filterEmpty(parametersMap);
-		System.out.println("reqmap:" + parameters);
+		System.out.println(parameters);
 		String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		if (path.endsWith("list"))// 清空搜索历史
 			ps = new PatientSearch();
@@ -150,14 +152,10 @@ public class PatientController extends GenericController<Patient> {
 			predicate = QPatient.patient.inRecords.any().inDate.before(ps.inDateEnd).and(predicate);
 		predicate = patientBinding(QPatient.patient, "patient.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.inRecords.any(), "inHospital.", parameters, predicate);
-		predicate = patientBinding(QPatient.patient.inRecords.any().firstDiag, "inHospital.firstDiag", parameters,
-				predicate);
-		predicate = patientBinding(QPatient.patient.inRecords.any().confirmDiag, "inHospital.confirmDiag", parameters,
-				predicate);
-		predicate = patientBinding(QPatient.patient.inRecords.any().correctDiag, "inHospital.correctDiag", parameters,
-				predicate);
-		predicate = patientBinding(QPatient.patient.inRecords.any().supplyDiags.any(), "inHospital.supplyDiags",
-				parameters, predicate);
+		predicate = patientBinding(QPatient.patient.inRecords.any().firstDiag, "inHospital.firstDiag", parameters, predicate);
+		predicate = patientBinding(QPatient.patient.inRecords.any().confirmDiag, "inHospital.confirmDiag", parameters, predicate);
+		predicate = patientBinding(QPatient.patient.inRecords.any().correctDiag, "inHospital.correctDiag", parameters, predicate);
+		predicate = patientBinding(QPatient.patient.inRecords.any().supplyDiags.any(), "inHospital.supplyDiags", parameters, predicate);
 		predicate = patientBinding(QSomatoscopy.somatoscopy, "inHospital", parameters, predicate);
 		predicate = patientBinding(QSomatoscopy.somatoscopy.sExamination, "inHospital", parameters, predicate);
 		predicate = patientBinding(QPatient_高级皮层功能.高级皮层功能, "inHospital", parameters, predicate);
@@ -170,13 +168,11 @@ public class PatientController extends GenericController<Patient> {
 		predicate = patientBinding(QPatient_眼底.眼底, "inHospital", parameters, predicate);
 		predicate = patientBinding(QPatient_视力.视力, "inHospital", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.frontRecords.any(), "frontPage.", parameters, predicate);
-		predicate = patientBinding(QPatient.patient.frontRecords.any().outDiags.any(), "frontPage.outDiag.", parameters,
+		predicate = patientBinding(QPatient.patient.frontRecords.any().outDiags.any(), "frontPage.outDiag.", parameters, predicate);
+		predicate = patientBinding(QPatient.patient.frontRecords.any().operationDetails.any(), "frontPage.operationDetail.", parameters,
 				predicate);
-		predicate = patientBinding(QPatient.patient.frontRecords.any().operationDetails.any(),
-				"frontPage.operationDetail.", parameters, predicate);
-		predicate = patientBinding(QPatient.patient.frontRecords.any().severeDetails.any(), "frontPage.severeDetail.",
-				parameters, predicate);
-
+		predicate = patientBinding(QPatient.patient.frontRecords.any().severeDetails.any(), "frontPage.severeDetail.", parameters,
+				predicate);
 		predicate = patientBinding(QPatient.patient.operations.any(), "operation.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.outRecords.any(), "outHospital.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.remarks.any(), "remark.", parameters, predicate);
@@ -199,6 +195,7 @@ public class PatientController extends GenericController<Patient> {
 		m.addAttribute("outOptions", Constant.outKeyMap.values());
 		m.addAttribute("bloodOptions", Constant.bloodKeyMap.values());
 		m.addAttribute("customeOptions", customeOptionService.findAll());
+		m.addAttribute("source", parameters.get("source").get(0));
 		return getListView();
 	}
 
@@ -211,11 +208,9 @@ public class PatientController extends GenericController<Patient> {
 	@RequestMapping(value = "/export")
 	public ModelAndView getExcel(String id, String[] fields, HttpSession session) {
 		String columnNames[] = { "名称" };// 列名
-
 		Predicate predicate = (Predicate) session.getAttribute("predicate");
 		System.out.println("session predicate:" + predicate);
 		List<Map<String, Object>> list = createExcel(service.getRepository().findAll(predicate), Arrays.asList(fields));
-
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("keys", fields);
 		m.put("columnNames", Constant.toNames(fields));
@@ -271,8 +266,7 @@ public class PatientController extends GenericController<Patient> {
 		// 设置response参数，可以打开下载页面
 		response.reset();
 		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition",
-				"attachment;filename=" + new String((fileName + ".xlsx").getBytes(), "iso-8859-1"));
+		response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName + ".xlsx").getBytes(), "iso-8859-1"));
 		ServletOutputStream out = response.getOutputStream();
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
@@ -331,7 +325,7 @@ public class PatientController extends GenericController<Patient> {
 	public Remark addRemark(String patientId, Remark remark, Model m) {
 		Patient p = service.findById(patientId);
 		remark.setId(UUID.randomUUID().toString());
-		if(p.getRemarks()==null)
+		if (p.getRemarks() == null)
 			p.setRemarks(new ArrayList<Remark>());
 		p.getRemarks().add(remark);
 		try {
@@ -368,8 +362,8 @@ public class PatientController extends GenericController<Patient> {
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 */
-	private Predicate patientBinding(BeanPath dslo, String reqPre, Map<String, List<String>> paramMap,
-			Predicate predicate) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+	private Predicate patientBinding(BeanPath dslo, String reqPre, Map<String, List<String>> paramMap, Predicate predicate)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Object o = RefactorUtil.initPathClass(dslo);
 		// Class.forName(dslo.getAnnotatedElement().toString().substring(6));
 		for (QueryOption qp : RefactorUtil.getNotNullValueMap(o, reqPre, paramMap)) {
@@ -387,8 +381,7 @@ public class PatientController extends GenericController<Patient> {
 	 * @param predicate
 	 * @return
 	 */
-	private Predicate customerBinding(Object o, String key, String value, String andOr, String option,
-			Predicate predicate) {
+	private Predicate customerBinding(Object o, String key, String value, String andOr, String option, Predicate predicate) {
 		if (o != null && StringTools.checkNull(value) != null) {
 			Field f = RefactorUtil.getFieldByName(o, key);
 			if (f != null)
@@ -460,13 +453,11 @@ public class PatientController extends GenericController<Patient> {
 			Field f = RefactorUtil.getFieldByName(o, key);
 			if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
 				try {
-					predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).containsIgnoreCase(value)
-							.and(predicate);
+					predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).containsIgnoreCase(value).and(predicate);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
 		}
 		return predicate;
 	}
-
 }

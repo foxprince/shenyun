@@ -21,87 +21,84 @@ import cn.anthony.boot.repository.PatientRepository;
 @SuppressWarnings("rawtypes")
 @Service
 public class PatientService extends GenericService<Patient> {
-    @Resource
-    protected PatientRepository repository;
-    @Autowired
-    private MongoOperations mongoTemplate;
+	@Resource
+	protected PatientRepository repository;
+	@Autowired
+	private MongoOperations mongoTemplate;
+	private static List<String> changedeptList;
+	private static List<String> dischargeWardList;
+	private static List<String> admissionWardList;
 
-    private static List<String> changedeptList;
-    private static List<String> dischargeWardList;
-    private static List<String> admissionWardList;
+	public PatientService() {
+		super();
+	}
 
-    public PatientService() {
-	super();
-    }
+	public List<String> getChangedeptList() {
+		if (changedeptList == null)
+			changedeptList = ditinctChangedept();
+		Collections.sort(changedeptList);
+		return changedeptList;
+	}
 
-    public List<String> getChangedeptList() {
-	if (changedeptList == null)
-	    changedeptList = ditinctChangedept();
-	Collections.sort(changedeptList);
-	return changedeptList;
-    }
+	public List<String> getDischargeWardList() {
+		if (dischargeWardList == null)
+			dischargeWardList = ditinctDischargeWard();
+		Collections.sort(dischargeWardList);
+		return dischargeWardList;
+	}
 
-    public List<String> getDischargeWardList() {
-	if (dischargeWardList == null)
-	    dischargeWardList = ditinctDischargeWard();
-	Collections.sort(dischargeWardList);
-	return dischargeWardList;
-    }
+	public List<String> getAdmissionWardList() {
+		if (admissionWardList == null)
+			admissionWardList = ditinctAdmissionWard();
+		Collections.sort(admissionWardList);
+		return admissionWardList;
+	}
 
-    public List<String> getAdmissionWardList() {
-	if (admissionWardList == null)
-	    admissionWardList = ditinctAdmissionWard();
-	Collections.sort(admissionWardList);
-	return admissionWardList;
-    }
+	@Override
+	public PatientRepository getRepository() {
+		return repository;
+	}
 
-    @Override
-    public PatientRepository getRepository() {
-	return repository;
-    }
-    
-    public Patient findByPid(String pId) {
-	List<Patient> l = repository.findByPId(pId);
-	if(l!=null&&l.size()>0)
-	    return l.get(0);
-	return null;
-    }
-    public Page<Patient> find(Predicate predicate, Pageable pageable) {
-	return repository.findAll(predicate, pageable);
-    }
+	public Patient findByPid(String pId) {
+		List<Patient> l = repository.findByPId(pId);
+		if (l != null && l.size() > 0)
+			return l.get(0);
+		return null;
+	}
 
-    public Long total(Predicate predicate) {
-	return repository.count(predicate);
-    }
+	public Page<Patient> find(Predicate predicate, Pageable pageable) {
+		return repository.findAll(predicate, pageable);
+	}
 
-    public Long total() {
-	return repository.count();
-    }
+	public Long total(Predicate predicate) {
+		return repository.count(predicate);
+	}
 
-    public Long totalIn() {
-	repository.count();
-	long l = 0;
-	for (Patient p : repository.findAll())
-	    l += p.inRecords.size();
-	return l;
-    }
+	public Long total() {
+		return repository.count();
+	}
 
-    public List<String> ditinctChangedept() {
-	Criteria criteria = new Criteria();
-	// criteria.where("dataset").is("d1");
-	Query query = new Query();
-	query.addCriteria(criteria);
-	return mongoTemplate.getCollection("patient").distinct("frontRecords.changedept", query.getQueryObject());
-    }
+	public Long totalIn() {
+		repository.count();
+		long l = 0;
+		for (Patient p : repository.findAll())
+			l += p.inRecords.size();
+		return l;
+	}
 
-    public List<String> ditinctDischargeWard() {
-	return mongoTemplate.getCollection("patient").distinct("frontRecords.dischargeWard");
-    }
+	public List<String> ditinctChangedept() {
+		Criteria criteria = new Criteria();
+		// criteria.where("dataset").is("d1");
+		Query query = new Query();
+		query.addCriteria(criteria);
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.changedept", query.getQueryObject());
+	}
 
-    public List<String> ditinctAdmissionWard() {
-	return mongoTemplate.getCollection("patient").distinct("frontRecords.admissionWard");
-    }
+	public List<String> ditinctDischargeWard() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.dischargeWard");
+	}
 
-    
-
+	public List<String> ditinctAdmissionWard() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.admissionWard");
+	}
 }

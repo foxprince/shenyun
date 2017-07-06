@@ -14,7 +14,9 @@ import lombok.Data;
 @Component
 @Data
 public class Constant {
-	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// = "E:\\project\\神云系统\\pacs\\";
+	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// =
+																									// "E:\\project\\神云系统\\pacs\\";
+
 	@Data
 	public static class CheckOption {
 		String inputType = "text", name, label, value;
@@ -33,7 +35,6 @@ public class Constant {
 			this.label = label;
 			this.value = value;
 		}
-
 	}
 
 	public static void main(String[] args) {
@@ -75,18 +76,16 @@ public class Constant {
 		return names;
 	}
 
-	public static final String[] pieColors = new String[] { "#00a65a", "#f56954", "#f39c12", "#f39c12", "#d2d6de",
-			"#32d6de", "#d223de", "#d2d645", "#57d6de" };
-	public static final String[] pieHighlights = new String[] { "#00a65b", "#f56955", "#f39c14", "#f39c15", "#d2d6ee",
-			"#32d7de", "#d224de", "#d2d675", "#57d7de" };
-
+	public static final String[] pieColors = new String[] { "#00a65a", "#f56954", "#f39c12", "#f39c12", "#d2d6de", "#32d6de", "#d223de",
+			"#d2d645", "#57d6de" };
+	public static final String[] pieHighlights = new String[] { "#00a65b", "#f56955", "#f39c14", "#f39c15", "#d2d6ee", "#32d7de",
+			"#d224de", "#d2d675", "#57d7de" };
 	private static final String DEFAULT_TYPE = "text";
 	private static final String DATETIME_TYPE = "datetime-local";
 	private static final String DATE_TYPE = "date";
-	//public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
-
+	// public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";//
+	// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 	public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(totalKeyMap, "frontRecords.age", "年龄");
 		defaultPut(totalKeyMap, "frontRecords.sex", "性别，1：男，2：女");
@@ -116,9 +115,7 @@ public class Constant {
 		defaultPut(totalKeyMap, "frontRecords.operationDetails.title", "手术、操作及大型设备检查名称");
 		defaultPut(totalKeyMap, "frontRecords.operationDetails.chief", "手术操作医师");
 	}
-
 	public static Map<String, CheckOption> patientKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(patientKeyMap, "patient.age", "年龄");
 		defaultPut(patientKeyMap, "patient.sex", "性别");
@@ -131,9 +128,7 @@ public class Constant {
 		defaultPut(patientKeyMap, "patient.country", "国籍");
 		defaultPut(patientKeyMap, "patient.birthplace", "出生地");
 	}
-
 	public static Map<String, CheckOption> frontPageKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(frontPageKeyMap, "frontPage.medicalInstitution", "医疗机构");
 		defaultPut(frontPageKeyMap, "frontPage.organizationCode", "组织机构代码");
@@ -239,9 +234,7 @@ public class Constant {
 		defaultPut(frontPageKeyMap, "frontPage.outToHospital", "医嘱转院，拟接收医疗机构名称");
 		defaultPut(frontPageKeyMap, "frontPage.outToCommunity", "医嘱转社区卫生服务机构/乡镇卫生院，拟接收医疗机构名称");
 	};
-
 	public static Map<String, CheckOption> inKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(inKeyMap, "inHospital.takingFrom", "病史叙述人");
 		defaultPut(inKeyMap, "inHospital.reliability", "可靠性");
@@ -392,9 +385,7 @@ public class Constant {
 		defaultPut(inKeyMap, "inHospital.Oppenheim右侧", "Oppenheim右侧");
 		defaultPut(inKeyMap, "inHospital.Gordon右侧", "Gordon右侧");
 	};
-
 	public static Map<String, CheckOption> operKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(operKeyMap, "operation.operationDpt", "科别");
 		defaultPut(operKeyMap, "operation.bedNumber", "床位号");
@@ -412,9 +403,7 @@ public class Constant {
 		defaultPut(operKeyMap, "operation.bb", "手术取标本肉眼所见");
 		defaultPut(operKeyMap, "operation.bl", "手术取标本送病理");
 	};
-
 	public static Map<String, CheckOption> outKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(outKeyMap, "outHospital.department", "科别");
 		defaultPut(outKeyMap, DATE_TYPE, "outHospital.outDate", "出院时间");
@@ -426,22 +415,18 @@ public class Constant {
 		defaultPut(outKeyMap, "outHospital.operationDesc", "手术名称及伤口愈合情况");
 		defaultPut(outKeyMap, "outHospital.dischargeOrder", "出院医嘱");
 	};
-	
 	public static Map<String, CheckOption> remarkKeyMap = new LinkedHashMap<String, CheckOption>();
-
 	static {
 		defaultPut(remarkKeyMap, "remark.content", "备注内容");
 		defaultPut(remarkKeyMap, "remark.doctor", "医生");
 		defaultPut(remarkKeyMap, "remark.operator", "录入者");
 		defaultPut(remarkKeyMap, "remark.label", "标签");
 	};
-
 	public static Map<String, CheckOption> bloodKeyMap = new LinkedHashMap<String, CheckOption>() {
 		{
 			putAll(patientKeyMap);
 		}
 	};
-
 	static {
 		defaultPut(bloodKeyMap, "operation.operationTitle", "手术名称");
 		defaultPut(bloodKeyMap, "operation.doctor", "手术医师");
@@ -452,7 +437,6 @@ public class Constant {
 		defaultPut(bloodKeyMap, "operation.bloodLoss", "失血量");
 		defaultPut(bloodKeyMap, "operation.bloodTransfusion", "输血量");
 	}
-
 	public static Map<String, CheckOption> ALL_KEY_MAP = new LinkedHashMap<String, CheckOption>() {
 		{
 			putAll(patientKeyMap);
@@ -513,7 +497,6 @@ public class Constant {
 
 	public static Map<String, String> PAY_TYPE_MAP = new TreeMap<String, String>() {
 		private static final long serialVersionUID = -4638190003036563391L;
-
 		{
 			put("1", "城镇职工基本医疗保险");
 			put("2", "城镇居民基本医疗保险");
