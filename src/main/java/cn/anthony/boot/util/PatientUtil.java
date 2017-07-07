@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,13 +52,21 @@ public class PatientUtil {
 		// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy.sExamination)));
 	}
 
+	private static List<File> getDirs(String s) {
+		StringTokenizer st = new StringTokenizer(s, ",");
+		List<File> l = new ArrayList<File>();
+		while (st.hasMoreTokens())
+			l.add(new File(st.nextToken()));
+		return l;
+	}
+
 	public static List<File> getPacsFiles(String patientNo) {
-		return getPacsFiles(new File(Constant.PACS_DIR), patientNo);
+		return getPacsFilesInDir(getDirs(Constant.PACS_DIR), patientNo);
 	}
 
 	public static List<String> getPacsRelativeNames(String patientNo) {
 		List<String> l = new ArrayList<String>();
-		for (File f : getPacsFiles(new File(Constant.PACS_DIR), patientNo)) {
+		for (File f : getPacsFilesInDir(getDirs(Constant.PACS_DIR), patientNo)) {
 			String path = f.getAbsolutePath();
 			l.add(path.substring(path.indexOf(Constant.PACS_DIR) + Constant.PACS_DIR.length()));
 			// int i = StringUtils.lastIndexOf(path, "\\",
@@ -74,9 +83,9 @@ public class PatientUtil {
 	 * @param patientNo
 	 * @return
 	 */
-	public static List<File> getPacsFiles(File dir, String patientNo) {
+	private static List<File> getPacsFilesInDir(List<File> dirs, String patientNo) {
 		try {
-			return processPacs(dir, (File f) -> {
+			return processPacs(dirs, (File f) -> {
 				return f.isDirectory() && f.getName().indexOf("-" + patientNo + "-") > 0;
 			});
 		} catch (Exception e) {
@@ -84,26 +93,17 @@ public class PatientUtil {
 		}
 	}
 
-	public static List<File> getPacsDirs(File dir, String patientNo) {
-		try {
-			File[] fs = dir.listFiles((File f) -> {
-				return f.isDirectory() && f.getName().indexOf("-" + patientNo + "-") > 0;
-			});
-			return Arrays.asList(fs);
-		} catch (Exception e) {
-			return new ArrayList<File>();
-		}
-	}
-
-	private static List<File> processPacs(File dir, FileFilter filter) {
+	private static List<File> processPacs(List<File> dirs, FileFilter filter) {
 		List<File> l = new ArrayList<File>();
-		File[] fs = dir.listFiles(filter);
-		for (int i = 0; i < fs.length; i++) {
-			if (fs[i].isDirectory()) {
-				l.addAll(Arrays.asList(fs[i].listFiles((File pathname) -> {
-					String name = pathname.getName().toLowerCase();
-					return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".bmp");
-				})));
+		for (File dir : dirs) {
+			File[] fs = dir.listFiles(filter);
+			for (int i = 0; i < fs.length; i++) {
+				if (fs[i].isDirectory()) {
+					l.addAll(Arrays.asList(fs[i].listFiles((File pathname) -> {
+						String name = pathname.getName().toLowerCase();
+						return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".bmp");
+					})));
+				}
 			}
 		}
 		return l;

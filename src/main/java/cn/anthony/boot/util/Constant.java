@@ -15,7 +15,6 @@ import lombok.Data;
 @Data
 public class Constant {
 	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// =
-																									// "E:\\project\\神云系统\\pacs\\";
 
 	@Data
 	public static class CheckOption {

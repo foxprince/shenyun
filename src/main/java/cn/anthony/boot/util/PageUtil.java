@@ -15,9 +15,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FileFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import cn.anthony.util.FileTools;
@@ -73,10 +70,8 @@ public class PageUtil {
 		body = StringUtils.replace(body, PRINT_DIV, "");
 		body = StringUtils.replace(body, "../resources/dist/img", "./patient_files");
 		body = StringUtils.replace(body, "../resources/pacs", "./pacs");
-		for (File srcFile : PatientUtil.getPacsDirs(new File(Constant.PACS_DIR), patientNo))
+		for (File srcFile : PatientUtil.getPacsFiles(patientNo))
 			try {
-				IOFileFilter jpgSuffixFilter = FileFilterUtils.suffixFileFilter(".jpg");
-				IOFileFilter jpgFiles = FileFilterUtils.and(FileFileFilter.FILE, jpgSuffixFilter);
 				FileUtils.copyDirectoryToDirectory(srcFile, new File(GENERATE_DIR + patientNo + "\\pacs"));
 			} catch (IOException e) {
 				e.printStackTrace();

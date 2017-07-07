@@ -1,6 +1,5 @@
 package cn.anthony.boot.domain;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,8 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysema.query.annotations.QueryEntity;
 
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.DateUtil;
 import cn.anthony.util.StringTools;
 import lombok.Data;
@@ -51,22 +48,6 @@ public class Patient extends GenericNoSQLEntity {
 	public String source;
 	// 扩展属性
 	public Map<String, ExtendObject> extendMap = new TreeMap<String, ExtendObject>();
-
-	public List<File> getPacsFiles() {
-		return PatientUtil.getPacsFiles(new File(Constant.PACS_DIR), getpId());
-	}
-
-	/**
-	 * 只返回 子目录及文件名
-	 * 
-	 * @return
-	 */
-	public List<String> getPacsFilesName() {
-		List<String> l = new ArrayList<String>();
-		for (File f : getPacsFiles())
-			l.add(f.getAbsolutePath().substring(f.getAbsolutePath().indexOf("dicom") + 5));
-		return l;
-	}
 
 	public List<FrontPage> frontRecords = new ArrayList<FrontPage>();// 首页纪录
 	public List<InHospital> inRecords = new ArrayList<InHospital>();/* 入院纪录 */
