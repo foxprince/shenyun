@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -28,17 +29,15 @@ import cn.anthony.boot.domain.Patient.Diag;
 import cn.anthony.boot.domain.Patient.OperationDetail;
 import cn.anthony.boot.domain.Patient.OutDiag;
 import cn.anthony.boot.domain.Patient.SevereDetail;
-import cn.anthony.util.FileTools;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.SAXUtil;
 import cn.anthony.util.StringTools;
 
 public class PatientUtil {
 	public static void main(String[] args) throws Exception {
-		File dir = new File("E:\\project\\神云系统\\pacs");
-		System.out.println(Constant.PACS_DIR);
-		for (String f : getPacsRelativeNames("184470"))
-			System.out.println(f);
+		File file = new File("/Users/zj/tmp/KYBLSJ/入院记录1/20161001-20161031/HospitalRecord_000529855800_1.xml");
+		System.out.println(StringTools.pe(FileUtils.readFileToString(file), "<ElementText(.*)>(.*)</ElementText>"));
+		System.out.println(extractText(file,"<ElementText>","</ElementText>",true));
 		// System.out.println(file.getAbsolutePath().replaceAll("\\", "/"));
 		// Patient p = (extractPatientFromFile(file));
 		// System.out.println(p.somatoscopy);
@@ -61,13 +60,17 @@ public class PatientUtil {
 	}
 
 	public static List<File> getPacsFiles(String patientNo) {
-		return getPacsFilesInDir(getDirs(Constant.PACS_DIR), patientNo);
+		List<File> l = new ArrayList<File>();
+		for(File dir : getDirs(Constant.PACS_DIR))
+			l.addAll(getPacsFilesInDir(dir, patientNo));
+		return l;
 	}
 
 	public static List<String> getPacsRelativeNames(String patientNo) {
 		List<String> l = new ArrayList<String>();
-		for (File f : getPacsFilesInDir(getDirs(Constant.PACS_DIR), patientNo)) {
+		for (File f : getPacsFiles(patientNo)) {
 			String path = f.getAbsolutePath();
+			System.out.println(path);
 			l.add(path.substring(path.indexOf(Constant.PACS_DIR) + Constant.PACS_DIR.length()));
 			// int i = StringUtils.lastIndexOf(path, "\\",
 			// path.lastIndexOf("\\") - 1) + 1;
@@ -83,9 +86,9 @@ public class PatientUtil {
 	 * @param patientNo
 	 * @return
 	 */
-	private static List<File> getPacsFilesInDir(List<File> dirs, String patientNo) {
+	private static List<File> getPacsFilesInDir(File dir, String patientNo) {
 		try {
-			return processPacs(dirs, (File f) -> {
+			return processPacs(dir, (File f) -> {
 				return f.isDirectory() && f.getName().indexOf("-" + patientNo + "-") > 0;
 			});
 		} catch (Exception e) {
@@ -93,9 +96,8 @@ public class PatientUtil {
 		}
 	}
 
-	private static List<File> processPacs(List<File> dirs, FileFilter filter) {
+	private static List<File> processPacs(File dir, FileFilter filter) {
 		List<File> l = new ArrayList<File>();
-		for (File dir : dirs) {
 			File[] fs = dir.listFiles(filter);
 			for (int i = 0; i < fs.length; i++) {
 				if (fs[i].isDirectory()) {
@@ -105,7 +107,6 @@ public class PatientUtil {
 					})));
 				}
 			}
-		}
 		return l;
 	}
 
@@ -121,35 +122,33 @@ public class PatientUtil {
 			}
 		}
 	}
-
-	public static StringBuilder extractText(File f, boolean filterBlank) {
-		List<String> l = FileTools.quickReadFile(f.getAbsolutePath());
-		int start = 0;
-		int end = 0;
-		int i = 0;
-		for (String s : l) {
-			i++;
-			if (s.contains("<text>"))
-				start = i;
-			if (s.contains("</text>")) {
-				end = i;
-				break;
-			}
+	
+	public static StringBuilder extractText(File f,String start,String end, boolean filterBlank) {
+		try {
+			String s = FileUtils.readFileToString(f, "UTF-8");
+			return new StringBuilder(StringTools.e(new StringBuilder(s), start, end));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
 		}
-		l = l.subList(start, end);
-		StringBuilder sb = new StringBuilder();
-		for (String s : l)
-			if (filterBlank && StringTools.checkNull(s) != null)
-				sb.append(s + "\n");
-			else
-				sb.append(s + "\n");
-		// System.out.println(sb.toString());
-		return sb;
+	}
+	
+	public static StringBuilder extractTextList(File f,List<String> startList,String end, boolean filterBlank) {
+		try {
+			String s = FileUtils.readFileToString(f, "UTF-8");
+			return new StringBuilder(StringTools.eList(new StringBuilder(s), startList, end));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	public static Patient extractPatientFromFile(File file) {
-		StringBuilder s = extractText(file, true);
+	public static Patient extractPatientFromFile(File file) throws IOException, ParseException {
+		//StringBuilder s = extractText(file, "<text>","</text>",true);
+		StringBuilder s = new StringBuilder(FileUtils.readFileToString(file));
 		Patient p = new Patient();
+		p.source = "haitai";
+		p.srcFile = file.getName();
 		p.pId = StringTools.e(s, "病案号", "医疗付费方式");
 		p.name = StringTools.e(s, "姓名", "性别");
 		p.sex = StringTools.e(s, "性别", "1.男 2.女");
@@ -163,7 +162,7 @@ public class PatientUtil {
 		} catch (Exception e) {
 		}
 		p.certNo = StringTools.e(s, "身份证号", "职业");
-		FrontPage f = extractFrontPage(file);
+		FrontPage f = extractFrontPageWithText(file);
 		f.outDiags = extractDiags(f, s);
 		f.operationDetails = extractODetails(f, StringTools.e(s, "II助", "颅脑损伤患者昏迷时间"));
 		f.severeDetails = extractSeveres(f, StringTools.e(s, "出重症监护室时间", "呼吸机使用时间"));
@@ -196,7 +195,7 @@ public class PatientUtil {
 
 	private static List<OutDiag> extractDiags(FrontPage f, StringBuilder s) {
 		List<OutDiag> l = new ArrayList<OutDiag>();
-		String t = StringTools.e(s, "病情", "入院病情：1.有，2.临床未确定，3.情况不明，4.无");
+		String t = StringTools.e(s, "病情", "入院病情：1.有，2.临床未确定");
 		char c = '\n';
 		String[] ss = StringUtils.split(t, c);
 		try {
@@ -255,13 +254,200 @@ public class PatientUtil {
 		f.srcFile = file.getAbsolutePath();
 		return f;
 	}
+	
+	public static FrontPage extractFrontPageWithText(File file) throws IOException, ParseException {
+		StringBuilder s = new StringBuilder(FileUtils.readFileToString(file));
+		FrontPage f = new FrontPage();
+		// 医疗机构
+		f.medicalInstitution=StringTools.e(s, "医疗机构", "（组织机构代码");
+		// （组织机构代码
+		f.organizationCode=StringTools.e(s, "（组织机构代码", ")");
+		// 病案号
+		f.adminission_no=StringTools.e(s, "病案号", "医疗付费方式");
+		// 医疗付费方式
+		f.patientclass=StringTools.e(s, "医疗付费方式", "第");
+		// 第几次住院
+		f.numberOfTimes=StringTools.e(s, "次住院", "门诊号");
+		// 门诊号
+		f.outpatientnum=StringTools.e(s, "门诊号", "健康卡号");
+		// 健康卡号
+		f.healthCardNo=StringTools.e(s, "健康卡号", "病理号");
+		// 病理号
+		f.pathological=StringTools.e(s, "病理号", "姓名");
+		// 姓名
+		f.name=StringTools.e(s, "姓名", "性别");
+		// 性别
+		f.sex=StringTools.e(s, "性别", "1.男 2.女");
+		// 出生日期 1943年04月21日
+		try {
+			StringBuilder s0 = new StringBuilder(StringTools.e(s, "出生日期", "年龄"));
+			Calendar cal = Calendar.getInstance();
+			cal.set(Integer.parseInt(StringTools.e(s0, "", "年")), Integer.parseInt(StringTools.e(s0, "年", "月")) - 1,
+					Integer.parseInt(StringTools.e(s0, "月", "日")));
+			f.dateOfBirthday = cal.getTime();
+			f.age = Integer.parseInt(StringTools.pe(s.toString(), "年龄.*?(\\d+).*国籍"));
+		} catch (Exception e) {
+		}
+		// 国籍
+		f.country=StringTools.e(s, "国籍", "出生地");
+		// 出生地
+		f.birthplace=StringTools.e(s, "出生地", "籍贯");
+		// 籍贯
+		f.nativeplace=StringTools.e(s, "籍贯", "民族");
+		// 民族
+		f.nationality=StringTools.e(s, "民族", "身份证号");
+		// 身份证号
+		f.certNo = StringTools.e(s, "身份证号", "职业");
+		// 职业
+		f.occupation = StringTools.e(s, "职业", "婚姻");
+		// 婚姻
+		f.marriageStatus=StringTools.e(s, "婚姻", "1.未婚 2.已婚");
+		// 现住址
+		f.homeAddress=StringTools.e(s, "现住址", "电话");
+		// 电话
+		f.mobilephone=StringTools.e(s, "电话", "邮编");
+		// 家庭邮编
+		f.homePostcode=StringTools.e(s, "邮编", "户口地");
+		// 户口地址
+		f.registeredaddress=StringTools.eList(s, Arrays.asList("户口地址","户口地"), "邮编");
+		// 户口邮编
+		f.registeredemail=StringTools.e(s, "邮编", "工作单位及地址");
+		// 工作单位及地址
+		f.company=StringTools.e(s, "工作单位及地址", "单位电话");
+		// 单位电话
+		f.businessphone=StringTools.e(s, "单位电话", "邮编");
+		// 单位邮编
+		f.businesspostcode=StringTools.e(s, "邮编", "病人来源");
+		// 病人来源
+		f.patientfrom=StringTools.e(s, "病人来源", "保健人员分类");
+		// 保健人员分类
+		f.sponsor=StringTools.e(s, "保健人员分类", "保健人员在岗状态");
+		// 保健人员在岗状态
+		f.sponsorstatues=StringTools.e(s, "保健人员在岗状态", "联系人姓名");
+		// 联系人姓名
+		f.contactName=StringTools.e(s, "联系人姓名", "关系");
+		// 联系人关系
+		f.relation=StringTools.e(s, "关系", "地址");
+		// 联系人地址
+		f.contactaddress=StringTools.e(s, "地址", "电话");
+		// 联系人电话
+		f.contactphone=StringTools.e(s, "电话", "入院途径");
+		// 入院途径 1.急诊 2.门诊 3.其他医疗机构转入 9.其他
+		f.admissionway=StringTools.e(s, "入院途径", "1.急诊");
+		// 入院时间 2015年02月13日18时
+		f.admissionTime=DateUtils.parseDate(StringTools.e(s, "入院时间", "入院科别"), "yyyy年MM月dd日HH时");
+		// 入院科别
+		f.admissionDept=StringTools.e(s, "入院科别", "病房");
+		// 入院病房
+		f.admissionWard=StringTools.e(s, "病房", "出院时间");
+		// 出院时间
+		f.dischargeTime=DateUtils.parseDate(StringTools.e(s, "出院时间", "出院科别"), "yyyy年MM月dd日HH时","yyyy年MM月dd日HH时yyyy年MM月dd日");
+		// 出院科别
+		f.dischargeDept=StringTools.e(s, "出院科别", "病房");
+		// 出院病房
+		f.dischargeWard=StringTools.e(s, "病房", "实际住院");
+		// 实际住院天数
+		f.inhopitalday=Integer.parseInt(StringTools.e(s, "实际住院", "天"));
+		// 转科科别
+		f.changedept=StringTools.eList(s, Arrays.asList("转科科别","转科"), "门（急）诊诊断");
+		// 门（急）诊诊断
+		f.REGISTER_DIAGNOSIS=StringTools.e(s, "门（急）诊诊断", "疾病编");
+		// 门（急）诊疾病编码
+		f.REGISTER_CODE=StringTools.eList(s, Arrays.asList("疾病编","疾病编码"), "出院诊断");//放在前面是有道理的
+		// 出院诊断 其他诊断
+		//public List<Patient.OutDiag> outDiags;
+		// 出院诊断 主要诊断 疾病
+		f.mainDiag=StringTools.e(s, "主要诊断", "\n");
+		// // 出院诊断 主要诊断 编码
+		f.mainDiagCode=StringTools.e(s, "", "\n");
+		// // 出院诊断 入院病情：1.有，2.临床未确定，3.情况不明，4.无
+		f.admissionCondition=StringTools.e(s, "", "其他诊断");
+		// 损伤、中毒的外部原因
+		f.EXTERNAL_CAUESES=StringTools.e(s, "损伤、中毒的外部原因", "疾病编码");
+		// 损伤、中毒疾病编码
+		f.EXTERNAL_CODE=StringTools.e(s, "疾病编码", "病理诊断");
+		// 病理诊断
+		f.PATHOLOGY_DIAGNOSIS=StringTools.e(s, "病理诊断", "疾病编码");
+		// 病理诊断疾病编码
+		f.PATHOLOGY_CODE=StringTools.e(s, "疾病编码", "药物过敏");
+		// 药物过敏：1.无 2.有
+		f.drugAllergy=StringTools.e(s, "药物过敏", "1.无 2.有");
+		// 过敏药物
+		f.ALLERGIC_DRUG=StringTools.e(s, "过敏药物", "死亡患者尸检");
+		// 死亡患者尸检
+		f.deadAutopsy=StringTools.e(s, "死亡患者尸检", "ABO血型");
+		// ABO血型：1.A 2.B 3.O 4.AB 5.不详 6.未查
+		f.ABO=StringTools.e(s, "ABO血型", "1.A");
+		// Rh血型：1.阴 2.阳 3.不详 4.未查
+		f.Rh=StringTools.e(s, "Rh血型", "1.阴");
+		// 输血品种- 红细胞 单位
+		f.redBloodCell=StringTools.e(s, "输血品种", "单位");
+		// 输血品种-血小板 袋
+		f.platelet=StringTools.e(s, "血小板", "血浆");
+		// 输血品种-血浆 ml
+		f.plasma=StringTools.e(s, "血浆", "全血");
+		// 输血品种-全血 ml
+		f.wholeBlood=StringTools.e(s, "全血", "其它");
+		// 输血品种-其它 ml
+		f.other=StringTools.e(s, "其它", "科 主 任");
+		// 科 主 任
+		f.KZR_DOCTOR_NAME=StringTools.e(s, "科 主 任", "主任（副主任）医师");
+		// 主任（副主任）医师
+		f.ZRFZR_DOCTOR_NAME=StringTools.e(s, "主任（副主任）医师", "主治医师");
+		// 主治医师
+		f.ZZ_DOCTOR_NAME=StringTools.e(s, "主治医师", "住院医师");
+		// 住院医师
+		f.ZY_DOCTOR_NAME=StringTools.e(s, "住院医师", "主诊医师");
+		// 主诊医师
+		f.ZZHEN_DOCTOR_NAME=StringTools.e(s, "主诊医师", "责任");
+		// 责任护士
+		f.ZR_NURSE_NAME=StringTools.e(s, "责任护士", "进修医师");
+		// 进修医师
+		f.JX_DOCTOR_NAME=StringTools.e(s, "进修医师", "实习医师");
+		// 实习医师
+		f.SX_DOCTOR_NAME=StringTools.e(s, "实习医师", "编 码 员");
+		// 编 码 员
+		f.coder=StringTools.e(s, "编 码 员", "病案质量");
+		// 病案质量:1.甲 2.乙 3.丙
+		f.ZK_DJ1=StringTools.e(s, "病案质量", "1.甲");
+		// 质控医师
+		f.ZK_DOCTOR_NAME=StringTools.e(s, "质控医师", "质控日期");
+		// 质控日期
+		f.qualityControlDate=StringTools.e(s, "质控日期", "质控护士");
+		// 质控护士
+		f.ZK_NURSE_NAME=StringTools.e(s, "质控护士", "填报医师");
+		// 填报医师签名
+		//public String imagSignature1;
+		// 填报医师代码
+		//public String TB_DOC_CODE;
+		// 填报医师名称
+		//public String TB_DOC_NAME;
+		// 颅脑损伤患者昏迷时间：入院前-天-小时-分钟 入院后-天-小时-分钟
+		// 入院前
+		//f.beforeday=Integer.parseInt(StringTools.e(s, "入院前", "天"));
+		// 天
+		//f.beforehours=Integer.parseInt(StringTools.e(s, "天", "小时"));
+		// 小时
+		//f.beforeminutes;
+		// 分钟 入院后
+		//public Integer afterday;
+		// 天
+		//public Integer afterhours;
+		// 小时
+		//public Integer afterminutes;
+		f.srcFile = file.getAbsolutePath();
+		return f;
+	}
 
-	public static InHospital extractInFromFile(File file) {
-		StringBuilder s = extractText(file, false);
+	public static InHospital extractInFromFile(File file) throws StringIndexOutOfBoundsException, IOException {
+//		List<String> startList = Arrays.asList("<ElementText>","<ElementText name=\"7D1C4C96BDB34EC5BB82726A48011089_3\">","<ElementText name=\"7D1C4C96BDB34EC5BB82726A48011089_1\">");
+//		StringBuilder s = null;
+//		try{s= extractTextList(file, startList,"</ElementText>",false);}catch(StringIndexOutOfBoundsException e){throw e;}
+		StringBuilder s = new StringBuilder(FileUtils.readFileToString(file));
 		InHospital i = new InHospital();
 		i.srcFile = file.getAbsolutePath();
-		i.admissionDept = extractTag("科室", ".*?", file);
-		i.admissionNo = extractPIdTag(file);
+		//i.admissionDept = StringTools.e(s, "科室：", "住院号");//extractTag("科室", ".*?", s.toString());
+		//i.admissionNo = extractPIdTag(file);
 		try {
 			i.inDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "入院日期：", "性别"));
 			i.takingDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "病史采集日期：", "年龄"));
@@ -277,13 +463,18 @@ public class PatientUtil {
 			i.contact = StringTools.e(s, "亲属姓名、电话", "主诉");
 		i.selfDesc = StringTools.e(s, "主诉", "现病史");
 		i.nowMedicalHistory = StringTools.e(s, "现病史", "既往史");
-		i.pastMedicalHistory = StringTools.pe(s.toString(), "既往史([\\s\\S]*?)(传染病史|个人生活史|个人史)");
-		if (s.indexOf("传染病史") >= 0)
-			i.infectiousHistory = StringTools.pe(s.toString(), "传染病史([\\s\\S]*?)(个人生活史|个人史)");
-		i.lifeHistory = StringTools.pe2(s.toString(), "(个人生活史|个人史)([\\s\\S]*?)家族史");
-		i.familyHistory = StringTools.e(s, "家族史", "体 格 检 查");
-		i.somatoscopy = ParseUtil.extractSomatoscopy(StringTools.e(s, "体 格 检 查", "辅助检查"));
-		if (s.indexOf("初步诊断") >= 0) {
+		try{
+			i.pastMedicalHistory = StringTools.pe(s.toString(), "既往史([\\s\\S]*?)(传染病史|个人生活史|个人史)");
+			if (s.indexOf("传染病史") >= 0)
+				i.infectiousHistory = StringTools.pe(s.toString(), "传染病史([\\s\\S]*?)(个人生活史|个人史)");
+			i.lifeHistory = StringTools.pe2(s.toString(), "(个人生活史|个人史)([\\s\\S]*?)家族史");
+			i.familyHistory = StringTools.e(s, "家族史", "体 格 检 查");
+		}catch(StringIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+		if (s.indexOf("辅助检查") >= 0)
+			i.somatoscopy = ParseUtil.extractSomatoscopy(StringTools.eList(s, Arrays.asList("体 格 检 查","体  格  检  查"), "辅助检查"));
+		if (s.indexOf("辅助检查") >= 0&&s.indexOf("初步诊断") >= 0) {
 			i.auxiliaryExamination = StringTools.e(s, "辅助检查", "初步诊断");
 			i.firstDiag.detail = StringTools.e(s, "初步诊断", "签名");
 			i.firstDiag.signature = StringTools.e(s, "签名", "时间");
@@ -291,8 +482,8 @@ public class PatientUtil {
 				i.firstDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
 			} catch (ParseException e) {
 			}
-		} else {
-			i.auxiliaryExamination = StringTools.e(s, "辅助检查", "</text>");
+		} else if (s.indexOf("辅助检查") >= 0&&s.indexOf("确定诊断") >= 0){
+			i.auxiliaryExamination = StringTools.e(s, "辅助检查", "确定诊断");
 		}
 		if (s.indexOf("确定诊断") > 0) {
 			i.confirmDiag.detail = StringTools.e(s, "确定诊断", "签名");
@@ -317,18 +508,19 @@ public class PatientUtil {
 			i.correctDiag.signature = StringTools.e(s, "签名", "时间");
 			try {
 				i.correctDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
-			} catch (ParseException e) {
+			} catch (Exception e) {
 			}
 		}
 		return i;
 	}
 
-	public static Operation extractOperationFromFile(File file) {
-		StringBuilder s = extractText(file, true);
+	public static Operation extractOperationFromFile(File file) throws IOException {
+		//StringBuilder s = extractText(file, "<text>","</text>",true);
+		StringBuilder s = new StringBuilder(FileUtils.readFileToString(file));
 		Operation o = new Operation();
 		o.operationDpt = StringTools.e(s, "科别", "床位号");
-		o.bedNumber = StringTools.e(s, "床位号", "术前诊断");
-		o.preDiagnosis = StringTools.e(s, "术前诊断", "术中诊断");
+		o.bedNumber = StringTools.e(s, "床位号", "术前诊");
+		o.preDiagnosis = StringTools.eList(s, Arrays.asList("术前诊断","术前诊"), "术中诊断");
 		try {
 			o.operataionDiagnosis = StringTools.e(s, "术中诊断", "手术名称");
 			o.operationTitle = StringTools.e(s, "手术名称", "手术医师");
@@ -368,19 +560,20 @@ public class PatientUtil {
 		}
 		o.sign = StringTools.pe(s.toString(), "签名：(.*?)(记录日期|日期)");
 		try {
-			o.recordTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "日期", "</text>"));
+			//o.recordTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "日期", "</text>"));
 		} catch (Exception e) {
 		}
 		o.srcFile = file.getAbsolutePath();
 		return o;
 	}
 
-	public static OutHospital extractOutFromFile(File file) {
-		StringBuilder s = extractText(file, true);
+	public static OutHospital extractOutFromFile(File file) throws IOException {
+		//StringBuilder s = extractText(file, "<text>","</text>",true);
+		StringBuilder s = new StringBuilder(FileUtils.readFileToString(file));
 		OutHospital o = new OutHospital();
-		o.department = extractTag("科别", ".*?", file);
+		//o.department = extractTag("科别", ".*?", s.toString());
 		try {
-			o.outDate = new SimpleDateFormat("yyyy年MM月dd日").parse(extractTag("出院时间[:|：]{0,1}", "\\d{4}年\\d{2}月\\d{2}日", file));// StringTools.e(s,
+			o.outDate = new SimpleDateFormat("yyyy年MM月dd日").parse(extractTag("出院时间[:|：]{0,1}", "\\d{4}年\\d{2}月\\d{2}日", s.toString()));// StringTools.e(s,
 		} catch (Exception e) {
 		}
 		o.inDescriotion = StringTools.e(s, "入院时情况(包括检验异常结果等)", "入院诊断");
@@ -390,9 +583,9 @@ public class PatientUtil {
 		o.outDiagnosis = StringTools.e(s, "出院诊断", "手术名称及伤口愈合情况");
 		o.operationDesc = StringTools.e(s, "手术名称及伤口愈合情况", "出院医嘱");
 		o.dischargeOrder = StringTools.pe(s.toString(), "出院医嘱([\\s\\S]*?)(备注|医生签名)");
-		if (s.indexOf("备注") >= 0)
+		if (s.indexOf("备注") >= 0&&s.indexOf("医生签名") >= 0)
 			o.note = StringTools.e(s, "备注", "医生签名");
-		o.sign = StringTools.e(s, "医生签名", "</text>");
+		//o.sign = StringTools.e(s, "医生签名", "</text>");
 		o.srcFile = file.getAbsolutePath();
 		return o;
 	}
@@ -448,45 +641,21 @@ public class PatientUtil {
 		return pId;
 	}
 
-	public static String extractTag(String obj, String match, File file) {
-		Pattern tagPattern = Pattern.compile("<text>(\\s*" + obj + ")(:|：){0,1}</text>");
-		Pattern contentPattern = Pattern.compile("<text>(" + match + ")</text>");
+	public static String extractTag(String obj, String match, String src) {
+		Pattern tagPattern = Pattern.compile("(\\s*" + obj + ")(:|：){0,1}");
+		Pattern contentPattern = Pattern.compile("(" + match + ")");
 		Matcher tagMatcher = null;
 		Matcher contentMatcher = null;
 		String content = null;
-		FileReader fr = null;
-		BufferedReader br = null;
-		try {
-			fr = new FileReader(file);
-			br = new BufferedReader(fr);
-			String ln;
-			boolean ready = false;
-			while ((ln = br.readLine()) != null) {
-				tagMatcher = tagPattern.matcher(ln);
+				tagMatcher = tagPattern.matcher(src);
 				if (tagMatcher.matches()) {
-					ready = true;
-				} else if (ready) {
-					contentMatcher = contentPattern.matcher(ln);
+				//	ready = true;
+				//} else if (ready) {
+					contentMatcher = contentPattern.matcher(src);
 					if (contentMatcher.find()) {
 						content = contentMatcher.group(1);
-						break;
 					}
 				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)
-					br.close();
-				if (fr != null)
-					fr.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		return content.trim();
 	}
 

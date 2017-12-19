@@ -297,7 +297,10 @@
 			$sorting +=",asc";
 			$(item).attr("src","../resources/dist/img/sort_asc.png");
 		}
-		window.location.href="listPage?source="+getParams("source")+"&sort="+$sorting;
+		if(getParams("source")!=null)
+    		window.location.href="listPage?source="+getParams("source")+"&sort="+$sorting;
+		else
+			window.location.href="listPage?sort="+$sorting;
 	}
     $("#patientCheckAll").click( 
     	function(){ 

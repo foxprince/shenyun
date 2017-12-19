@@ -46,7 +46,8 @@ public class Patient extends GenericNoSQLEntity {
 	public String birthplace;
 	// 数据来源
 	public String source;
-	// 扩展属性
+	public String srcFile;
+	// 扩展属性 key 为type，如出血组、手术预案等
 	public Map<String, ExtendObject> extendMap = new TreeMap<String, ExtendObject>();
 
 	public List<FrontPage> frontRecords = new ArrayList<FrontPage>();// 首页纪录

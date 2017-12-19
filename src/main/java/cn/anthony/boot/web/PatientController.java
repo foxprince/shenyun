@@ -195,7 +195,8 @@ public class PatientController extends GenericController<Patient> {
 		m.addAttribute("outOptions", Constant.outKeyMap.values());
 		m.addAttribute("bloodOptions", Constant.bloodKeyMap.values());
 		m.addAttribute("customeOptions", customeOptionService.findAll());
-		m.addAttribute("source", parameters.get("source").get(0));
+		if(parameters.get("source")!=null)
+			m.addAttribute("source", parameters.get("source").get(0));
 		return getListView();
 	}
 

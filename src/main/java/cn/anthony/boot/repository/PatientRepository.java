@@ -33,6 +33,7 @@ public interface PatientRepository
 
 	// @Query("select from Patient p where p.name like ?1")
 	Page<Patient> findByNameLike(String name, Pageable request);
+	List<Patient> findBySrcFileLike(String srcFile);
 
 	@Query("{ $or : [ { $where: '?0 == null' } , { field : ?0 } ] }")
 	List<Patient> findAll(String query);

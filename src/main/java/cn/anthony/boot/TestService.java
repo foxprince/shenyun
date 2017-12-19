@@ -2,12 +2,13 @@ package cn.anthony.boot;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,8 +27,9 @@ import cn.anthony.util.RefactorUtil;
 
 @SpringBootApplication
 public class TestService implements CommandLineRunner {
-	private static final String MOVE_DIR = "E:\\project\\神云系统\\data\\已处理\\";
-	private static final String MUL_DIR = "E:\\project\\神云系统\\data\\待处理\\";
+	private static final String srcDir = "/Users/zj/tmp/KYBLSJ/";
+	private static final String MOVE_DIR = "/Users/zj/tmp/已处理/";
+	private static final String ERR_DIR = "/Users/zj/tmp/格式错误/";
 	@Autowired
 	private PatientRepository repository;
 	@Autowired
@@ -47,33 +49,9 @@ public class TestService implements CommandLineRunner {
 		System.out.println("run test");
 		try {
 			long t1 = System.currentTimeMillis();
-//			InputStream is2 = new FileInputStream("/Users/zj/Documents/project/shenyun/2015患者信息（高清玲）.xlsx");
-//			Map<Integer, List<String>> map = ExcelUtil.readExcelContent(is2);
-//			int t = 0;
-//			for (int i = 1; i <= map.size(); i++) {
-//				List<String> l = (map.get(i));
-//				Patient p = new Patient();
-//				p.setSource("gql");
-//				p.setName(l.get(3));
-//				p.setpId(l.get(4));
-//				FrontPage fp = new FrontPage();
-//				try {
-//					fp.setAdmissionTime(DateUtils.parseDate(l.get(0), "MM/dd/yy"));
-//					fp.setDischargeTime(DateUtils.parseDate(l.get(10), "MM/dd/yy"));
-//				} catch (Exception e) {
-//				}
-//				fp.setREGISTER_DIAGNOSIS(l.get(6));
-//				fp.setMainDiag(l.get(7));
-//				fp.setZY_DOCTOR_NAME(l.get(5));
-//				p.addFront(fp);
-//				service.create(p);
-//				t++;
-//				System.out.println(p.getName()+","+l.get(0)+":"+fp.getAdmissionTimeDesc()+","+l.get(10)+":"+fp.getDischargeTimeDesc());
-//			}
-//			System.out.println(t);
+			processTool();
 			long t2 = System.currentTimeMillis();
 			System.out.println(t2 - t1);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,8 +69,7 @@ public class TestService implements CommandLineRunner {
 		return pre;
 	}
 
-	private void processTool() throws ParseException {
-		String srcDir = "E:\\project\\神云系统\\data\\待处理";
+	private void processTool() throws ParseException, IOException {
 		File dir = new File(srcDir);
 		long t1 = System.currentTimeMillis();
 		// 先处理首页文件，处理完移走
@@ -101,13 +78,13 @@ public class TestService implements CommandLineRunner {
 		});
 		// 再处理其他文件
 		process(dir, (File f) -> {
-			return true;
+			return !f.getName().endsWith(".DS_Store");
 		});
 		long t2 = System.currentTimeMillis();
 		System.out.println((t2 - t1) + "\t" + s.size());
 	}
 
-	public void process(File dir, FileFilter filter) throws ParseException {
+	public void process(File dir, FileFilter filter) throws ParseException, IOException {
 		// File[] fs = dir.listFiles((File f) -> {
 		// return f.isDirectory() ? true : f.getName().startsWith("FrontSheet");
 		// });
@@ -127,38 +104,58 @@ public class TestService implements CommandLineRunner {
 		}
 	}
 
-	private void pp(File file) throws ParseException {
+	private void pp(File file) throws ParseException, IOException {
 		String pId = PatientUtil.extractPIdTag(file);
+		Patient p = null;
+		if(pId==null) {
+			String s = file.getName().substring(file.getName().indexOf("_"));
+			p = service.findBySrcFileLike("FrontSheet"+s);
+			if(p!=null)
+				pId = p.getpId();
+		}
+		File destFile = new File(MOVE_DIR+file.getAbsolutePath().substring(file.getAbsolutePath().indexOf(srcDir)+srcDir.length()));
+		File errFile = new File(ERR_DIR+file.getAbsolutePath().substring(file.getAbsolutePath().indexOf(srcDir)+srcDir.length()));
 		System.out.println(pId + "\t" + file.getAbsolutePath());
 		if (pId != null) {
 			String fileName = file.getName();
-			List<Patient> list = repository.findByPId(pId);
-			if (list.size() == 0) {
+			//List<Patient> list = repository.findByPId(pId);
+			if (p==null) {
 				if (fileName.startsWith("FrontSheet")) {
 					repository.save(PatientUtil.extractPatientFromFile(file));
-					file.renameTo(new File(MOVE_DIR + file.getName()));
-				} else
+					//file.renameTo(destFile);
+					FileUtils.moveFile(file, destFile); 
+				} else {
+					//非首页信息，但是在数据库里没有首页纪录
 					System.out.println("no ffffff\t" + file.getName());
+					FileUtils.moveFile(file, errFile);
+				}
 			} else {
-				Patient p = list.get(0);
-				if (fileName.startsWith("FrontSheet")) {
-					// 首页信息
-					p.addFront(PatientUtil.extractFrontPage(file));
-				} else if (fileName.startsWith("HospitalRecord")) {
-					// 入院信息
-					p.addIn(PatientUtil.extractInFromFile(file));
-				} else if (fileName.startsWith("OperationInfoRecord")) {
-					// 手术信息
-					p.addOperation(PatientUtil.extractOperationFromFile(file));
-				} else if (fileName.startsWith("Discharge")) {
-					// 出院信息
-					p.addOut(PatientUtil.extractOutFromFile(file));
-				} else
-					System.out.println("errrrrr\t" + file.getName());
-				repository.save(p);
-				file.renameTo(new File(MOVE_DIR + file.getName()));
+				//Patient p = list.get(0);
+				//try{
+					if (fileName.startsWith("FrontSheet")) {
+						// 首页信息
+						p.addFront(PatientUtil.extractFrontPageWithText(file));
+					} else if (fileName.startsWith("HospitalRecord")) {
+						// 入院信息
+						p.addIn(PatientUtil.extractInFromFile(file));
+					} else if (fileName.startsWith("OperationInfoRecord")||fileName.startsWith("OperationInfoRec")) {
+						// 手术信息
+						p.addOperation(PatientUtil.extractOperationFromFile(file));
+					} else if (fileName.startsWith("Discharge")) {
+						// 出院信息
+						p.addOut(PatientUtil.extractOutFromFile(file));
+					} else
+						System.out.println("errrrrr\t" + file.getName());
+					repository.save(p);
+					FileUtils.moveFile(file, destFile);
+//				}catch(StringIndexOutOfBoundsException e){
+//					e.printStackTrace();
+//					FileUtils.moveFile(file, errFile);
+//				}
 			}
 			s.add(file.getName() + ":" + pId);
 		}
+		else
+			FileUtils.moveFile(file, errFile);
 	}
 }

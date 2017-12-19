@@ -1,5 +1,8 @@
 package cn.anthony.boot.domain;
 
+import java.io.File;
+import java.util.List;
+
 import cn.anthony.boot.util.Constant;
 import lombok.Data;
 
@@ -14,7 +17,12 @@ public class ExtendObject {
 	public String getTypeDesc() {
 		return Constant.getExtendTypeDesc(type);
 	}
-
+	@Data//手术预案，ppt格式
+	public static class Precase extends ExtendObject {public String type="precase";public List<File> files;}
+	@Data//手术录像，视频格式
+	public static class OperationVideoes extends ExtendObject {public String type="operationVideo";public List<File> files;}
+	@Data//影像图片，图片
+	public static class RelateImgs extends ExtendObject {public String type="relateImg";public List<File> files;}
 	@Data
 	public static class 出血组 extends ExtendObject {
 		// 患者姓名 病历编号 性别 年龄 身份证号 诊断 基本病情 标签 出生年月日 科室 就诊日期 编号种类 编号 其他编号种类 编号 联系人

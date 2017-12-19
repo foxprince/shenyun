@@ -537,6 +537,12 @@ public class Constant {
 			return "肿瘤组";
 		case "remark":
 			return "备注";
+		case "precase":
+			return "手术预案";
+		case "operationVideo":
+			return "手术视频";
+		case "relateImg":
+			return "影像图片";
 		default:
 			return type;
 		}

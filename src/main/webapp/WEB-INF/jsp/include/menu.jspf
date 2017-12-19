@@ -27,8 +27,9 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li>
-              <a href="/patient/list"> <i class="fa fa-th"></i> <span>病人</span> </a>
+              <a href="/patient/list?source=haitai"> <i class="fa fa-th"></i> <span>病人--海泰</span> </a>
               <a href="/patient/list?source=gql"> <i class="fa fa-th"></i> <span>病人--GQL</span> </a>
+              <a href="/patient/list?source=gql-access"> <i class="fa fa-th"></i> <span>病人--GQL_ACCESS</span> </a>
             </li>
             <li class="treeview" navi="search">
               <a href="#">

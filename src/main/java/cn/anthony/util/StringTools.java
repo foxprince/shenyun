@@ -241,6 +241,22 @@ public class StringTools {
 		src.delete(0, endIndex);
 		return s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s;
 	}
+	
+	public static String eList(StringBuilder src, List<String> startList, String end) {
+		int startIndex = -100;String start = null;
+		for(String s : startList) {
+			startIndex = src.indexOf(s);
+			if(startIndex>=0) {
+				start = s;
+				break;
+			}
+		}
+		src.delete(0, startIndex);
+		int endIndex = src.indexOf(end);
+		String s = (src.substring(start.length(), endIndex).trim());
+		src.delete(0, endIndex);
+		return s.startsWith(":") || s.startsWith("：") ? s.substring(1) : s;
+	}
 
 	public static String eWithoutTrim(StringBuilder src, String start, String end) {
 		int startIndex = src.indexOf(start);

@@ -65,6 +65,12 @@ public class PatientService extends GenericService<Patient> {
 			return l.get(0);
 		return null;
 	}
+	public Patient findBySrcFileLike(String srcFile) {
+		List<Patient> l = repository.findBySrcFileLike(srcFile);
+		if (l != null && l.size() > 0)
+			return l.get(0);
+		return null;
+	}
 
 	public Page<Patient> find(Predicate predicate, Pageable pageable) {
 		return repository.findAll(predicate, pageable);

@@ -1,5 +1,6 @@
 package cn.anthony.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -9,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -245,25 +244,24 @@ public class ExcelUtil {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(DateFormatUtils.format(DateUtils.parseDate("5/13/17", "MM/dd/yy"),"yyyy-MM-dd"));
-			// 对读取Excel表格标题测试
-//			InputStream is = new FileInputStream("/Users/zj/Documents/project/shenyun/2015患者信息（高清玲）.xlsx");
-//			ExcelUtil excelReader = new ExcelUtil();
-//			String[] title = excelReader.readExcelTitle(is);
-//			System.out.println("获得Excel表格的标题:");
-//			int j = 0;
-//			for (String s : title) {
-//				// System.out.println("public String "+s+";");
-//				System.out.print(j++ + ": " + s + "\t");
-//			}
-//			System.out.println();
-//			// 对读取Excel表格内容测试
-//			InputStream is2 = new FileInputStream("/Users/zj/Documents/project/shenyun/2015患者信息（高清玲）.xlsx");
-//			Map<Integer, List<String>> map = readExcelContent(is2);
-//			System.out.println("获得Excel表格的内容:");
-//			for (int i = 1; i <= map.size(); i++) {
-//				System.out.println(map.get(i));
-//			}
+			//对读取Excel表格标题测试
+			InputStream is = new FileInputStream("/Users/zj/Documents/project/shenyun/表3.xlsx");
+			ExcelUtil excelReader = new ExcelUtil();
+			String[] title = excelReader.readExcelTitle(is);
+			System.out.println("获得Excel表格的标题:");
+			int j = 0;
+			for (String s : title) {
+				// System.out.println("public String "+s+";");
+				System.out.print(j++ + ": " + s + "\t");
+			}
+			System.out.println();
+			// 对读取Excel表格内容测试
+			InputStream is2 = new FileInputStream("/Users/zj/Documents/project/shenyun/表3.xlsx");
+			Map<Integer, List<String>> map = readExcelContent(is2);
+			System.out.println("获得Excel表格的内容:");
+			for (int i = 1; i <= map.size(); i++) {
+				System.out.println(map.get(i));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
