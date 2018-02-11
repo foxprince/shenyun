@@ -2,7 +2,7 @@ package cn.anthony.boot.domain;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mysema.query.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryEntity;
 
 import lombok.Data;
 

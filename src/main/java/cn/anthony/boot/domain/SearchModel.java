@@ -7,9 +7,8 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.util.MultiValueMap;
 
-import com.mysema.query.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryEntity;
 
 import cn.anthony.boot.util.Constant;
 import cn.anthony.util.QueryOption;
@@ -68,7 +67,10 @@ public class SearchModel extends GenericNoSQLEntity {
 		StringBuilder sb = new StringBuilder();
 		for (QueryOption sf : fields)
 			sb.append(sf.toPlainString() + ",");
-		return sb.substring(0, sb.length() - 1);
+		if(sb.length()>0)
+			return sb.substring(0, sb.length() - 1);
+		else
+			return sb.toString();
 	}
 
 	public void addField(String k, String v, String andOr, String option) {

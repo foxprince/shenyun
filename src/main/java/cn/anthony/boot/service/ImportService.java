@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.ImportModel;
 import cn.anthony.boot.repository.ImportModelRepository;

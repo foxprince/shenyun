@@ -29,6 +29,7 @@ import cn.anthony.boot.domain.Patient.Diag;
 import cn.anthony.boot.domain.Patient.OperationDetail;
 import cn.anthony.boot.domain.Patient.OutDiag;
 import cn.anthony.boot.domain.Patient.SevereDetail;
+import cn.anthony.util.FileTools;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.SAXUtil;
 import cn.anthony.util.StringTools;
@@ -687,5 +688,15 @@ public class PatientUtil {
 			}
 		}
 		return sb;
+	}
+
+	public static String assetType(String ext) {
+		if(FileTools.imgExts.contains(ext.toLowerCase()))
+			return "1";
+		else if(FileTools.videoExts.contains(ext.toLowerCase()))
+			return "2";
+		else if(ext.equalsIgnoreCase("ppt")||ext.equalsIgnoreCase("pptx"))
+			return "3";
+		return "0";
 	}
 }

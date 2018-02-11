@@ -11,8 +11,8 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.StringPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.StringPath;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QPatient;
@@ -40,4 +40,6 @@ public interface PatientRepository
 
 	@Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
 	List<Patient> findAllIn(String query, Pageable pageable);
+
+	List<Patient> findBySource(String source);
 }

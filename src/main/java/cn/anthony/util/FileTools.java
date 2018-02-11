@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,10 +27,30 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.io.FileUtils;
+
 /**
  * @author Anthony
+ * 根据名称查找文件
  */
 public class FileTools {
+	public static List<String> imgExts = Arrays.asList("bmp","jpg","jpeg","hdri","flic","emf","ico","png","tiff","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","wmf");
+	public static List<String> videoExts = Arrays.asList("mpg","mpeg","mpe","mpa","asx","wvx","gdf","wmv","asf","asx","rm","rmvb","mp4","3gp","mov","m4v","avi","dat","mkv","flv","vob","ts","mts");
+	public static List<File>  search(File root,String fileName) {
+        List<File> l = new ArrayList<File>();
+		try {
+            boolean recursive = true;
+            Collection<File> files = FileUtils.listFiles(root, null, recursive);
+            for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
+                File file = iterator.next();
+                if (file.getName().contains(fileName))
+                    l.add(file);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return l;
+    }
 	/**
 	 * 锟侥硷拷锟斤拷锟斤拷
 	 * 
@@ -519,15 +540,7 @@ public class FileTools {
 	}
 
 	public static void main(String[] args) {
-		String fileName = "/Users/hch/Documents/workspace/smsGroup/WebRoot/WEB-INF/lib";
-		File dir = new File(fileName);
-		StringBuffer sb = new StringBuffer("export CLASSPATH=$CLASSPATH:");
-		for (String s : dir.list()) {
-			if (s.endsWith("jar") || s.endsWith("zip"))
-				sb.append("$WEBINF/lib/" + s + ":");
-		}
-		sb.append("$HOME/tomcat/lib/servlet-api.jar");
-		System.out.println(sb.toString());
+		System.out.println("1.123".substring("1.123".lastIndexOf(".")));
 	}
 
 	public static void createFile(String filepath, String content, boolean append) {

@@ -98,6 +98,7 @@
                   <li><a href="#outHospital" data-toggle="tab">出院纪录</a></li>
                   <li><a href="#pacs" data-toggle="tab">PACS影像</a></li>
                   <li><a href="#dsa" data-toggle="tab">DSA影像</a></li>
+                  <li><a href="#asset" data-toggle="tab">外来资料</a></li>
                   <c:forEach var="item" items="${patient.extendMap}">
                     <li><a href="#${item.key }" data-toggle="tab">${item.value.typeDesc}</a></li>
                   </c:forEach>
@@ -110,6 +111,7 @@
                   <%@ include file="outHospital.jspf" %>
                   <%@ include file="pacs.jspf" %>
                   <%@ include file="dsa.jspf" %>
+                  <%@ include file="asset.jspf" %>
                   
                   <c:forEach var="item" items="${patient.extendMap}">
                     <div class="tab-pane" id="${item.key }">

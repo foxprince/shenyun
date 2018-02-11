@@ -18,9 +18,11 @@ public class Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		// SpringApplication.run(Application.class, args);
 		// Enable MongoDB logging in general
-		System.setProperty("DEBUG.MONGO", "true");
+		//System.setProperty("DEBUG.MONGO", "true");
 		// Enable DB operation tracing
+		//System.setProperty("DB.TRACE", "true");
 		System.setProperty("DB.TRACE", "true");
+		System.setProperty("DEBUG.MONGO", "true");
 		SpringApplication app = new SpringApplication(Application.class);
 		// app.setWebEnvironment(true);
 		// app.setApplicationContextClass(AnnotationConfigEmbeddedWebApplicationContext.class);

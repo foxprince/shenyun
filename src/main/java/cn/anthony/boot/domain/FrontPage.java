@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.mysema.query.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryEntity;
 
 import cn.anthony.boot.util.Constant;
 import cn.anthony.util.DateUtil;

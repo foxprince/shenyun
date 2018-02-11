@@ -1,5 +1,6 @@
 package cn.anthony.boot.service;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,10 +14,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
+import cn.anthony.boot.util.PatientUtil;
+import cn.anthony.util.FileTools;
 
 @SuppressWarnings("rawtypes")
 @Service
@@ -32,7 +35,19 @@ public class PatientService extends GenericService<Patient> {
 	public PatientService() {
 		super();
 	}
-
+	
+	private void updateAssets(String source) {
+		for(Patient p : repository.findBySource(source)) {
+			System.out.println(p.getName());
+			for(File f : FileTools.search(new File("d:\\"),p.getName())){
+				String ext = f.getName().substring(f.getName().lastIndexOf(".")+1);
+				String type = PatientUtil.assetType(ext);
+				System.out.println("\t"+ext+" | "+f.getAbsolutePath());
+				p.addAsset(type, f);
+				repository.save(p);
+			}
+		}
+	}
 	public List<String> getChangedeptList() {
 		if (changedeptList == null)
 			changedeptList = ditinctChangedept();

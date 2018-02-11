@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mysema.query.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryEntity;
 
 import lombok.Data;
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.SearchModel;
 import cn.anthony.boot.service.GenericService;

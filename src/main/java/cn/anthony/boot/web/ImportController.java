@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.ExtendObject;
 import cn.anthony.boot.domain.FrontPage;

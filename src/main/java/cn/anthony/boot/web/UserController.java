@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.BaseUser;
 import cn.anthony.boot.domain.User;

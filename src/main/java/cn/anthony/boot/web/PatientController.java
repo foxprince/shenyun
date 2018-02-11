@@ -39,13 +39,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QPatient;
@@ -130,7 +130,14 @@ public class PatientController extends GenericController<Patient> {
 		m.addAttribute("patient", service.findByPid(pId));
 		return getIndexView();
 	}
-
+	
+	@RequestMapping(value = { "/query" })
+	public Page<Patient> query(@QuerydslPredicate(root = Patient.class) Predicate predicate,
+			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable
+			) {
+		return service.find(predicate, pageable);
+	}
+	
 	@RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
 	public String listPage(@ModelAttribute("pageRequest") PatientSearch ps,
 			@QuerydslPredicate(root = Patient.class) Predicate predicate,
@@ -177,8 +184,8 @@ public class PatientController extends GenericController<Patient> {
 		predicate = patientBinding(QPatient.patient.outRecords.any(), "outHospital.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.remarks.any(), "remark.", parameters, predicate);
 		session.setAttribute("predicate", predicate);
-		System.out.println("predecate:" + predicate);
 		QPatient.patient.age.asc();
+		System.out.println("predecate:" + predicate);
 		Page<Patient> page = service.find(predicate, pageable);
 		if (page.getContent().size() == 1)
 			return "redirect:" + getIndexView() + "?id=" + page.getContent().get(0).getId();
@@ -388,10 +395,10 @@ public class PatientController extends GenericController<Patient> {
 			if (f != null)
 				try {
 					BooleanExpression expression = null;// .containsIgnoreCase(value);
-					if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.ListPath")) {
+					if (f.getType().getCanonicalName().equals("com.querydsl.core.types.dsl.ListPath")) {
 						ListPath path = (ListPath) f.get(o);
 						System.out.println(path);
-					} else if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.NumberPath")) {
+					} else if (f.getType().getCanonicalName().equals("com.querydsl.core.types.dsl.NumberPath")) {
 						NumberPath<Integer> path = ((NumberPath<Integer>) f.get(o));
 						Integer ivalue = Integer.parseInt(value);
 						if (option.equalsIgnoreCase("eq"))
@@ -406,7 +413,7 @@ public class PatientController extends GenericController<Patient> {
 							expression = path.notIn(ivalue);
 						else if (option.equalsIgnoreCase("ne"))
 							expression = path.notIn(ivalue);
-					} else if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.DateTimePath")) {
+					} else if (f.getType().getCanonicalName().equals("com.querydsl.core.types.dsl.DateTimePath")) {
 						DateTimePath<Date> path = ((DateTimePath<Date>) f.get(o));
 						Date dvalue = DateUtil.parse(value);
 						if (option.equalsIgnoreCase("eq"))
@@ -421,8 +428,8 @@ public class PatientController extends GenericController<Patient> {
 							expression = path.ne(dvalue);
 						else if (option.equalsIgnoreCase("notIn"))
 							expression = path.notIn(dvalue);
-					} else if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath")) {
-						StringPath path = ((com.mysema.query.types.path.StringPath) f.get(o));
+					} else if (f.getType().getCanonicalName().equals("com.querydsl.core.types.dsl.StringPath")) {
+						StringPath path = ((StringPath) f.get(o));
 						if (option.equalsIgnoreCase("eq"))
 							expression = path.equalsIgnoreCase(value);
 						else if (option.equalsIgnoreCase("contains"))
@@ -432,9 +439,9 @@ public class PatientController extends GenericController<Patient> {
 						else if (option.equalsIgnoreCase("le"))
 							expression = path.loe(value);
 						else if (option.equalsIgnoreCase("ne"))
-							expression = path.notLike(value);
+							expression = path.notEqualsIgnoreCase(value);
 						else if (option.equalsIgnoreCase("notIn"))
-							expression = path.notIn(value);
+							expression = path.containsIgnoreCase(value).not();
 					}
 					if (andOr.equalsIgnoreCase("and"))
 						predicate = expression.and(predicate);
@@ -452,9 +459,9 @@ public class PatientController extends GenericController<Patient> {
 	private Predicate queryBinding(Object o, String key, String value, Predicate predicate) {
 		if (o != null && StringTools.checkNull(value) != null) {
 			Field f = RefactorUtil.getFieldByName(o, key);
-			if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath"))
+			if (f.getType().getCanonicalName().equals("com.querydsl.core.types.dsl.StringPath"))
 				try {
-					predicate = ((com.mysema.query.types.path.StringPath) f.get(o)).containsIgnoreCase(value).and(predicate);
+					predicate = ((StringPath) f.get(o)).containsIgnoreCase(value).and(predicate);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}

@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="tab-pane" id="asset">
+	<div class="row modal-body">
+		<div class="box-header">
+		</div>
+	</div>
+	<div id="remark_parent">
+		<c:forEach var="item" items="${patient.assets}">
+		<div class="row" >
+			<div class="col-md-12">
+				<!-- Box Comment -->
+				<div class="box box-widget box-primary direct-chat direct-chat-primary">
+					<div class="box-header with-border">
+						<div class="user-block">
+							<span class="username">${item.file}</span> 
+						</div>
+						<!-- /.user-block -->
+						<div class="box-tools">
+							<button class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">
+								<i class="fa fa-circle-o"></i>
+							</button>
+							<button class="btn btn-box-tool" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+							<button class="btn btn-box-tool" data-widget="remove">
+								<i class="fa fa-times"></i>
+							</button>
+						</div>
+						<!-- /.box-tools -->
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.col -->
+		</div>
+		</c:forEach>
+	</div>
+</div>
+<!-- /.tab-pane -->

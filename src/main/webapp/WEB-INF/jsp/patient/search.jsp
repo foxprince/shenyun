@@ -195,7 +195,8 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime">出院起始</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <INPUT name="dischargetime" class="form-control" id="dischargetime" type="date">
+                            <form:input class="form-control" path="outHospital.outDate" type="date" />
+                            <input type="hidden" name="outHospital.outDate_option" value="ge"/>
                           </DIV>
                         </DIV>
                         <DIV class="form-group form-group-sm">
@@ -212,7 +213,8 @@
                         <DIV class="form-group form-group-sm">
                           <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime2">出院截止</LABEL>
                           <DIV class="col-md-9 col-sm-9">
-                            <INPUT name="dischargetime2" class="form-control" id="dischargetime2" type="date">
+                            <form:input class="form-control" path="outHospital.outDate" type="date" />
+                            <input type="hidden" name="outHospital.outDate_option" value="le"/>
                           </DIV>
                         </DIV>
                       </DIV>

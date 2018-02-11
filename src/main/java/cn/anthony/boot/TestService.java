@@ -14,7 +14,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.StringPath;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QInHospital;
@@ -61,7 +62,7 @@ public class TestService implements CommandLineRunner {
 		Field f = RefactorUtil.getFieldByName(QInHospital.inHospital, key);
 		if (f.getType().getCanonicalName().equals("com.mysema.query.types.path.StringPath")) {
 			try {
-				pre = ((com.mysema.query.types.path.StringPath) f.get(QPatient.patient.inRecords.any())).eq(value).and(pre);
+				pre = ((StringPath) f.get(QPatient.patient.inRecords.any())).eq(value).and(pre);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

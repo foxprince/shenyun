@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.SearchModel;
 import cn.anthony.boot.repository.SearchModelRepository;
@@ -16,6 +16,7 @@ public class SearchModelService extends GenericService<SearchModel> {
 	@Resource
 	protected SearchModelRepository repository;
 
+	@Override
 	public SearchModelRepository getRepository() {
 		return repository;
 	}

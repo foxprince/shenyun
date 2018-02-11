@@ -393,8 +393,8 @@ public class Constant {
 		defaultPut(operKeyMap, "operation.operationTitle", "手术名称");
 		defaultPut(operKeyMap, "operation.doctor", "手术医师");
 		defaultPut(operKeyMap, "operation.assistant", "助手");
-		defaultPut(operKeyMap, DATETIME_TYPE, "operation.beginTime", "开始时间");
-		defaultPut(operKeyMap, DATETIME_TYPE, "operation.endTime", "结束时间");
+		defaultPut(operKeyMap, DATE_TYPE, "operation.beginTime", "开始时间");
+		defaultPut(operKeyMap, DATE_TYPE, "operation.endTime", "结束时间");
 		defaultPut(operKeyMap, "operation.anaesthetic", "麻醉方法");
 		defaultPut(operKeyMap, "operation.bloodLoss", "失血量");
 		defaultPut(operKeyMap, "operation.bloodTransfusion", "输血量");

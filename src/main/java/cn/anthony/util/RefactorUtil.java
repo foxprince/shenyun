@@ -13,8 +13,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.ListPath;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.ListPath;
 
 import cn.anthony.boot.domain.ExtendObject;
 import cn.anthony.boot.domain.Patient;
@@ -135,7 +135,7 @@ public class RefactorUtil {
 					m.add(StringTools.printString(val));
 					System.out.println(val.getClass().getName());
 					if (!val.getClass().getName().equals(o.getClass().getName())) {
-						if (val instanceof com.mysema.query.types.path.ListPath) {
+						if (val instanceof ListPath) {
 							m.addAll(getQueraPaths(((ListPath) val).any()));
 						} else if ((val instanceof QPatient_OutDiag || val instanceof QPatient_Diag
 								|| val instanceof QPatient_OperationDetail || val instanceof QPatient_SevereDetail
