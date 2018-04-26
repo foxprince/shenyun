@@ -43,8 +43,9 @@ public class FileTools {
             Collection<File> files = FileUtils.listFiles(root, null, recursive);
             for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
                 File file = iterator.next();
-                if (file.getName().contains(fileName))
-                    l.add(file);
+                if (file.getPath().contains(fileName)) {
+                	l.add(file);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

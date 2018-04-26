@@ -32,7 +32,7 @@
               <DIV class="panel panel-default">
                 <DIV class="row panel-heading clearfix ">
                   <DIV class="col-sm-4 pull-center">
-                    <BUTTON class="btn btn-success btn-sm" type="submit">查询病案</BUTTON>
+                    <BUTTON class="btn btn-success btn-sm" type="button" onclick="checkSubmit()">查询病案</BUTTON>
                   </DIV>
                   <div class="col-sm-8 pull-left">
                     <label class="col-sm-4 control-label">保存查询历史</label>
@@ -241,6 +241,19 @@
                         </DIV>
                       </DIV>
                     </DIV>
+                    <DIV class="row">
+                      <DIV class="col-md-4 col-sm-4">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">病案来源</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:select path="source" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${sourceList}" />
+                            </form:select>
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                    </DIV>
                     <div class="box box-success">
     <div class="box-header">
       <h3 class="box-title">排序选项</h3>
@@ -254,64 +267,48 @@
         <DIV class="row">
           <div class="form-group">
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 年龄</label>
-            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 年龄</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.age" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.age" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 入院时间</label>
-            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 入院时间</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.admissionTime" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.admissionTime" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 出院时间</label>
-            <LABEL class="radio-inline"><INPUT name="sort" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
-          </DIV>
-          </div>
-        </DIV>
-        <DIV class="row">
-          <div class="form-group">
-          <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 籍贯</label>
-            <LABEL class="radio-inline"><INPUT name="sort1" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
-          </DIV>
-          <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 出生地</label>
-            <LABEL class="radio-inline"><INPUT name="sort2" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
-          </DIV>
-          <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 民族</label>
-            <LABEL class="radio-inline"><INPUT name="sort3" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 出院时间</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.dischargeTime" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.dischargeTime" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           </div>
         </DIV>
         <DIV class="row">
           <div class="form-group">
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 住院次数</label>
-            <LABEL class="radio-inline"><INPUT name="sort4" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 主要诊断</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.mainDiag" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.mainDiag" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 主要诊断</label>
-            <LABEL class="radio-inline"><INPUT name="sort5" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 手术名称</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.operations.operationTitle" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.operations.operationTitle" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 手术</label>
-            <LABEL class="radio-inline"><INPUT name="sort6" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 手术医师</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.operations.doctor" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.operations.doctor" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           </div>
         </DIV>
         <DIV class="row">
           <div class="form-group">
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 主诊医生</label>
-            <LABEL class="radio-inline"><INPUT name="sort7" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 主诊医生</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.ZZHEN_DOCTOR_NAME" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.ZZHEN_DOCTOR_NAME" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 主治医师</label>
-            <LABEL class="radio-inline"><INPUT name="sort8" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 主治医师</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.ZZ_DOCTOR_NAME" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.ZZ_DOCTOR_NAME" type="radio"  value="desc"> 逆序 </LABEL>
           </DIV>
           <DIV class="col-md-4 col-sm-4">
-            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="minimal" > 住院医师</label>
-            <LABEL class="radio-inline"><INPUT name="sort9" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><INPUT name="sort" type="radio" checked="" value="desc"> 逆序 </LABEL>
+            <label class="col-md-6 col-sm-6 control-label"><input type="checkbox" class="sortCheck" > 住院医师</label>
+            <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="sort.frontRecords.ZY_DOCTOR_NAME" type="radio" value="asc"> 顺序 </LABEL> <LABEL class="radio-inline"><input type="hidden" name="sort"/> <input name="radio.frontRecords.ZY_DOCTOR_NAME" type="radio" value="desc"> 逆序 </LABEL>
           </DIV>
           </div>
         </DIV>
@@ -321,7 +318,7 @@
                 </DIV>
                 <DIV class="panel-heading clearfix ">
                   <DIV class="col-sm-4 pull-center">
-                    <BUTTON class="btn btn-success btn-sm" type="submit">查询病案</BUTTON>
+                    <BUTTON class="btn btn-success btn-sm" type="button" onclick="checkSubmit()">查询病案</BUTTON>
                   </DIV>
                   <div class="col-sm-8 pull-left">
                     <label class="col-sm-4 control-label">保存查询历史</label>
@@ -345,6 +342,22 @@
     <%@ include file="../include/footer.jspf"%>
     <%@ include file="../include/sidebar.jspf"%>
   </div>
+  <script>
+  function checkSubmit() {
+	  var sort="";
+	  $(".sortCheck").each(function(index,e){
+		  var sorte = $(e).parent().parent().find("input:hidden");
+		  if($(e).prop("checked")) {
+		  	var i = $(e).parent().parent().find("input:radio:checked");
+		  	var sort = $(i).attr("name").slice(5)+","+$(i).val();
+		  	$(sorte).val(sort);
+		  }
+		  else
+		  	$(sorte).remove();
+	  })
+	  $("#patientForm").submit();
+  }
+  </script>
   <!-- ./wrapper -->
   <!-- Bootstrap 3.3.5 -->
   <script src="../resources/bootstrap/js/bootstrap.min.js"></script>

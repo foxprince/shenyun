@@ -1,6 +1,5 @@
 package cn.anthony.boot.domain;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +57,7 @@ public class Patient extends GenericNoSQLEntity {
 	public List<Remark> remarks = new ArrayList<Remark>();/* 备注 */
 	public List<Asset> assets = new ArrayList<Asset>();//介入、预案、手术资料
 	
-	public void addAsset(String type,File f) {
+	public void addAsset(String type,String f) {
 		assets.add(new Asset(type,f));
 	}
 	public List<Remark> getRemarks() {
@@ -193,13 +192,13 @@ public class Patient extends GenericNoSQLEntity {
 		public Asset() {
 			super();
 		}
-		public Asset(String type, File file) {
+		public Asset(String type, String filePath) {
 			super();
 			this.type = type;
-			this.file = file;
+			this.filePath = filePath;
 		}
 		public String type;//1:扫片，2:介入预案PPT，3:手术视频
-		public File file;//文件所在位置
+		public String filePath;//文件所在位置
 	}
 	@Data
 	public static class Diag {

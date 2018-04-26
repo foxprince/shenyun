@@ -33,19 +33,15 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-content">
-                  <html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/listPage">
                     <div class="row">
-                      <html:inputField labelCss="col-sm-4" css="col-sm-4" name="name" label="病人姓名" />
-                      <input type="hidden" name="source" value="${source}"/>
-                      <div class="col-sm-4">
-                        <button type="submit" class="btn btn-primary pull-left">搜</button>
-                      </div>
+			          
+                      
+                      
                       <!-- <div class="col-sm-4"><input type="button" value="导出数据" onclick="download()"/></div> -->
                       <div class="col-sm-4">
                         <A class="btn btn-success" data-toggle="modal" data-target="#csvOutput">导出数据 </A>
                       </div>
                     </div>
-                  </html:form>
                 </div>
               </div>
               <!-- /.box-header -->
@@ -85,7 +81,7 @@
                     </tr>
                   </tfoot>
                 </table>
-                <html:page url="./listPage?1=1" />
+                <html:page url="?1=1" />
               </div>
               <!-- /.box-body -->
             </div>
@@ -249,24 +245,18 @@
   <script>
   $(function () {
 	  var sort = getParams("sort");
-	  if(sort!=null){	  
+	  if(sort!=null){
 		  var array = sort.split(",");
 		  $(".sortImg").each(function(){
-		      if(array[0]==$(this).attr("sort")) {
-		      	$(this).attr("src","../resources/dist/img/sort_"+array[1]+".png");
+			  for(var i= 0;i<array.length;i++){  
+			  if(array[i]==$(this).attr("sort")) {
+		      	$(this).attr("src","../resources/dist/img/sort_"+array[i+1]+".png");
 		      	$(this).parent().addClass("bg-green-active");
 		      }
+			  }
 		  });
 	  }
     });	
-  	<spring:eval expression="T(cn.anthony.boot.util.Constant).getJSArrayString(bloodOptions)" var="keyDesc" />
-    var bloodOptions=new Array(${keyDesc});
-    Array.prototype.contains = function ( needle ) {
-    	  for (i in this) {
-    	    if (this[i] == needle) return true;
-    	  }
-    	  return false;
-    	}
     function download(){
         var url="./download";
         window.open(url);
@@ -298,9 +288,9 @@
 			$(item).attr("src","../resources/dist/img/sort_asc.png");
 		}
 		if(getParams("source")!=null)
-    		window.location.href="listPage?source="+getParams("source")+"&sort="+$sorting;
+    		window.location.href="?source="+getParams("source")+"&sort="+$sorting;
 		else
-			window.location.href="listPage?sort="+$sorting;
+			window.location.href="?sort="+$sorting;
 	}
     $("#patientCheckAll").click( 
     	function(){ 

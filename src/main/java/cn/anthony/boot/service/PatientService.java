@@ -1,6 +1,8 @@
 package cn.anthony.boot.service;
 
 import java.io.File;
+import java.util.Date;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,22 +33,44 @@ public class PatientService extends GenericService<Patient> {
 	private static List<String> changedeptList;
 	private static List<String> dischargeWardList;
 	private static List<String> admissionWardList;
-
+	
+	private static List<String> rootDirs = Arrays.asList("U:\\","V:\\","W:\\","X:\\","Y:\\","Z:\\");
 	public PatientService() {
 		super();
 	}
 	
-	private void updateAssets(String source) {
-		for(Patient p : repository.findBySource(source)) {
-			System.out.println(p.getName());
-			for(File f : FileTools.search(new File("d:\\"),p.getName())){
-				String ext = f.getName().substring(f.getName().lastIndexOf(".")+1);
-				String type = PatientUtil.assetType(ext);
-				System.out.println("\t"+ext+" | "+f.getAbsolutePath());
-				p.addAsset(type, f);
-				repository.save(p);
+	public String updateAssets(String source,String pId) {
+		if(pId!=null)
+			return updatePatientAset(repository.findByPId(pId));
+		else { 
+			StringBuilder sb = new StringBuilder();
+			for(Patient p : repository.findBySource(source)) {
+				sb.append(updatePatientAset(p));
 			}
+			return sb.toString();
 		}
+	}
+	
+	public String updateAssetsByInTime(String source,Date begin,Date end) {
+		StringBuilder sb = new StringBuilder();
+		for(Patient p : repository.findBySourceAndFrontRecordsAdmissionTimeBetween(source,begin,end)) {
+			System.out.println(p.getName()+"  \n");
+			sb.append(updatePatientAset(p));
+		}
+		return sb.toString();
+	}
+
+	private String updatePatientAset(Patient p) {
+		StringBuilder sb = new StringBuilder();
+		for(String dir : rootDirs)
+		for(File f : FileTools.search(new File(dir),p.getName())){
+			String ext = f.getPath().substring(f.getPath().lastIndexOf(".")+1);
+			String type = PatientUtil.assetType(ext);
+			sb.append("  "+ext+" | "+f.getAbsolutePath()+"  \n");
+			p.addAsset(type, f.getAbsolutePath());
+			repository.save(p);
+		}
+		return sb.toString();
 	}
 	public List<String> getChangedeptList() {
 		if (changedeptList == null)
@@ -75,10 +99,7 @@ public class PatientService extends GenericService<Patient> {
 	}
 
 	public Patient findByPid(String pId) {
-		List<Patient> l = repository.findByPId(pId);
-		if (l != null && l.size() > 0)
-			return l.get(0);
-		return null;
+		return repository.findByPId(pId);
 	}
 	public Patient findBySrcFileLike(String srcFile) {
 		List<Patient> l = repository.findBySrcFileLike(srcFile);
@@ -117,6 +138,10 @@ public class PatientService extends GenericService<Patient> {
 
 	public List<String> ditinctDischargeWard() {
 		return mongoTemplate.getCollection("patient").distinct("frontRecords.dischargeWard");
+	}
+	
+	public List<String> ditinctSource() {
+		return mongoTemplate.getCollection("patient").distinct("source");
 	}
 
 	public List<String> ditinctAdmissionWard() {

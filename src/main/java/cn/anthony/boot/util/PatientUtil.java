@@ -689,7 +689,7 @@ public class PatientUtil {
 		}
 		return sb;
 	}
-
+	
 	public static String assetType(String ext) {
 		if(FileTools.imgExts.contains(ext.toLowerCase()))
 			return "1";

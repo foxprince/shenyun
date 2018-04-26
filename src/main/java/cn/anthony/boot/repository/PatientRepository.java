@@ -1,5 +1,6 @@
 package cn.anthony.boot.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public interface PatientRepository
 		});
 	}
 
-	List<Patient> findByPId(String pId);
+	Patient findByPId(String pId);
 
 	// @Query("select from Patient p where p.name like ?1")
 	Page<Patient> findByNameLike(String name, Pageable request);
@@ -40,6 +41,12 @@ public interface PatientRepository
 
 	@Query("{ $or : [ { $where: '?0.length == 0' } , { field : { $in : ?0 } } ] }")
 	List<Patient> findAllIn(String query, Pageable pageable);
-
+	
+	@Query("{assets:{$ne:null}}")
+	Page<Patient> findWithAsset(Pageable pageable);
+	
 	List<Patient> findBySource(String source);
+
+	List<Patient> findBySourceAndFrontRecordsAdmissionTimeBetween(String source,Date begin,Date end);
+	
 }

@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -206,7 +207,11 @@ public class PatientController extends GenericController<Patient> {
 			m.addAttribute("source", parameters.get("source").get(0));
 		return getListView();
 	}
-
+	@RequestMapping(value = {"/listWithAsset"})
+	public String listWithAsset(@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable,Model m){
+		ControllerUtil.setPageVariables(m, service.getRepository().findWithAsset(pageable));
+		return getListView();
+	}
 	/**
 	 * 试验成功，正式方法
 	 * 
@@ -325,6 +330,7 @@ public class PatientController extends GenericController<Patient> {
 		m.addAttribute("changedeptList", service.getChangedeptList());
 		m.addAttribute("dischargeWardList", service.getDischargeWardList());
 		m.addAttribute("admissionWardList", service.getAdmissionWardList());
+		m.addAttribute("sourceList", service.ditinctSource());
 		return "/patient/search";
 	}
 
@@ -356,6 +362,29 @@ public class PatientController extends GenericController<Patient> {
 			return false;
 		}
 		return true;
+	}
+	
+	@RequestMapping(value = { "/updateAsset" })
+	@ResponseBody
+	public String updateAsset(String pId) {
+		try {
+			return service.updateAssets("haitai",pId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "find fail";
+	}
+	
+	@RequestMapping(value = { "/updateAssetByTime" })
+	@ResponseBody
+	public String updateAssetByTime(@DateTimeFormat(pattern="yyyyMMdd")Date begin,@DateTimeFormat(pattern="yyyyMMdd")Date end) {
+		try {
+			System.out.println("begin:"+begin+"---end:"+end);
+			return service.updateAssetsByInTime("haitai",begin,end);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "find fail";
 	}
 
 	/**
