@@ -15,7 +15,7 @@
 							<div class="row">
 								<div class="col-sm-4">
 								<form:form action="${pageUrl}" commandName="pageRequest" method="POST">每页:
-								<form:input  path="size" class="input-short"/>
+								<form:input  path="size" placeholder="100" class="input-short"/>
 								<input type="submit" value="条"/><form:errors path="size" cssclass="error"/>
 								</form:form>
 								</div>

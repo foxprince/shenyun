@@ -36,9 +36,8 @@ import cn.anthony.util.StringTools;
 
 public class PatientUtil {
 	public static void main(String[] args) throws Exception {
-		File file = new File("/Users/zj/tmp/KYBLSJ/入院记录1/20161001-20161031/HospitalRecord_000529855800_1.xml");
-		System.out.println(StringTools.pe(FileUtils.readFileToString(file), "<ElementText(.*)>(.*)</ElementText>"));
-		System.out.println(extractText(file,"<ElementText>","</ElementText>",true));
+		File file = new File("/Users/zj/tmp/格式错误/病案首页/FrontSheet_000612203800_1.xml");
+		System.out.println(extractPIdTag(file));
 		// System.out.println(file.getAbsolutePath().replaceAll("\\", "/"));
 		// Patient p = (extractPatientFromFile(file));
 		// System.out.println(p.somatoscopy);
@@ -304,9 +303,10 @@ public class PatientUtil {
 		// 婚姻
 		f.marriageStatus=StringTools.e(s, "婚姻", "1.未婚 2.已婚");
 		// 现住址
-		f.homeAddress=StringTools.e(s, "现住址", "电话");
+		f.homeAddress=StringTools.eList(s, Arrays.asList("现住址","现"), "电话");
 		// 电话
 		f.mobilephone=StringTools.e(s, "电话", "邮编");
+		try{
 		// 家庭邮编
 		f.homePostcode=StringTools.e(s, "邮编", "户口地");
 		// 户口地址
@@ -318,21 +318,21 @@ public class PatientUtil {
 		// 单位电话
 		f.businessphone=StringTools.e(s, "单位电话", "邮编");
 		// 单位邮编
-		f.businesspostcode=StringTools.e(s, "邮编", "病人来源");
+		f.businesspostcode=StringTools.e(s, "邮编", "病人");}catch(Exception e){}
 		// 病人来源
-		f.patientfrom=StringTools.e(s, "病人来源", "保健人员分类");
+		f.patientfrom=StringTools.eList(s, Arrays.asList("病人来源","病人"), "保健人员分类");
 		// 保健人员分类
 		f.sponsor=StringTools.e(s, "保健人员分类", "保健人员在岗状态");
 		// 保健人员在岗状态
 		f.sponsorstatues=StringTools.e(s, "保健人员在岗状态", "联系人姓名");
-		// 联系人姓名
+		try{// 联系人姓名
 		f.contactName=StringTools.e(s, "联系人姓名", "关系");
 		// 联系人关系
 		f.relation=StringTools.e(s, "关系", "地址");
 		// 联系人地址
 		f.contactaddress=StringTools.e(s, "地址", "电话");
 		// 联系人电话
-		f.contactphone=StringTools.e(s, "电话", "入院途径");
+		f.contactphone=StringTools.e(s, "电话", "入院途径");}catch(Exception e){}
 		// 入院途径 1.急诊 2.门诊 3.其他医疗机构转入 9.其他
 		f.admissionway=StringTools.e(s, "入院途径", "1.急诊");
 		// 入院时间 2015年02月13日18时
@@ -358,11 +358,11 @@ public class PatientUtil {
 		// 出院诊断 其他诊断
 		//public List<Patient.OutDiag> outDiags;
 		// 出院诊断 主要诊断 疾病
-		f.mainDiag=StringTools.e(s, "主要诊断", "\n");
+		f.mainDiag=StringTools.e(s, "主要诊断", "其他诊断");
 		// // 出院诊断 主要诊断 编码
-		f.mainDiagCode=StringTools.e(s, "", "\n");
+		//f.mainDiagCode=StringTools.e(s, "", "\n");
 		// // 出院诊断 入院病情：1.有，2.临床未确定，3.情况不明，4.无
-		f.admissionCondition=StringTools.e(s, "", "其他诊断");
+		//f.admissionCondition=StringTools.e(s, "", "其他诊断");
 		// 损伤、中毒的外部原因
 		f.EXTERNAL_CAUESES=StringTools.e(s, "损伤、中毒的外部原因", "疾病编码");
 		// 损伤、中毒疾病编码
@@ -460,9 +460,10 @@ public class PatientUtil {
 			i.takingFrom = StringTools.e(s, "病史叙", "出生地");
 		if (s.indexOf("职业") > 0 || s.indexOf("主诉") > 0)
 			i.reliability = StringTools.pe(s.toString(), "可靠性(.*?)(职业|主诉)");
-		if (s.indexOf("亲属姓名、电话") > 0)
+		if (s.indexOf("亲属姓名、电话") > 0 && s.indexOf("主诉") > 0)
 			i.contact = StringTools.e(s, "亲属姓名、电话", "主诉");
-		i.selfDesc = StringTools.e(s, "主诉", "现病史");
+		if (s.indexOf("主诉") > 0)
+			i.selfDesc = StringTools.e(s, "主诉", "现病史");
 		i.nowMedicalHistory = StringTools.e(s, "现病史", "既往史");
 		try{
 			i.pastMedicalHistory = StringTools.pe(s.toString(), "既往史([\\s\\S]*?)(传染病史|个人生活史|个人史)");
@@ -473,25 +474,27 @@ public class PatientUtil {
 		}catch(StringIndexOutOfBoundsException e){
 			e.printStackTrace();
 		}
-		if (s.indexOf("辅助检查") >= 0)
-			i.somatoscopy = ParseUtil.extractSomatoscopy(StringTools.eList(s, Arrays.asList("体 格 检 查","体  格  检  查"), "辅助检查"));
-		if (s.indexOf("辅助检查") >= 0&&s.indexOf("初步诊断") >= 0) {
-			i.auxiliaryExamination = StringTools.e(s, "辅助检查", "初步诊断");
-			i.firstDiag.detail = StringTools.e(s, "初步诊断", "签名");
-			i.firstDiag.signature = StringTools.e(s, "签名", "时间");
-			try {
-				i.firstDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
-			} catch (ParseException e) {
+		if(s.indexOf("无辅助检查")<0) {
+			if (s.indexOf("辅助检查") >= 0)
+				i.somatoscopy = ParseUtil.extractSomatoscopy(StringTools.eList(s, Arrays.asList("体 格 检 查","体  格  检  查"), "辅助检查"));
+			if (s.indexOf("辅助检查") >= 0&&s.indexOf("初步诊断") >= 0) {
+				i.auxiliaryExamination = StringTools.e(s, "辅助检查", "初步诊断");
+				i.firstDiag.detail = StringTools.e(s, "初步诊断", "签名");
+				i.firstDiag.signature = StringTools.e(s, "签名", "时间");
+				try {
+					i.firstDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
+				} catch (ParseException e) {
+				}
+			} else if (s.indexOf("辅助检查") >= 0&&s.indexOf("确定诊断") >= 0){
+				i.auxiliaryExamination = StringTools.e(s, "辅助检查", "确定诊断");
 			}
-		} else if (s.indexOf("辅助检查") >= 0&&s.indexOf("确定诊断") >= 0){
-			i.auxiliaryExamination = StringTools.e(s, "辅助检查", "确定诊断");
 		}
 		if (s.indexOf("确定诊断") > 0) {
 			i.confirmDiag.detail = StringTools.e(s, "确定诊断", "签名");
 			i.confirmDiag.signature = StringTools.e(s, "签名", "时间");
 			try {
 				i.confirmDiag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
-			} catch (ParseException e) {
+			} catch (Exception e) {
 			}
 		}
 		while (s.indexOf("补充诊断") >= 0) {
@@ -500,7 +503,7 @@ public class PatientUtil {
 			diag.signature = StringTools.e(s, "签名", "时间");
 			try {
 				diag.diagDate = new SimpleDateFormat("yyyy-MM-dd").parse(StringTools.e(s, "时间", "\n"));
-			} catch (ParseException e) {
+			} catch (Exception e) {
 			}
 			i.supplyDiags.add(diag);
 		}
@@ -591,7 +594,7 @@ public class PatientUtil {
 		return o;
 	}
 
-	final static Pattern PID_PATTERN = Pattern.compile("^.*[住院|病案]号[:|：](\\d+)$");
+	final static Pattern PID_PATTERN = Pattern.compile("^.*[住院|病案]号[:|：](\\d+)");
 	final static Pattern PID_TAG_PATTERN = Pattern.compile("<text>(住院|病案)号(:|：){0,1}</text>");
 	final static Pattern PID_CODE_PATTERN = Pattern.compile("<text>(\\d+)</text>");
 

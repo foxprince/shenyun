@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
@@ -199,7 +200,7 @@ public class RefactorUtil {
 	public static Map<String, List<String>> filterEmpty(MultiValueMap<String, String> map) {
 		Map<String, List<String>> m = new LinkedHashMap<String, List<String>>(map.size());
 		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			if (!ObjectUtils.isEmpty(entry.getValue()) && !isEmptyCollection(entry.getValue()))
+			if (!ObjectUtils.isEmpty(entry.getValue()))// && !isEmptyCollection(entry.getValue()))
 				m.put(entry.getKey(), entry.getValue());
 		}
 		return m;
@@ -207,7 +208,7 @@ public class RefactorUtil {
 
 	public static boolean isEmptyCollection(List<String> l) {
 		for (String s : l)
-			if (StringTools.checkNull(s) != null)
+			if (!StringUtils.isNoneBlank(s) )
 				return false;
 		return true;
 	}

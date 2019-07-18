@@ -1,9 +1,8 @@
 package cn.anthony.boot.service;
 
 import java.io.File;
-import java.util.Date;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,6 +19,7 @@ import com.querydsl.core.types.Predicate;
 
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.repository.PatientRepository;
+import cn.anthony.boot.util.Constant;
 import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.FileTools;
 
@@ -34,9 +34,28 @@ public class PatientService extends GenericService<Patient> {
 	private static List<String> dischargeWardList;
 	private static List<String> admissionWardList;
 	
-	private static List<String> rootDirs = Arrays.asList("U:\\","V:\\","W:\\","X:\\","Y:\\","Z:\\");
 	public PatientService() {
 		super();
+	}
+	
+	/**
+	 * db.patient.aggregate([ { $group: {"_id":"$name" , "number":{$sum:1}} } ])
+	 * db.patient.distinct('name').length;
+	 * db.patient.distinct('name').limit(10).skip(1);
+	 * db.runCommand({"distinct":"patient","key":"name","query":{"ctime":/^2011-12-15/}}).values.length(); 
+	 * @param pageable
+	 * @return
+	 */
+	public List<String> findDistinctName(Pageable pageable) {
+		Criteria criteria = new Criteria();
+		criteria.where("source").equals("haitai");
+		Query query = new Query();
+		query.addCriteria(criteria);
+		query.with(pageable);
+		List l = mongoTemplate.getCollection("patient").distinct("name", query.getQueryObject());
+		logger.info(pageable.toString()+":"+l.size());
+		//return new PageImpl(l,pageable,t);
+		return l;
 	}
 	
 	public String updateAssets(String source,String pId) {
@@ -62,7 +81,7 @@ public class PatientService extends GenericService<Patient> {
 
 	private String updatePatientAset(Patient p) {
 		StringBuilder sb = new StringBuilder();
-		for(String dir : rootDirs)
+		for(String dir : Constant.MEIDA_DIRS)
 		for(File f : FileTools.search(new File(dir),p.getName())){
 			String ext = f.getPath().substring(f.getPath().lastIndexOf(".")+1);
 			String type = PatientUtil.assetType(ext);

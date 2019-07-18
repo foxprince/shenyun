@@ -36,6 +36,22 @@ import org.apache.commons.io.FileUtils;
 public class FileTools {
 	public static List<String> imgExts = Arrays.asList("bmp","jpg","jpeg","hdri","flic","emf","ico","png","tiff","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","wmf");
 	public static List<String> videoExts = Arrays.asList("mpg","mpeg","mpe","mpa","asx","wvx","gdf","wmv","asf","asx","rm","rmvb","mp4","3gp","mov","m4v","avi","dat","mkv","flv","vob","ts","mts");
+	
+	public static void main(String[] args) {
+		String srcDir = "/Users/zj/tmp/xwyy201803/";
+		File dir = new File(srcDir);
+		System.out.println(dir.isDirectory());
+		File[] fs = dir.listFiles();//
+		System.out.println(fs);
+		for (int i = 0; i < fs.length; i++) {
+			File file = fs[i];
+			if (file.isDirectory()) {
+				;//process(file, filter);
+			} else {
+				System.out.println(file.getName());
+			}
+		}
+	}
 	public static List<File>  search(File root,String fileName) {
         List<File> l = new ArrayList<File>();
 		try {
@@ -538,10 +554,6 @@ public class FileTools {
 			}
 		}
 		return "0";
-	}
-
-	public static void main(String[] args) {
-		System.out.println("1.123".substring("1.123".lastIndexOf(".")));
 	}
 
 	public static void createFile(String filepath, String content, boolean append) {

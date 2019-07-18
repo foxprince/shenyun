@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -64,6 +65,7 @@ import cn.anthony.boot.domain.Remark;
 import cn.anthony.boot.domain.SearchModel;
 import cn.anthony.boot.exception.EntityNotFound;
 import cn.anthony.boot.service.CustomeOptionService;
+import cn.anthony.boot.service.FileAssetService;
 import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.service.SearchModelService;
 import cn.anthony.boot.util.Constant;
@@ -85,6 +87,8 @@ public class PatientController extends GenericController<Patient> {
 	SearchModelService searchModelService;
 	@Resource
 	CustomeOptionService customeOptionService;
+	@Resource
+	FileAssetService fileAssetService;
 
 	@Override
 	public Patient init(Model m) {
@@ -126,17 +130,46 @@ public class PatientController extends GenericController<Patient> {
 		return new PatientSearch();
 	}
 
-	@RequestMapping(value = { "/", "/index" }, params = "pId")
-	public String index(String pId, Model m) {
-		m.addAttribute("patient", service.findByPid(pId));
+	@RequestMapping(value = { "/", "/index" }, params = "id")
+	public String index(String id, Model m) {
+		Patient p = service.findById(id);
+		m.addAttribute("patient", p);
+		m.addAttribute("assets", fileAssetService.findByNr(p.getName()));
 		return getIndexView();
 	}
 	
 	@RequestMapping(value = { "/query" })
-	public Page<Patient> query(@QuerydslPredicate(root = Patient.class) Predicate predicate,
+	public String query(@QuerydslPredicate(root = Patient.class) Predicate predicate,
+			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable,Model m
+			) {
+		Page<Patient> page = service.find(predicate, pageable);
+		if (page.getContent().size() == 1)
+			return "redirect:" + getIndexView() + "?id=" + page.getContent().get(0).getId();
+		else {
+			ControllerUtil.setPageVariables(m, page);
+			return getListView();
+		}
+	}
+	
+	@RequestMapping(value = { "/distinctName" })
+	@ResponseBody
+	public List<String> distinctName(
 			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable
 			) {
-		return service.find(predicate, pageable);
+		return service.findDistinctName(pageable);
+	}
+	
+	@RequestMapping(value = { "/queryAssetNr" })
+	public String queryAsset(String name,@PageableDefault(value = 100, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable , Model m) {
+		//m.addAttribute("totalNames", fileAssetService.totalDistinctNr());
+		if(name!=null&&fileAssetService.findByNr(name).size()>0) {
+			List<String> l = Arrays.asList(name);
+			ControllerUtil.setPageVariables(m, new PageImpl<String>(l,pageable, l.size()));
+		}
+		else
+			ControllerUtil.setPageVariables(m, fileAssetService.findDistinctNr(pageable));
+		//m.addAttribute("assetNames", .getContent());
+		return "/patient/assetAll";
 	}
 	
 	@RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
@@ -158,6 +191,11 @@ public class PatientController extends GenericController<Patient> {
 			predicate = QPatient.patient.inRecords.any().inDate.after(ps.inDateBegin).and(predicate);
 		if (ps.inDateEnd != null)
 			predicate = QPatient.patient.inRecords.any().inDate.before(ps.inDateEnd).and(predicate);
+		if (ps.outDateBegin != null)
+			predicate = QPatient.patient.outRecords.any().outDate.after(ps.outDateBegin).and(predicate);
+		if (ps.outDateEnd != null)
+			predicate = QPatient.patient.outRecords.any().outDate.before(ps.outDateEnd).and(predicate);
+		
 		predicate = patientBinding(QPatient.patient, "patient.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.inRecords.any(), "inHospital.", parameters, predicate);
 		predicate = patientBinding(QPatient.patient.inRecords.any().firstDiag, "inHospital.firstDiag", parameters, predicate);

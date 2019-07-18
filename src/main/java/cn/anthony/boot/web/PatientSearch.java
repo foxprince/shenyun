@@ -46,4 +46,8 @@ public class PatientSearch extends Patient {
 	Date inDateBegin;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date inDateEnd;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date outDateBegin;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date outDateEnd;
 }

@@ -1,7 +1,9 @@
 package cn.anthony.boot.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -15,7 +17,8 @@ import lombok.Data;
 @Data
 public class Constant {
 	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// =
-
+	public static List<String> MEIDA_DIRS = Arrays.asList("U:\\","V:\\","W:\\","X:\\","Y:\\","Z:\\");
+	
 	@Data
 	public static class CheckOption {
 		String inputType = "text", name, label, value;

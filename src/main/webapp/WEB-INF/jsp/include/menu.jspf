@@ -15,14 +15,22 @@
             </div>
           </div>
           <!-- search form -->
-          <form action="/patient/listPage" method="get" class="sidebar-form">
+          <form action="/patient/fullSearch" method="get" onsubmit="queryPatient();" class="sidebar-form">
             <div class="input-group">
-              <input type="text" name="name" class="form-control" placeholder="病人...">
+              <input type="text" id="queryName" name="patient.name" class="form-control" placeholder="病人...">
+              <input type="hidden" id="queryPId" name="patient.pId" class="form-control" >
+              <input type="hidden" name="patient.name_andOr" value="or" >
+              <input type="hidden" name="patient.pId_andOr" value="or" >
               <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
             </div>
           </form>
+          <script>
+          function queryPatient() {
+        	  	$('#queryPId').val($('#queryName').val());
+          }
+          </script>
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
@@ -30,7 +38,7 @@
               <a href="/patient/list?source=haitai"> <i class="fa fa-th"></i> <span>病人--海泰</span> </a>
               <a href="/patient/list?source=gql"> <i class="fa fa-th"></i> <span>病人--GQL</span> </a>
               <a href="/patient/list?source=gql-access"> <i class="fa fa-th"></i> <span>病人--GQL_ACCESS</span> </a>
-              <a href="/patient/listWithAsset"> <i class="fa fa-th"></i> <span>病人-已关联</span> </a>
+              <a href="/patient/queryAssetNr"> <i class="fa fa-th"></i> <span>病人-已关联</span> </a>
             </li>
             <li class="treeview" navi="search">
               <a href="#">

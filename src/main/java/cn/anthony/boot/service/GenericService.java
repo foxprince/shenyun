@@ -3,6 +3,8 @@ package cn.anthony.boot.service;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,6 +13,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import cn.anthony.boot.exception.EntityNotFound;
 
 public abstract class GenericService<T> {
+	public Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	public abstract PagingAndSortingRepository<T, String> getRepository();
 
 	public T create(T item) {

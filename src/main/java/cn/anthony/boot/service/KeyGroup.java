@@ -20,7 +20,7 @@ public class KeyGroup<T> {
 	public List<Object> getColumnKey() {
 		List<Object> l = new ArrayList<Object>();
 		if (key instanceof Map)
-			l = new ArrayList(((Map) key).values());
+			l = new ArrayList<Object>(((Map<?, ?>) key).values());
 		else
 			l.add(key);
 		return l;

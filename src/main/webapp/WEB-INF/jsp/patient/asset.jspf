@@ -5,7 +5,7 @@
 		</div>
 	</div>
 	<div id="remark_parent">
-		<c:forEach var="item" items="${patient.assets}">
+		<c:forEach var="item" items="${assets}">
 		<div class="row" >
 			<div class="col-md-12">
 				<!-- Box Comment -->
