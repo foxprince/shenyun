@@ -175,11 +175,12 @@ public class PatientController extends GenericController<Patient> {
 	@RequestMapping(value = { "/search", "/list", "/listPage", "/fullSearch" })
 	public String listPage(@ModelAttribute("pageRequest") PatientSearch ps,
 			@QuerydslPredicate(root = Patient.class) Predicate predicate,
-			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.ASC) Pageable pageable, Model m,
+			@PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.DESC) Pageable pageable, Model m,
 			@RequestParam MultiValueMap<String, String> parametersMap, HttpServletRequest request, HttpSession session)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Map<String, List<String>> parameters = RefactorUtil.filterEmpty(parametersMap);
 		System.out.println(parameters);
+		initSearchModel(m);
 		String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		if (path.endsWith("list"))// 清空搜索历史
 			ps = new PatientSearch();
@@ -365,11 +366,19 @@ public class PatientController extends GenericController<Patient> {
 
 	@RequestMapping(value = { "/initSearch" })
 	public String searchForm(Model m) {
+		initSearchModel(m);
+		return "/patient/search";
+	}
+
+	private void initSearchModel(Model m) {
+		m.addAttribute("mainDiagList", service.getMainDiagList());
+		m.addAttribute("zzDoctorList", service.getZzDoctorList());
+		m.addAttribute("zyDoctorList", service.getZyDoctorList());
+		m.addAttribute("zzhenDoctorList", service.getZzhenDoctorList());
 		m.addAttribute("changedeptList", service.getChangedeptList());
 		m.addAttribute("dischargeWardList", service.getDischargeWardList());
 		m.addAttribute("admissionWardList", service.getAdmissionWardList());
 		m.addAttribute("sourceList", service.ditinctSource());
-		return "/patient/search";
 	}
 
 	@RequestMapping(value = { "/addRemark" })

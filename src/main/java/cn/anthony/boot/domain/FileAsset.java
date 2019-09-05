@@ -8,6 +8,6 @@ import lombok.Data;
 @Document
 public class FileAsset extends GenericNoSQLEntity {
 	private static final long serialVersionUID = -8566135736622133604L;
-	String fileName,filePath,nr;
+	String fileName,filePath,vistiPath,nr;
 	Boolean isDir;
 }

@@ -28,7 +28,7 @@ import cn.anthony.util.RefactorUtil;
 
 @SpringBootApplication
 public class TestService implements CommandLineRunner {
-	private static final String srcDir = "/Users/zj/tmp/KYBLSJ/";
+	private static final String srcDir = "/Users/zj/tmp/KYBLSJ201906/";
 	private static final String MOVE_DIR = "/Users/zj/tmp/已处理/";
 	private static final String ERR_DIR = "/Users/zj/tmp/格式错误/";
 	@Autowired

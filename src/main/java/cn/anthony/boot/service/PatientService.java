@@ -33,6 +33,10 @@ public class PatientService extends GenericService<Patient> {
 	private static List<String> changedeptList;
 	private static List<String> dischargeWardList;
 	private static List<String> admissionWardList;
+	private static List<String> zZDoctorList;
+	private static List<String> zYDoctorList;
+	private static List<String> zZhenDoctorList;
+	private static List<String> mainDiagList;
 	
 	public PatientService() {
 		super();
@@ -97,12 +101,37 @@ public class PatientService extends GenericService<Patient> {
 		Collections.sort(changedeptList);
 		return changedeptList;
 	}
+	public List<String> getZzDoctorList() {
+		if (zZDoctorList == null)
+			zZDoctorList = ditinctZZDoctorName();
+		Collections.sort(zZDoctorList);
+		return zZDoctorList;
+	}
+	public List<String> getZyDoctorList() {
+		if (zYDoctorList == null)
+			zYDoctorList = ditinctZYDoctorName();
+		Collections.sort(zYDoctorList);
+		return zYDoctorList;
+	}
+	public List<String> getZzhenDoctorList() {
+		if (zZhenDoctorList == null)
+			zZhenDoctorList = ditinctZZhenDoctorName();
+		Collections.sort(zZhenDoctorList);
+		return zZhenDoctorList;
+	}
 
 	public List<String> getDischargeWardList() {
 		if (dischargeWardList == null)
 			dischargeWardList = ditinctDischargeWard();
 		Collections.sort(dischargeWardList);
 		return dischargeWardList;
+	}
+	
+	public List<String> getMainDiagList() {
+		if (mainDiagList == null)
+			mainDiagList = ditinctMainDiag();
+		Collections.sort(mainDiagList);
+		return mainDiagList;
 	}
 
 	public List<String> getAdmissionWardList() {
@@ -158,7 +187,18 @@ public class PatientService extends GenericService<Patient> {
 	public List<String> ditinctDischargeWard() {
 		return mongoTemplate.getCollection("patient").distinct("frontRecords.dischargeWard");
 	}
-	
+	public List<String> ditinctMainDiag() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.mainDiag");
+	}
+	public List<String> ditinctZZDoctorName() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZZ_DOCTOR_NAME");
+	}
+	public List<String> ditinctZYDoctorName() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZY_DOCTOR_NAME");
+	}
+	public List<String> ditinctZZhenDoctorName() {
+		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZZHEN_DOCTOR_NAME");
+	}
 	public List<String> ditinctSource() {
 		return mongoTemplate.getCollection("patient").distinct("source");
 	}

@@ -34,16 +34,116 @@
               <div class="box-header">
                 <div class="box-content">
                     <div class="row">
-			          
-                      
+			        <html:form id="patientForm" modelAttribute="pageRequest" formUrl="/patient/search">  
+                      <DIV class="panel-body">
+                  <DIV class="container-fluid">
+                    <DIV class="row">
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime">入院起始</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:input class="form-control" path="inDateBegin" type="date" />
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime2">入院截止</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:input class="form-control" path="inDateEnd" type="date" />
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime">出院起始</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <input class="form-control" name="frontRecords.dischargeTime" type="date" />
+                            <input type="hidden" name="frontRecords.dischargeTime_option" value="ge"/> 
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="dischargetime2">出院截止</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <input class="form-control" name="frontRecords.dischargeTime" type="date" />
+                            <input type="hidden" name="frontRecords.dischargeTime_option" value="le"/> 
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                    </DIV>
+                   <DIV class="row">
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm ">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="mainDiag">诊断病情</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                              <form:input class="form-control" path="frontPage.mainDiag" type="text" placeholder="诊断病情"/>
+                          </DIV>
+                        </DIV>
+					  </DIV>
+                      <DIV class="col-md-3 col-sm-3">   
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="KZR_DOCTOR_NAME">主诊医生</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:select path="frontPage.ZZHEN_DOCTOR_NAME" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${zzhenDoctorList}" />
+                            </form:select>
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZZ_DOCTOR_NAME">主治医师</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:select path="frontPage.ZZ_DOCTOR_NAME" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${zzDoctorList}" />
+                            </form:select>
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                      <DIV class="col-md-3 col-sm-3">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">住院医师</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:select path="frontPage.ZY_DOCTOR_NAME" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${zyDoctorList}" />
+                            </form:select>
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                    </DIV>
+                    
+                    <%-- <DIV class="row">
+                      <DIV class="col-md-4 col-sm-4">
+                        <DIV class="form-group form-group-sm">
+                          <LABEL class="col-md-3 col-sm-3 control-label" for="ZY_DOCTOR_NAME">病案来源</LABEL>
+                          <DIV class="col-md-9 col-sm-9">
+                            <form:select path="source" >
+                                <OPTION value="">全部</OPTION>
+                                <form:options items="${sourceList}" />
+                            </form:select>
+                          </DIV>
+                        </DIV>
+                      </DIV>
+                    </DIV> --%>
+                  </DIV>
+                </DIV>
                       
                       <!-- <div class="col-sm-4"><input type="button" value="导出数据" onclick="download()"/></div> -->
+                      <DIV class="col-sm-4 pull-center">
+	                    <BUTTON class="btn btn-success btn-sm" type="submit" >查询病案</BUTTON>
+	                  </DIV>
                       <div class="col-sm-4">
                         <A class="btn btn-success" data-toggle="modal" data-target="#csvOutput">导出数据 </A>
                       </div>
                     </div>
                 </div>
               </div>
+              </html:form>
               <!-- /.box-header -->
               <div class="box-body">
                 <table id="example11" class="table table-bordered table-striped">

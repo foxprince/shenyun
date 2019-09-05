@@ -70,10 +70,37 @@ public class FileAssetService extends GenericService<FileAsset> {
 					asset.setNr(term.word);
 			asset.setFileName(f.getName());
 			asset.setFilePath(f.getAbsolutePath());
+			asset.setVistiPath(vistPath(f.getAbsolutePath()));
 			repository.save(asset);
 			if (f.isDirectory())
 				initNrAndSave(f);
 		}
+	}
+
+	private String vistPath(String a) {
+		int index = a.indexOf(":\\");
+		if(index>0) {
+			String driver = a.substring(0,a.indexOf(":\\")).toLowerCase();
+			String pre = "";
+			switch(driver) {
+			case "u":
+				 pre = "http://172.21.17.9:8001";break;
+			case "v":
+				pre = "http://172.21.17.9:8002";break;
+			case "w":
+				pre = "http://172.21.17.9:8003";break;
+			case "x":
+				pre = "http://172.21.17.9:8004";break;
+			case "y":
+				pre = "http://172.21.17.9:8005";break;
+			case "z":
+				pre = "http://172.21.17.9:8006";break;
+			}
+			driver = driver.substring(index+2);
+			driver = driver.replaceAll("\\", "/");
+			return pre+"/"+driver;
+		}
+		return null;
 	}
 
 }
