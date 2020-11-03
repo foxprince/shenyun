@@ -1,19 +1,17 @@
 package cn.anthony.boot.domain;
 
+import cn.anthony.boot.util.Constant;
+import cn.anthony.util.QueryOption;
+import cn.anthony.util.StringTools;
+import com.querydsl.core.annotations.QueryEntity;
+import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.querydsl.core.annotations.QueryEntity;
-
-import cn.anthony.boot.util.Constant;
-import cn.anthony.util.QueryOption;
-import cn.anthony.util.StringTools;
-import lombok.Data;
 
 @QueryEntity
 @Document

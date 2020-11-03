@@ -1,38 +1,32 @@
 package cn.anthony.boot.web;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+import cn.anthony.boot.exception.EntityNotFound;
+import cn.anthony.boot.service.GenericService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import cn.anthony.boot.exception.EntityNotFound;
-import cn.anthony.boot.service.GenericService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public abstract class GenericController<T> {
 	public abstract T init(Model m);
 
-	abstract GenericService<T> getService();
+	abstract GenericService getService();
 
 	/**
 	 * 在所有方法执行前执行，根据id构造实例
@@ -46,11 +40,12 @@ public abstract class GenericController<T> {
 		if (id == null) {
 			return init(m);
 		} else {
-			T t = getService().findById(id);
-			if (t == null)
+			T t = (T) getService().findById(id);
+			if (t == null) {
 				return init(m);
-			else
+			} else {
 				return t;
+			}
 		}
 	}
 
@@ -133,7 +128,6 @@ public abstract class GenericController<T> {
 	 * 适用于首页就是列表页
 	 * 
 	 * @param m
-	 * @param status
 	 * @return
 	 */
 	@RequestMapping(value = { "/", "/index" })
@@ -165,6 +159,13 @@ public abstract class GenericController<T> {
 		listByRelate(m, page, size, relateId);
 		return getListView();
 	}
+//	@RequestMapping(value = { "/list"})
+//	public String all(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable,
+//	                       Model m, @RequestParam MultiValueMap<String, String> parameters, HttpServletRequest request) {
+//		Page<T> page = getService().find(predicate, pageable);
+//		ControllerUtil.setPageVariables(m, page);
+//		return getListView();
+//	}
 
 	protected void listByRelate(Model m, String... relateId) {
 	}
@@ -186,7 +187,7 @@ public abstract class GenericController<T> {
 	public ModelAndView delete(@RequestParam String id, final RedirectAttributes redirectAttributes, SessionStatus status)
 			throws EntityNotFound {
 		ModelAndView mav = new ModelAndView("redirect:list");
-		T t = getService().delete(id);
+		T t = (T) getService().delete(id);
 		status.setComplete();
 		redirectAttributes.addFlashAttribute("message", deleteHint(t));
 		return mav;

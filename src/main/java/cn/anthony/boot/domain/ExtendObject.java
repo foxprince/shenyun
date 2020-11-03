@@ -1,10 +1,10 @@
 package cn.anthony.boot.domain;
 
-import java.io.File;
-import java.util.List;
-
 import cn.anthony.boot.util.Constant;
 import lombok.Data;
+
+import java.io.File;
+import java.util.List;
 
 @Data
 public class ExtendObject {
@@ -23,6 +23,41 @@ public class ExtendObject {
 	public static class OperationVideoes extends ExtendObject {public String type="operationVideo";public List<File> files;}
 	@Data//影像图片，图片
 	public static class RelateImgs extends ExtendObject {public String type="relateImg";public List<File> files;}
+
+	@Data
+	public static class 缺血组  extends ExtendObject {
+		public 缺血组() {
+			this.type = "缺血组";
+		}
+		public 基线数据 基线数据;
+		public 术前情况 术前情况;
+		@Data public static class 基线数据 {
+			public String 脑血管病家族史,心血管病家族史;
+			public 术前血管超生结果 术前血管超生结果;
+			public 围术期用药 围术期用药;
+		}
+		@Data
+		public static class 术前血管超生结果 {
+			public String 靶血管原始内经,靶血管参与内经,拔血罐远端是否有低搏动性,板块是否有溃疡;
+		}
+
+		@Data public static class 围术期用药 {
+			public String 抗血小板药物,抗凝药物,降压药物,降脂药物,降糖药物;
+		}
+		@Data public static class 术前情况 {
+			public String 术前NIHSS平分,术前mRs评分症状性颈动脉狭窄,发作症状症状形式,术前血管影响,狭窄判别;
+			public String 狭窄侧别狭窄最严重部位,狭窄合并迂曲靶血管狭窄程度,靶血管斑块特点斑块上缘距最窄处;
+			public String 斑块下缘距最窄处合并其他超过二分之一狭窄或闭塞的血管,术前脑组织影像,影响种类是否有梗塞病灶;
+			public String 梗塞病灶的最大径可能的梗塞机制,其他相关影像学资料高分辨核磁,灌注影像NOVA,术中情况手术切口;
+			public String 手术方式术中肝素用量,术中阻断时间术中流转,术中补片成型术中阻断后MCA流速_阻断前流速;
+			public String 术中开放后MCA流速_阻断前流速,书中开放阻断时栓子信号血管斑块特点,标本去向术后情况;
+			public String 术后NIHSS评分术后mRs评分,术后血管影像影像类型,靶血管狭窄程度术后脑组织影像;
+			public String 影像种类责任血管供血区是否有新发梗塞病灶,梗塞病灶的最大径是否责任血管区;
+			public String 可能的梗塞机制是否有脑出血,是否有脑水肿术后相关并发症,颅神经损伤伤口感染,心脏时间肺部感染;
+			public String 下肢静脉血栓肺栓塞,症状性脑卒中,需要非预期手术解决的不良时间;
+
+		}
+	}
 	@Data
 	public static class 出血组 extends ExtendObject {
 		// 患者姓名 病历编号 性别 年龄 身份证号 诊断 基本病情 标签 出生年月日 科室 就诊日期 编号种类 编号 其他编号种类 编号 联系人

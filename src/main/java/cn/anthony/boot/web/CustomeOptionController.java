@@ -1,8 +1,11 @@
 package cn.anthony.boot.web;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import cn.anthony.boot.domain.CustomeOption;
+import cn.anthony.boot.service.CustomeOptionService;
+import cn.anthony.boot.service.GenericService;
+import cn.anthony.boot.util.Constant;
+import cn.anthony.boot.util.ControllerUtil;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -14,13 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.querydsl.core.types.Predicate;
-
-import cn.anthony.boot.domain.CustomeOption;
-import cn.anthony.boot.service.CustomeOptionService;
-import cn.anthony.boot.service.GenericService;
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.ControllerUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/customeOption")
@@ -34,7 +32,7 @@ public class CustomeOptionController extends GenericController<CustomeOption> {
 	}
 
 	@Override
-	GenericService<CustomeOption> getService() {
+	GenericService getService() {
 		return this.service;
 	}
 

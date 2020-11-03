@@ -15,26 +15,15 @@
  */
 package cn.anthony.boot.repository;
 
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import cn.anthony.boot.domain.QUser;
+import cn.anthony.boot.domain.User;
+import com.querydsl.core.types.dsl.StringPath;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.CrudRepository;
 
-import com.querydsl.core.types.dsl.StringPath;
-
-import cn.anthony.boot.domain.QUser;
-import cn.anthony.boot.domain.User;
-
-/**
- * Repository to manage {@link User}s. Also implements
- * {@link QueryDslPredicateExecutor} to enable predicate filtering on Spring MVC
- * controllers as well as {@link QuerydslBinderCustomizer} to tweak the way
- * predicates are created for properties.
- * 
- * @author Christoph Strobl
- * @author Oliver Gierke
- */
-public interface UserRepository extends CrudRepository<User, String>, QueryDslPredicateExecutor<User>, QuerydslBinderCustomizer<QUser> {
+public interface UserRepository extends CrudRepository<User, String>, QuerydslPredicateExecutor<User>, QuerydslBinderCustomizer<QUser> {
 	/*
 	 * (non-Javadoc)
 	 * 

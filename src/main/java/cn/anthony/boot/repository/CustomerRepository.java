@@ -1,10 +1,9 @@
 package cn.anthony.boot.repository;
 
-import java.util.List;
-
+import cn.anthony.boot.domain.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import cn.anthony.boot.domain.Customer;
+import java.util.List;
 
 public interface CustomerRepository extends MongoRepository<Customer, String> {
 	public Customer findByFirstName(String firstName);

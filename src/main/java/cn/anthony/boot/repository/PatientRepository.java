@@ -1,27 +1,25 @@
 package cn.anthony.boot.repository;
 
-import java.util.Date;
-import java.util.List;
-
+import cn.anthony.boot.domain.Patient;
+import cn.anthony.boot.domain.QPatient;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.core.types.dsl.StringPath;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
-import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.util.ObjectUtils;
 
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.StringPath;
-
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.domain.QPatient;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public interface PatientRepository
-		extends PagingAndSortingRepository<Patient, String>, QueryDslPredicateExecutor<Patient>, QuerydslBinderCustomizer<QPatient> {
+		extends BaseRepository<Patient, QPatient,String> {
 	@Override
 	default public void customize(QuerydslBindings bindings, QPatient p) {
 		bindings.bind(String.class).first(new SingleValueBinding<StringPath, String>() {
@@ -30,22 +28,45 @@ public interface PatientRepository
 				return path.containsIgnoreCase(value);
 			}
 		});
+		bindings.bind(LocalDateTime.class).all((path, value) -> {
+			List<LocalDateTime> l = new ArrayList<LocalDateTime>(value);
+			if(value!=null&&value.size()>1)
+				return Optional.of(((DateTimeExpression) path).between(l.get(0), l.get(1)));
+			else if(value.size()==1)
+				return Optional.of(((DateTimeExpression) path).after(l.get(0)));
+			return null;
+		});
+		bindings.bind(String.class).first(( path,  value) -> {
+			if(value.contains(",")) {
+				String[] values = value.split(",");
+				List<String> list = Arrays.asList(values);
+				BooleanBuilder builder = new BooleanBuilder();
+				for (String s : list) {
+					builder.or(((StringExpression) path).containsIgnoreCase(s));
+				}
+				return builder;
+			}
+			else if(value.startsWith("!")) {
+				return ((StringExpression) path).ne(value.substring(1));
+			} else {
+				return ((StringExpression) path).containsIgnoreCase(value);
+			}
+		});
 		bindings.bind(p.frontRecords.any().dischargeTime).all((path, value) -> {
 			List<Date> l = new java.util.ArrayList<Date>(value);
-			if(!ObjectUtils.isEmpty(l)&&(l.get(0)!=null||l.get(1)!=null)){
-				BooleanExpression b = path.isNotNull();
-				if(l.get(0)!=null)
-					b = b.and(path.goe(l.get(0)));
-				if(l.get(1)!=null)
-					b = b.and(path.lt(l.get(1)));
-				return b;
-			}
+			if(value!=null&&value.size()>1)
+				return Optional.of(((DateTimeExpression) path).between(l.get(0), l.get(1)));
+			else if(value.size()==1)
+				return Optional.of(((DateTimeExpression) path).after(l.get(0)));
 			return null;
 		});
 		bindings.bind(p.outRecords.any().outDate).all((path, value) -> {
 			List<Date> l = new java.util.ArrayList<Date>(value);
-			BooleanExpression b = path.isNotNull().and(path.goe(l.get(0))).and(path.lt(l.get(1)));
-			return b;
+			if(value!=null&&value.size()>1)
+				return Optional.of(((DateTimeExpression) path).between(l.get(0), l.get(1)));
+			else if(value.size()==1)
+				return Optional.of(((DateTimeExpression) path).after(l.get(0)));
+			return null;
 		});
 	}
 

@@ -1,12 +1,10 @@
 package cn.anthony.boot.domain;
 
-import java.util.List;
-
+import com.querydsl.core.annotations.QueryEntity;
+import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.querydsl.core.annotations.QueryEntity;
-
-import lombok.Data;
+import java.util.List;
 
 @QueryEntity
 @Document

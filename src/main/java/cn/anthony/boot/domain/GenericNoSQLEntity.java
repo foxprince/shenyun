@@ -1,18 +1,16 @@
 package cn.anthony.boot.domain;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-
+import cn.anthony.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import cn.anthony.util.DateUtil;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 public class GenericNoSQLEntity implements Serializable {
 	private static final long serialVersionUID = 4365837246243902781L;

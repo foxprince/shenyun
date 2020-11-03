@@ -1,11 +1,10 @@
 package cn.anthony.boot.domain;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import cn.anthony.util.DateUtil;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 public class OutHospital {

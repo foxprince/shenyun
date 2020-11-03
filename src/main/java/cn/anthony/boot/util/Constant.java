@@ -1,24 +1,34 @@
 package cn.anthony.boot.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
-
-import org.springframework.stereotype.Component;
-
 import cn.anthony.util.StringTools;
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.util.*;
 
 @Component
+@ConfigurationProperties("application")
 @Data
 public class Constant {
+	@Inject
+	private Environment env;
+	public static String FILE_SEPA = System.getProperty("file.separator");
+
 	public static String PACS_DIR = ResourceBundle.getBundle("application").getString("PACS_DIR");// =
 	public static List<String> MEIDA_DIRS = Arrays.asList("U:\\","V:\\","W:\\","X:\\","Y:\\","Z:\\");
-	
+	private String uploadTmpDir;
+	private String uploadDir;
+	public String getUploadAbsoluteDir() {
+		return getUploadDir();
+	}
+
+	public String getAbsoluteTmpDir() {
+		return getUploadTmpDir();
+	}
+
 	@Data
 	public static class CheckOption {
 		String inputType = "text", name, label, value;
@@ -85,10 +95,10 @@ public class Constant {
 	private static final String DEFAULT_TYPE = "text";
 	private static final String DATETIME_TYPE = "datetime-local";
 	private static final String DATE_TYPE = "date";
-	// public static final String PACS_DIR = "E:\\project\\神云系统\\pacs\\";//
-	// "E:\\xampp\\htdocs\\auth\\Public\\Admin\\img\\dicom\\";
 	public static Map<String, CheckOption> totalKeyMap = new LinkedHashMap<String, CheckOption>();
+	//按术者、主诊医师、出院病房、入院病房、时间段统计、 手术时间、手术名称
 	static {
+		/*
 		defaultPut(totalKeyMap, "frontRecords.age", "年龄");
 		defaultPut(totalKeyMap, "frontRecords.sex", "性别，1：男，2：女");
 		defaultPut(totalKeyMap, "frontRecords.name", "姓名");
@@ -96,8 +106,6 @@ public class Constant {
 		defaultPut(totalKeyMap, "frontRecords.nationality", "民族");
 		defaultPut(totalKeyMap, "frontRecords.country", "国籍");
 		defaultPut(totalKeyMap, "frontRecords.birthplace", "出生地");
-		// defaultPut(totalKeyMap, "frontRecords.registeredaddress", "户口地址");
-		// defaultPut(totalKeyMap, "frontRecords.homeAddress", "现住址");
 		defaultPut(totalKeyMap, "frontRecords.admissionDept", "入院科别");
 		defaultPut(totalKeyMap, "frontRecords.admissionWard", "入院病房");
 		defaultPut(totalKeyMap, "frontRecords.dischargeDept", "出院科别");
@@ -105,17 +113,25 @@ public class Constant {
 		defaultPut(totalKeyMap, "frontRecords.inhopitalday", "实际住院天数");
 		defaultPut(totalKeyMap, "frontRecords.changedept", "转科科别");
 		defaultPut(totalKeyMap, "frontRecords.REGISTER_DIAGNOSIS", "门（急）诊诊断　");
-		// defaultPut(totalKeyMap, "frontRecords.REGISTER_CODE", "门（急）诊诊断疾病编码");
 		defaultPut(totalKeyMap, "frontRecords.mainDiag", "出院主要诊断");
 		defaultPut(totalKeyMap, "frontRecords.ZRFZR_DOCTOR_NAME", "主任（副主任）医师");
 		defaultPut(totalKeyMap, "frontRecords.ZZ_DOCTOR_NAME", "主治医师");
 		defaultPut(totalKeyMap, "frontRecords.ZY_DOCTOR_NAME", "住院医师");
 		defaultPut(totalKeyMap, "frontRecords.ZZHEN_DOCTOR_NAME", "主诊医师");
 		defaultPut(totalKeyMap, "frontRecords.ZR_NURSE_NAME", "责任护士");
-		// defaultPut(totalKeyMap, "frontRecords.JX_DOCTOR_NAME", "进修医师");
-		// defaultPut(totalKeyMap, "frontRecords.SX_DOCTOR_NAME", "实习医师");
+		defaultPut(totalKeyMap, "frontRecords.JX_DOCTOR_NAME", "进修医师");
+		defaultPut(totalKeyMap, "frontRecords.SX_DOCTOR_NAME", "实习医师");
 		defaultPut(totalKeyMap, "frontRecords.operationDetails.title", "手术、操作及大型设备检查名称");
 		defaultPut(totalKeyMap, "frontRecords.operationDetails.chief", "手术操作医师");
+		 */
+		defaultPut(totalKeyMap, "frontRecords.admissionWard", "入院病房");
+		defaultPut(totalKeyMap, "frontRecords.ZY_DOCTOR_NAME", "住院医师");
+		defaultPut(totalKeyMap, "frontRecords.dischargeWard", "出院病房");
+		defaultPut(totalKeyMap, "frontRecords.ZZHEN_DOCTOR_NAME", "主诊医师");
+		defaultPut(totalKeyMap, "operations.doctor", "手术医师");
+		defaultPut(totalKeyMap, "operations.preDiagnosis", "术前诊断");
+		defaultPut(totalKeyMap, "operations.operataionDiagnosis", "术中诊断");
+		defaultPut(totalKeyMap, "operations.operationTitle", "手术名称");
 	}
 	public static Map<String, CheckOption> patientKeyMap = new LinkedHashMap<String, CheckOption>();
 	static {

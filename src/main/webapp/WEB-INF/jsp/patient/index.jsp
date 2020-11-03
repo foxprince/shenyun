@@ -12,7 +12,6 @@
 	<%@ include file="../include/topbar.jspf" %>
 	<!-- left menu-->
 	<%@ include file="../include/menu.jspf" %>
-	
 	<div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -153,117 +152,179 @@
     <%@ include file="../include/footer.jspf" %>
 	<script src="../resources/plugins/jquery-validation/jquery.validate.min.js"></script>
 	<script src="../resources/plugins/jquery-validation/messages_zh.js"></script>
+
 	<script>
-	$(document).ready(function() {
-	});
-	$("#remarkForm").validate({
-		rules : {
-			content : "required",
-			doctor : "required",
-			operator : "required"
-		}
-	});
-	function delRemark(ref){
-		$.get("/patient/delRemark?patientId=${patient.id}",
-			{remarkId:ref},
-			function(data){
-				if(data){
-					var divId="remark_"+ref;
-			        $('#'+divId).fadeOut('slow');
-				}else{
-					alert('删除失败。');
-				}
-				return true;
-			}
-		);
-		return false;
-	}
-	function addReamrk(){    
-		if($("#remarkForm").valid()){
-		$.ajax({
-			type: "POST",
-            url: "/patient/addRemark",
-            data: $('#remarkForm').serialize(),
-            dataType: "json",
-		    success: function (json) {
-            	if (json.id!='') {
-                    var	succAlert="";
-            		var newRemark="";
-              		newRemark+='<div class="row" id="remark_'+json.id+'">';
-            		newRemark+='	<div class="col-md-12">';
-            		newRemark+='		<!-- Box Comment -->';
-            		newRemark+='		<div class="box box-widget">';
-            		newRemark+='			<div class="box-header with-border">';
-            		newRemark+='				<div class="user-block">';
-            		newRemark+='				<img class="img-circle img-sm" src="/resources/dist/img/user3-128x128.jpg" alt="user image">';
-            		newRemark+='					<span class="username">'+json.doctor+'</span>';
-            		newRemark+='				</div>';
-            		newRemark+='				<!-- /.user-block -->';
-            		newRemark+='				<div class="box-tools">';
-            		newRemark+='					<button class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">';
-            		newRemark+='						<i class="fa fa-circle-o"></i>';
-            		newRemark+='					</button>';
-            		newRemark+='					<button class="btn btn-box-tool" data-widget="collapse">';
-            		newRemark+='						<i class="fa fa-minus"></i>';
-            		newRemark+='					</button>';
-            		newRemark+='					<button class="btn btn-box-tool" data-widget="remove">';
-            		newRemark+='						<i class="fa fa-times"></i>';
-            		newRemark+='					</button>';
-            		newRemark+='					<button class="btn btn-danger" id="btn_remark" onclick=delRemark("'+json.id+'") ref="'+json.id+'">删除</button>';
-            		newRemark+='				</div>';
-            		newRemark+='				<!-- /.box-tools -->';
-            		newRemark+='			</div>';
-            		newRemark+='			<!-- /.box-header -->';
-            		newRemark+='			<div class="box-body">';
-            		newRemark+='				<p>'+json.content+'</p>';
-            		newRemark+='			</div>';
-            		newRemark+='			<!-- /.box-body -->';
-            		newRemark+='			<div class="box-footer box-comments">';
-            		newRemark+='				<div class="box-comment">';
-            		newRemark+='					<!-- User image -->';
-            		newRemark+='					<img class="img-circle img-sm" src="/resources/dist/img/user5-128x128.jpg" alt="user image">';
-            		newRemark+='					<div class="comment-text">';
-            		newRemark+='						<span class="username"> 添加人：'+json.operator+' <span class="text-muted pull-right">'+json.ctime+'</span>';
-            		newRemark+='						</span>';
-            		newRemark+='					</div>';
-            		newRemark+='					<!-- /.comment-text -->';
-            		newRemark+='				</div>';
-            		newRemark+='				<!-- /.box-comment -->';
-            		newRemark+='			</div>';
-            		newRemark+='		</div>';
-            		newRemark+='		<!-- /.box -->';
-            		newRemark+='	</div>';
-            		newRemark+='	<!-- /.col -->';
-            		newRemark+='</div>';
-                    $(newRemark).hide().prependTo($('#remark_parent')).fadeIn('slow');
-        			succAlert+='<div class="alert alert-success alert-dismissable">';
-                    succAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-                    succAlert+='<h4>	<i class="icon fa fa-check"></i> 添加成功!</h4>';
-                    succAlert+='备注信息添加成功。';
-                  	succAlert+='</div>';
-                  	$(succAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
-        			//alert('添加成功。');
+    	$(".imgView").click(function () {
+                var src = $(this).attr('orig');
+                src = src.replace('/132', '/0');
+                var img = new Image();
+                img.src = src;
+                img.onload = function () {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        shadeClose: true,
+                        maxWidth: 500,
+                        content: '<img src="' + src + '" style="max-width:500px;" />' //这里content是一个普通的String
+                    });
                 }
-                else {
-                	var	failAlert="";
-                	failAlert+='<div class="alert alert-warning alert-dismissable">';
-                	failAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-                	failAlert+='<h4><i class="icon fa fa-warning"></i> 添加失败!</h4>';
-                	failAlert+='添加失败，请填写完整信息。';
-                	failAlert+='</div>';
-                	$(failAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
-                	//alert('添加失败。');
+            })
+    	$("#remarkForm").validate({
+    		rules : {
+    			content : "required",
+    			doctor : "required",
+    			operator : "required"
+    		}
+    	});
+    	function delRemark(ref){
+    		$.get("/patient/delRemark?patientId=${patient.id}",
+    			{remarkId:ref},
+    			function(data){
+    				if(data){
+    					var divId="remark_"+ref;
+    			        $('#'+divId).fadeOut('slow');
+    				}else{
+    					alert('删除失败。');
+    				}
+    				return true;
+    			}
+    		);
+    		return false;
+    	}
+    	function addReamrk(){
+    		if($("#remarkForm").valid()){
+    		$.ajax({
+    			type: "POST",
+                url: "/patient/addRemark",
+                data: $('#remarkForm').serialize(),
+                dataType: "json",
+    		    success: function (json) {
+                	if (json.id!='') {
+                        var	succAlert="";
+                		var newRemark="";
+                  		newRemark+='<div class="row" id="remark_'+json.id+'">';
+                		newRemark+='	<div class="col-md-12">';
+                		newRemark+='		<!-- Box Comment -->';
+                		newRemark+='		<div class="box box-widget">';
+                		newRemark+='			<div class="box-header with-border">';
+                		newRemark+='				<div class="user-block">';
+                		newRemark+='				<img class="img-circle img-sm" src="/resources/dist/img/user3-128x128.jpg" alt="user image">';
+                		newRemark+='					<span class="username">'+json.doctor+'</span>';
+                		newRemark+='				</div>';
+                		newRemark+='				<!-- /.user-block -->';
+                		newRemark+='				<div class="box-tools">';
+                		newRemark+='					<button class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">';
+                		newRemark+='						<i class="fa fa-circle-o"></i>';
+                		newRemark+='					</button>';
+                		newRemark+='					<button class="btn btn-box-tool" data-widget="collapse">';
+                		newRemark+='						<i class="fa fa-minus"></i>';
+                		newRemark+='					</button>';
+                		newRemark+='					<button class="btn btn-box-tool" data-widget="remove">';
+                		newRemark+='						<i class="fa fa-times"></i>';
+                		newRemark+='					</button>';
+                		newRemark+='					<button class="btn btn-danger" id="btn_remark" onclick=delRemark("'+json.id+'") ref="'+json.id+'">删除</button>';
+                		newRemark+='				</div>';
+                		newRemark+='				<!-- /.box-tools -->';
+                		newRemark+='			</div>';
+                		newRemark+='			<!-- /.box-header -->';
+                		newRemark+='			<div class="box-body">';
+                		newRemark+='				<p>'+json.content+'</p>';
+                		newRemark+='			</div>';
+                		newRemark+='			<!-- /.box-body -->';
+                		newRemark+='			<div class="box-footer box-comments">';
+                		newRemark+='				<div class="box-comment">';
+                		newRemark+='					<!-- User image -->';
+                		newRemark+='					<img class="img-circle img-sm" src="/resources/dist/img/user5-128x128.jpg" alt="user image">';
+                		newRemark+='					<div class="comment-text">';
+                		newRemark+='						<span class="username"> 添加人：'+json.operator+' <span class="text-muted pull-right">'+json.ctime+'</span>';
+                		newRemark+='						</span>';
+                		newRemark+='					</div>';
+                		newRemark+='					<!-- /.comment-text -->';
+                		newRemark+='				</div>';
+                		newRemark+='				<!-- /.box-comment -->';
+                		newRemark+='			</div>';
+                		newRemark+='		</div>';
+                		newRemark+='		<!-- /.box -->';
+                		newRemark+='	</div>';
+                		newRemark+='	<!-- /.col -->';
+                		newRemark+='</div>';
+                        $('#remark_parent').prepend(newRemark);
+                        $(newRemark).hide().prependTo($('#remark_parent')).fadeIn('slow');
+            			console.log($('#remark_parent').html());
+            			$('#remark_parent').show();
+            			succAlert+='<div class="alert alert-success alert-dismissable">';
+                        succAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                        succAlert+='<h4>	<i class="icon fa fa-check"></i> 添加成功!</h4>';
+                        succAlert+='备注信息添加成功。';
+                      	succAlert+='</div>';
+                      	$(succAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
+            			alert('添加成功。');
+                    }
+                    else {
+                    	var	failAlert="";
+                    	failAlert+='<div class="alert alert-warning alert-dismissable">';
+                    	failAlert+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                    	failAlert+='<h4><i class="icon fa fa-warning"></i> 添加失败!</h4>';
+                    	failAlert+='添加失败，请填写完整信息。';
+                    	failAlert+='</div>';
+                    	$(failAlert).hide().prependTo($('#remark_parent')).fadeIn('slow');
+                    	//alert('添加失败。');
+                    }
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) {
+                    console.log(XmlHttpRequest);
+                    console.log(textStatus);
+                    console.log(errorThrown);
                 }
-            },
-            error: function (XmlHttpRequest, textStatus, errorThrown) {
-                console.log(XmlHttpRequest);
-                console.log(textStatus);
-                console.log(errorThrown);
+    		});}
+    		return false;
+    	}
+    $("#btnPic").Huploadify({
+        auto: true,
+        multi: true,
+        fileObjName: 'file',
+        uploader: '/api/asset/uploadOnly?${_csrf.parameterName}=${_csrf.token}',
+        fileSizeLimit: 99999999999,
+        showUploadedPercent: true,
+        showUploadedQueue: true,
+        //simUploadLimit:1,
+        buttonText: '选择文件',
+        buttonCss: 'btn btn-primary',
+        onUploadSuccess: function (file, json) {
+            var responseText = JSON.parse(json);
+            addTmpl = $("#addTmpl").html();
+            if (responseText.code == 0) {
+                addTmpl = addTmpl.replace('{{sourceName}}', responseText.data[0]).replace('{{imgUrl}}', responseText.data[1]);
+                addTmpl = addTmpl.replace('{{visitUrl}}', '/api/asset/preview?size=orig&fileName='+responseText.data[2]);
+                $('#picList').append(addTmpl);
+            } else {
+                utils.msg('提示', '图片上传失败', 'warning');
             }
-		});}
-		return false;
-	}	
-	</script>
+        }
+    });
+    function getThumbName(src) {
+    		if(utils.isNullorEmpty(src))
+                return "null";
+            if(src.toUpperCase().indexOf("WEBP")>0) {return src;}
+    	    var i = src.lastIndexOf(".");
+    	    return src.substring(0,i).concat("_thumb").concat(src.substring(i));
+    	}
+    </script>
+
 	</div>
+	<script type="text/template"  id="addTmpl">
+                        <div class="row">
+                            <div class="col-sm-2 text-right control-label">图片</div>
+                            <div class="col-sm-8">
+                                <span>{{sourceName}}</span>
+                                <input type="hidden" name="filenames" value="{{imgUrl}}"/>
+                            </div>
+                            <div class="col-sm-2" class="btnPic"><a class="delTmpl" href="javascript:;" onclick="delTmpl(this);">删除</a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 text-right control-label">预览</div>
+                            <div class="col-sm-10"><img class="imgView" src="{{visitUrl}}" style="height:50px;" /></div>
+                        </div>
+    </script>
 </body>
 </html>

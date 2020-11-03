@@ -1,26 +1,16 @@
 package cn.anthony.boot.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import cn.anthony.boot.domain.Patient.动眼神经;
-import cn.anthony.boot.domain.Patient.反射;
-import cn.anthony.boot.domain.Patient.听力;
-import cn.anthony.boot.domain.Patient.头部反射;
-import cn.anthony.boot.domain.Patient.痛触觉;
-import cn.anthony.boot.domain.Patient.眼底;
-import cn.anthony.boot.domain.Patient.视力;
+import cn.anthony.boot.domain.Patient.*;
 import cn.anthony.boot.domain.Somatoscopy;
 import cn.anthony.boot.domain.Somatoscopy.SpecialExamination;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.StringTools;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ParseUtil {
 	public static String extractAllTag(File file, String tag) {

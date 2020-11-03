@@ -1,31 +1,30 @@
 package cn.anthony.boot.service;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import cn.anthony.boot.domain.Patient;
+import cn.anthony.boot.domain.QPatient;
+import cn.anthony.boot.repository.PatientRepository;
+import cn.anthony.boot.util.Constant;
+import cn.anthony.boot.util.PatientUtil;
+import cn.anthony.util.FileTools;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.types.Predicate;
-
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.repository.PatientRepository;
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.PatientUtil;
-import cn.anthony.util.FileTools;
+import javax.annotation.Resource;
+import java.io.File;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 @Service
-public class PatientService extends GenericService<Patient> {
+public class PatientService extends GenericService<Patient, QPatient> {
 	@Resource
 	protected PatientRepository repository;
 	@Autowired
@@ -51,21 +50,20 @@ public class PatientService extends GenericService<Patient> {
 	 * @return
 	 */
 	public List<String> findDistinctName(Pageable pageable) {
-		Criteria criteria = new Criteria();
-		criteria.where("source").equals("haitai");
 		Query query = new Query();
-		query.addCriteria(criteria);
-		query.with(pageable);
-		List l = mongoTemplate.getCollection("patient").distinct("name", query.getQueryObject());
+		query.addCriteria(Criteria.where("source").is("haitai"))
+				.with(Sort.by(Sort.Order.desc("name")))
+				.with(pageable);
+		List<String> l = mongoTemplate.findDistinct(query, "name",  "patient",Patient.class, String.class);
 		logger.info(pageable.toString()+":"+l.size());
 		//return new PageImpl(l,pageable,t);
 		return l;
 	}
 	
 	public String updateAssets(String source,String pId) {
-		if(pId!=null)
+		if(pId!=null) {
 			return updatePatientAset(repository.findByPId(pId));
-		else { 
+		} else {
 			StringBuilder sb = new StringBuilder();
 			for(Patient p : repository.findBySource(source)) {
 				sb.append(updatePatientAset(p));
@@ -85,58 +83,66 @@ public class PatientService extends GenericService<Patient> {
 
 	private String updatePatientAset(Patient p) {
 		StringBuilder sb = new StringBuilder();
-		for(String dir : Constant.MEIDA_DIRS)
-		for(File f : FileTools.search(new File(dir),p.getName())){
-			String ext = f.getPath().substring(f.getPath().lastIndexOf(".")+1);
-			String type = PatientUtil.assetType(ext);
-			sb.append("  "+ext+" | "+f.getAbsolutePath()+"  \n");
-			p.addAsset(type, f.getAbsolutePath());
-			repository.save(p);
+		for(String dir : Constant.MEIDA_DIRS) {
+			for(File f : FileTools.search(new File(dir),p.getName())){
+				String ext = f.getPath().substring(f.getPath().lastIndexOf(".")+1);
+				String type = PatientUtil.assetType(ext);
+				sb.append("  "+ext+" | "+f.getAbsolutePath()+"  \n");
+				p.addAsset(type, f.getAbsolutePath());
+				repository.save(p);
+			}
 		}
 		return sb.toString();
 	}
 	public List<String> getChangedeptList() {
-		if (changedeptList == null)
+		if (changedeptList == null) {
 			changedeptList = ditinctChangedept();
+		}
 		Collections.sort(changedeptList);
 		return changedeptList;
 	}
 	public List<String> getZzDoctorList() {
-		if (zZDoctorList == null)
+		if (zZDoctorList == null) {
 			zZDoctorList = ditinctZZDoctorName();
+		}
 		Collections.sort(zZDoctorList);
 		return zZDoctorList;
 	}
 	public List<String> getZyDoctorList() {
-		if (zYDoctorList == null)
+		if (zYDoctorList == null) {
 			zYDoctorList = ditinctZYDoctorName();
+		}
 		Collections.sort(zYDoctorList);
 		return zYDoctorList;
 	}
 	public List<String> getZzhenDoctorList() {
-		if (zZhenDoctorList == null)
+		if (zZhenDoctorList == null) {
 			zZhenDoctorList = ditinctZZhenDoctorName();
+		}
 		Collections.sort(zZhenDoctorList);
 		return zZhenDoctorList;
 	}
 
 	public List<String> getDischargeWardList() {
-		if (dischargeWardList == null)
+		if (dischargeWardList == null) {
 			dischargeWardList = ditinctDischargeWard();
+		}
 		Collections.sort(dischargeWardList);
 		return dischargeWardList;
 	}
 	
 	public List<String> getMainDiagList() {
-		if (mainDiagList == null)
+		if (mainDiagList == null) {
 			mainDiagList = ditinctMainDiag();
+		}
 		Collections.sort(mainDiagList);
 		return mainDiagList;
 	}
 
 	public List<String> getAdmissionWardList() {
-		if (admissionWardList == null)
+		if (admissionWardList == null) {
 			admissionWardList = ditinctAdmissionWard();
+		}
 		Collections.sort(admissionWardList);
 		return admissionWardList;
 	}
@@ -151,11 +157,13 @@ public class PatientService extends GenericService<Patient> {
 	}
 	public Patient findBySrcFileLike(String srcFile) {
 		List<Patient> l = repository.findBySrcFileLike(srcFile);
-		if (l != null && l.size() > 0)
+		if (l != null && l.size() > 0) {
 			return l.get(0);
+		}
 		return null;
 	}
 
+	@Override
 	public Page<Patient> find(Predicate predicate, Pageable pageable) {
 		return repository.findAll(predicate, pageable);
 	}
@@ -171,8 +179,9 @@ public class PatientService extends GenericService<Patient> {
 	public Long totalIn() {
 		repository.count();
 		long l = 0;
-		for (Patient p : repository.findAll())
+		for (Patient p : repository.findAll()) {
 			l += p.inRecords.size();
+		}
 		return l;
 	}
 
@@ -181,29 +190,39 @@ public class PatientService extends GenericService<Patient> {
 		// criteria.where("dataset").is("d1");
 		Query query = new Query();
 		query.addCriteria(criteria);
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.changedept", query.getQueryObject());
+		//return mongoTemplate.getCollection("patient").distinct("myfield");
+		return mongoTemplate.findDistinct("name",Patient.class,String.class);
+		//return mongoTemplate.getCollection("patient").distinct("name",String.class);
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.changedept").all();
 	}
 
 	public List<String> ditinctDischargeWard() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.dischargeWard");
+		return mongoTemplate.findDistinct("frontRecords.dischargeWard",Patient.class,String.class);
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.dischargeWard").all();
 	}
 	public List<String> ditinctMainDiag() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.mainDiag");
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.mainDiag").all();
+		return mongoTemplate.findDistinct("frontRecords.mainDiag",Patient.class,String.class);
 	}
 	public List<String> ditinctZZDoctorName() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZZ_DOCTOR_NAME");
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.ZZ_DOCTOR_NAME").all();
+		return mongoTemplate.findDistinct("frontRecords.ZZ_DOCTOR_NAME",Patient.class,String.class);
 	}
 	public List<String> ditinctZYDoctorName() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZY_DOCTOR_NAME");
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.ZY_DOCTOR_NAME").all();
+		return mongoTemplate.findDistinct("frontRecords.ZY_DOCTOR_NAME",Patient.class,String.class);
 	}
 	public List<String> ditinctZZhenDoctorName() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.ZZHEN_DOCTOR_NAME");
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.ZZHEN_DOCTOR_NAME").all();
+		return mongoTemplate.findDistinct("frontRecords.ZZHEN_DOCTOR_NAME",Patient.class,String.class);
 	}
 	public List<String> ditinctSource() {
-		return mongoTemplate.getCollection("patient").distinct("source");
+		//return mongoTemplate.query(Patient.class).distinct("source").all();
+		return mongoTemplate.findDistinct("source",Patient.class,String.class);
 	}
 
 	public List<String> ditinctAdmissionWard() {
-		return mongoTemplate.getCollection("patient").distinct("frontRecords.admissionWard");
+		//return mongoTemplate.query(Patient.class).distinct("frontRecords.admissionWard").all();
+		return mongoTemplate.findDistinct("frontRecords.admissionWard",Patient.class,String.class);
 	}
 }

@@ -44,8 +44,8 @@
                     <p style="display:inline-block; border-style:solid; border-width:3px; border-color:#0CF; padding:20px;">
                     <input type="file" name="uploadfile" />
                     <input type="hidden" name="type" value="${type}"/>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <button type="button" id="exceluploadbtn" onclick="excelupload()" style="font-size:16px; background-color:#06F; padding:15px 20px; border-width:1px; color:#FFF;">上传并导入</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /></br/>
+                    <button type="button" id="exceluploadbtn" onclick="excelupload()" class="button button-primary">上传并导入</button>
                     </p>
                   </form>
                   <span id="upload-file-message"></span>

@@ -1,10 +1,15 @@
 package cn.anthony.boot.web;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import cn.anthony.boot.domain.SearchModel;
+import cn.anthony.boot.service.GenericService;
+import cn.anthony.boot.service.SearchModelService;
+import cn.anthony.boot.util.Constant;
+import cn.anthony.boot.util.ControllerUtil;
+import cn.anthony.util.RefactorUtil;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -14,14 +19,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.querydsl.core.types.Predicate;
-
-import cn.anthony.boot.domain.SearchModel;
-import cn.anthony.boot.service.GenericService;
-import cn.anthony.boot.service.SearchModelService;
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.ControllerUtil;
-import cn.anthony.util.RefactorUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/searchModel")
@@ -35,7 +34,7 @@ public class SearchModelController extends GenericController<SearchModel> {
 	}
 
 	@Override
-	GenericService<SearchModel> getService() {
+	GenericService getService() {
 		return this.service;
 	}
 
@@ -66,8 +65,8 @@ public class SearchModelController extends GenericController<SearchModel> {
 
 	@RequestMapping(value = { "/search", "/list", "/listPage" })
 	public String listPage(@ModelAttribute("pageRequest") SearchModelSearch pr,
-			@QuerydslPredicate(root = SearchModel.class) Predicate predicate, @PageableDefault Pageable pageable, Model m,
-			@RequestParam MultiValueMap<String, String> parameters, HttpServletRequest request) {
+	                       @QuerydslPredicate(root = SearchModel.class) Predicate predicate, @PageableDefault(value = 10, sort = { "ctime" }, direction = Sort.Direction.DESC) Pageable pageable, Model m,
+	                       @RequestParam MultiValueMap<String, String> parameters, HttpServletRequest request) {
 		Page<SearchModel> page = service.find(predicate, pageable);
 		ControllerUtil.setPageVariables(m, page);
 		m.addAttribute("pageRequest", pr);

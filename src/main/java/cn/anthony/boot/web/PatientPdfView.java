@@ -1,18 +1,16 @@
 package cn.anthony.boot.web;
 
-import java.net.URLEncoder;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.anthony.boot.domain.Patient;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import cn.anthony.boot.domain.Patient;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.util.Map;
 
 public class PatientPdfView extends AbstractITextPdfView {
 	@Override

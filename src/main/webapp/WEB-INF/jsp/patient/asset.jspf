@@ -12,7 +12,7 @@
 				<div class="box box-widget box-primary direct-chat direct-chat-primary">
 					<div class="box-header with-border">
 						<div class="user-block">
-							<span class="username">${item.filePath}</span> 
+							<span class="username"><a href="${item.visitUrl}">${item.filePath}</a></span>
 						</div>
 						
 						<!-- /.box-tools -->

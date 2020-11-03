@@ -1,26 +1,16 @@
 package cn.anthony.boot.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
+import cn.anthony.util.DateUtil;
+import cn.anthony.util.StringTools;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryEntity;
+import lombok.Data;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.querydsl.core.annotations.QueryEntity;
-
-import cn.anthony.util.DateUtil;
-import cn.anthony.util.StringTools;
-import lombok.Data;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @QueryEntity
 @Document(collection = "patient")

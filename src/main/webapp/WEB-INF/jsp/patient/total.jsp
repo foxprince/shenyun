@@ -359,13 +359,29 @@
         barChart.Bar(barChartData, barChartOptions);
       });
     </script>
-    <script language="javascript" type="text/javascript"> 
-window.onload = function(){ 
-    var oTable = document.getElementById("example11"); 
-    for(var i=1;i<oTable.rows.length-1;i++){ 
-        oTable.rows[i].cells[0].innerHTML = (i); 
-    } 
-} 
-</script> 
+    <script language="javascript" type="text/javascript">
+    window.onload = function(){
+        var oTable = document.getElementById("example11");
+        for(var i=1;i<oTable.rows.length-1;i++){
+            oTable.rows[i].cells[0].innerHTML = (i);
+        }
+    }
+    </script>
+<!-- DataTables -->
+    <script src="../resources/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+          $(function () {
+            $('#example11').DataTable({
+              "paging": true,
+              "iDisplayLength" : 100,
+              "lengthChange": false,
+              "searching": false,
+              "ordering": true,
+              "info": true,
+              "autoWidth": false
+            });
+          });
+    </script>
 </body>
 </html>

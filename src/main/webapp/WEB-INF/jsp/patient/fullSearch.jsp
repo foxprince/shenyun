@@ -44,7 +44,7 @@
       <section class="content">
         <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">请选择查询条件</h3>
+      <h3 class="box-title">请选择查询条件</h3><input type="text" name="searchKey"></input><input type="button" name="search" value="搜索"></input>
     </div>
 <div class="box-body">
   <div class="box box-info">
@@ -288,7 +288,6 @@ function copy(obj){
 
 $(function(){
 	$('input[type="checkbox"].minimal').click(function(){
-		
 		var _id = $(this).attr("id").replace(".","_");
 		if($(this).get(0).checked)
 		{
@@ -309,6 +308,14 @@ $(function(){
 				$("#"+_id+"_panel").remove();
 		}
 	})
+	$("input[name=search]").click(function() {
+          var txt=$("input[name=searchKey]").val();
+          if($.trim(txt)!=""){
+            $("label").filter(":contains('"+txt+"')").show().css("background","#00c0ef");
+          }else{
+            $("label").css("background","#fff").show();
+          }
+    });
 })
 
 </script>

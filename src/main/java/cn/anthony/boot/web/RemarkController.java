@@ -1,11 +1,10 @@
 package cn.anthony.boot.web;
 
+import cn.anthony.boot.domain.Remark;
+import cn.anthony.boot.service.GenericService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import cn.anthony.boot.domain.Remark;
-import cn.anthony.boot.service.GenericService;
 
 @Controller
 @RequestMapping(value = "/remark")
@@ -16,7 +15,7 @@ public class RemarkController extends GenericController<Remark> {
 	}
 
 	@Override
-	GenericService<Remark> getService() {
+	GenericService getService() {
 		// TODO Auto-generated method stub
 		return null;
 	}

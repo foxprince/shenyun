@@ -378,19 +378,19 @@
     	window.open(href + '?fields=' + selected.join(','));
     }
     function clickSort(item){
-    	$sorting = $(item).attr("sort");
-    	if($(item).attr("src")=="../resources/dist/img/sort_asc.png") {
-			$sorting +=",desc";
-			$(item).attr("src","../resources/dist/img/sort_desc.png");
-		}
-		else {
-			$sorting +=",asc";
-			$(item).attr("src","../resources/dist/img/sort_asc.png");
-		}
-		if(getParams("source")!=null)
-    		window.location.href="?source="+getParams("source")+"&sort="+$sorting;
-		else
-			window.location.href="?sort="+$sorting;
+	    	$sorting = $(item).attr("sort");
+	    		if($(item).attr("src")=="../resources/dist/img/sort_asc.png") {
+				$sorting +=",desc";
+				$(item).attr("src","../resources/dist/img/sort_desc.png");
+			}
+			else {
+				$sorting +=",asc";
+				$(item).attr("src","../resources/dist/img/sort_asc.png");
+			}
+			href = window.location.href;
+			if(window.location.href.lastIndexOf("&sort")>0)
+				href = window.location.href.substring(0,window.location.href.lastIndexOf("&sort"));
+			window.location.href=href+"&sort="+$sorting;
 	}
     $("#patientCheckAll").click( 
     	function(){ 

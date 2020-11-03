@@ -1,30 +1,6 @@
 package cn.anthony.boot.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
-import cn.anthony.boot.domain.FrontPage;
-import cn.anthony.boot.domain.InHospital;
-import cn.anthony.boot.domain.Operation;
-import cn.anthony.boot.domain.OutHospital;
-import cn.anthony.boot.domain.Patient;
+import cn.anthony.boot.domain.*;
 import cn.anthony.boot.domain.Patient.Diag;
 import cn.anthony.boot.domain.Patient.OperationDetail;
 import cn.anthony.boot.domain.Patient.OutDiag;
@@ -33,22 +9,21 @@ import cn.anthony.util.FileTools;
 import cn.anthony.util.RefactorUtil;
 import cn.anthony.util.SAXUtil;
 import cn.anthony.util.StringTools;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PatientUtil {
 	public static void main(String[] args) throws Exception {
-		File file = new File("/Users/zj/tmp/格式错误/病案首页/FrontSheet_000612203800_1.xml");
+		File file = new File("/Users/zj/tmp/FrontSheet_000029219000_4.text");
 		System.out.println(extractPIdTag(file));
-		// System.out.println(file.getAbsolutePath().replaceAll("\\", "/"));
-		// Patient p = (extractPatientFromFile(file));
-		// System.out.println(p.somatoscopy);
-		// System.out.println(p.getFrontRecords().get(0).getMainDiag());
-		// for (OutDiag o : p.getFrontRecords().get(0).getOutDiags())
-		// System.out.println("----:" + o);
-		// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(p)));
-		// System.out.println("==================================================");
-		// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy)));
-		// System.out.println("==================================================");
-		// System.out.println(StringTools.formatMap(RefactorUtil.getObjectParaMap(in.somatoscopy.sExamination)));
 	}
 
 	private static List<File> getDirs(String s) {
@@ -342,7 +317,7 @@ public class PatientUtil {
 		// 入院病房
 		f.admissionWard=StringTools.e(s, "病房", "出院时间");
 		// 出院时间
-		f.dischargeTime=DateUtils.parseDate(StringTools.e(s, "出院时间", "出院科别"), "yyyy年MM月dd日HH时","yyyy年MM月dd日HH时yyyy年MM月dd日");
+		try{f.dischargeTime=DateUtils.parseDate(StringTools.e(s, "出院时间", "出院科别"), "yyyy年MM月dd日HH时","yyyy年MM月dd日HH时yyyy年MM月dd日");}catch(Exception e){}
 		// 出院科别
 		f.dischargeDept=StringTools.e(s, "出院科别", "病房");
 		// 出院病房
@@ -350,9 +325,10 @@ public class PatientUtil {
 		// 实际住院天数
 		f.inhopitalday=Integer.parseInt(StringTools.e(s, "实际住院", "天"));
 		// 转科科别
-		f.changedept=StringTools.eList(s, Arrays.asList("转科科别","转科"), "门（急）诊诊断");
+		try{f.changedept=StringTools.eList(s, Arrays.asList("转科科别","转科"), "门（急）诊诊断");
 		// 门（急）诊诊断
 		f.REGISTER_DIAGNOSIS=StringTools.e(s, "门（急）诊诊断", "疾病编");
+		}catch(Exception e){e.printStackTrace();}
 		// 门（急）诊疾病编码
 		f.REGISTER_CODE=StringTools.eList(s, Arrays.asList("疾病编","疾病编码"), "出院诊断");//放在前面是有道理的
 		// 出院诊断 其他诊断
@@ -454,9 +430,9 @@ public class PatientUtil {
 			i.takingDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "病史采集日期：", "年龄"));
 		} catch (Exception e) {
 		}
-		if (s.indexOf("病史叙述人") >= 0)
+		if (s.indexOf("病史叙述人") >= 0&&s.indexOf("出生地") >= 0)
 			i.takingFrom = StringTools.e(s, "病史叙述人", "出生地");
-		else if (s.indexOf("病史叙") >= 0)
+		else if (s.indexOf("病史叙") >= 0&&s.indexOf("出生地") >= 0)
 			i.takingFrom = StringTools.e(s, "病史叙", "出生地");
 		if (s.indexOf("职业") > 0 || s.indexOf("主诉") > 0)
 			i.reliability = StringTools.pe(s.toString(), "可靠性(.*?)(职业|主诉)");
@@ -524,8 +500,8 @@ public class PatientUtil {
 		Operation o = new Operation();
 		o.operationDpt = StringTools.e(s, "科别", "床位号");
 		o.bedNumber = StringTools.e(s, "床位号", "术前诊");
-		o.preDiagnosis = StringTools.eList(s, Arrays.asList("术前诊断","术前诊"), "术中诊断");
 		try {
+			o.preDiagnosis = StringTools.eList(s, Arrays.asList("术前诊断","术前诊"), "术中诊断");
 			o.operataionDiagnosis = StringTools.e(s, "术中诊断", "手术名称");
 			o.operationTitle = StringTools.e(s, "手术名称", "手术医师");
 		} catch (Exception e) {
@@ -548,13 +524,17 @@ public class PatientUtil {
 				o.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(StringTools.e(s, "开始", "完毕"));
 		} catch (Exception e) {
 		}
-		if (s.indexOf("血量") > 0) {
-			o.anaesthetic = StringTools.pe(s.toString(), "麻醉方法：(.*?)(血量|失血量)");
-			o.bloodLoss = StringTools.pe(s.toString(), "血量：(.*?)(血量|输血量)");
-			if (s.indexOf("输血量") > 0)
-				o.bloodTransfusion = StringTools.e(s, "输血量", "手术经过");
-		} else
-			o.anaesthetic = StringTools.e(s, "麻醉方法", "手术经过、术中出现的情况及处理等");
+		try {
+			if (s.indexOf("血量") > 0) {
+				o.anaesthetic = StringTools.pe(s.toString(), "麻醉方法：(.*?)(血量|失血量)");
+				o.bloodLoss = StringTools.pe(s.toString(), "血量：(.*?)(血量|输血量)");
+				if (s.indexOf("输血量") > 0)
+					o.bloodTransfusion = StringTools.e(s, "输血量", "手术经过");
+			} else if (s.indexOf("手术经过、术中出现的情况及处理等") > 0)
+				o.anaesthetic = StringTools.e(s, "麻醉方法", "手术经过、术中出现的情况及处理等");
+		} catch(Exception e) {
+
+		}
 		if (s.indexOf("手术取标本肉眼所见") > 0) {
 			o.detail = StringTools.e(s, "手术经过、术中出现的情况及处理等", "手术取标本肉眼所见");
 			o.bb = StringTools.pe(s.toString(), "手术取标本肉眼所见：([\\s\\S]*?)(手术取标本送病理|术取标本送病理)");

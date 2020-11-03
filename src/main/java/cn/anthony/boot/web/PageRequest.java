@@ -1,10 +1,10 @@
 package cn.anthony.boot.web;
 
+import lombok.Data;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import lombok.Data;
 
 @Data
 public class PageRequest {

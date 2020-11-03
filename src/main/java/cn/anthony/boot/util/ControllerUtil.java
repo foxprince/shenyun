@@ -1,14 +1,13 @@
 package cn.anthony.boot.util;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
+import cn.anthony.boot.service.KeyGroup;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 
-import cn.anthony.boot.service.KeyGroup;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ControllerUtil {
 	private static Map<String, String> provinceMap = new TreeMap<String, String>() {

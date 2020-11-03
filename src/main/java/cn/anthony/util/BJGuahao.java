@@ -1,10 +1,7 @@
 package cn.anthony.util;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cn.anthony.util.http.HTTPUtil;
+import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
@@ -23,9 +20,10 @@ import org.apache.http.impl.cookie.BestMatchSpecFactory;
 import org.apache.http.impl.cookie.BrowserCompatSpecFactory;
 import org.apache.http.util.EntityUtils;
 
-import com.google.gson.Gson;
-
-import cn.anthony.util.http.HTTPUtil;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BJGuahao {
 	String loginUrl = "http://www.bjguahao.gov.cn/quicklogin.htm";

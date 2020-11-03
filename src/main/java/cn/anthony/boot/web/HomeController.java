@@ -1,12 +1,12 @@
 package cn.anthony.boot.web;
 
-import javax.annotation.Resource;
-
+import cn.anthony.boot.service.PatientService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.anthony.boot.service.PatientService;
+import javax.annotation.Resource;
 
 @Controller
 public class HomeController {
@@ -24,9 +24,9 @@ public class HomeController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping(value = { "/tindex" })
+	@GetMapping(value = { "/test" })
 	public String thymeLeafIndex() {
-		return "index";
+		return "test";
 	}
 
 	@RequestMapping(value = { "/login", "/logout" })

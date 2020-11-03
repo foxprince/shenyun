@@ -1,15 +1,13 @@
 package cn.anthony.boot.domain;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.querydsl.core.annotations.QueryEntity;
-
 import cn.anthony.boot.util.Constant;
 import cn.anthony.util.DateUtil;
+import com.querydsl.core.annotations.QueryEntity;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 @QueryEntity

@@ -1,0 +1,4 @@
+
+
+1:更新病人信息
+PATCH /rest/patients/{id}

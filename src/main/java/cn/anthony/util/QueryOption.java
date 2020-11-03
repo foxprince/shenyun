@@ -1,9 +1,8 @@
 package cn.anthony.util;
 
-import org.springframework.util.ObjectUtils;
-
 import cn.anthony.boot.util.Constant;
 import lombok.Data;
+import org.springframework.util.ObjectUtils;
 
 @Data
 public class QueryOption {

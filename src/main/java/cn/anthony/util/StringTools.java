@@ -4,20 +4,13 @@ package cn.anthony.util;
  * Author:Anthony
  */
 
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import cn.anthony.boot.util.Constant;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.io.*;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,10 +21,23 @@ public class StringTools {
 	public static String ZH_SPACE = "　";
 	public static final String BIN_MSG = "<!EHAPPY_BIN_MSG!>";
 
+	public static String createFileNameWithYM(String originalName) {
+		return DateFormatUtils.format(Calendar.getInstance(), "yyyyMM") + Constant.FILE_SEPA  + DateFormatUtils.format(Calendar.getInstance(), "yyyyMMddHHmmss")
+				+((int)(Math.random()*900) + 100)+ "." + FilenameUtils.getExtension(originalName);
+	}
+
+	public static String getThumbName(String filename) {
+		int idx = filename.lastIndexOf(".");
+		return filename.substring(0,idx)+"_thumb."+ FilenameUtils.getExtension(filename);
+	}
+
+	public static String createTmpFileName(String originalName) {
+		return "tmp" + Constant.FILE_SEPA  + DateFormatUtils.format(Calendar.getInstance(), "yyyyMMddHHmmss") + "."
+				+ FilenameUtils.getExtension(originalName);
+	}
 	/**
 	 * 去掉换行符
 	 * 
-	 * @param str
 	 * @return
 	 */
 	public static String trimCRLF(String s) {

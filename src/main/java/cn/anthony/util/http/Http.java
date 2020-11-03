@@ -1,17 +1,7 @@
 package cn.anthony.util.http;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
 import java.util.Enumeration;
 import java.util.Properties;
 

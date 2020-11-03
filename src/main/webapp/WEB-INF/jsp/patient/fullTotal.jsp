@@ -54,12 +54,34 @@
         <h3 class="box-title">统计选项</h3>
       </div><!-- /.box-header -->
       <div class="box-body pad">
-        <div class="form-group">
-          <c:forEach var="item" items="${totalOptions}">
-             <label><input type="checkbox" class="minimal" name="fields" value="${item.name}" >${item.label}</label>
-            <i style="margin:0px 10px">|</i>
-          </c:forEach>
-         </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group form-group-sm">
+                <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime">手术时间开始：</LABEL>
+                <div class="col-md-9 col-sm-9">
+                  <input class="form-control" name="beginTime" type="date" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group form-group-sm">
+                <LABEL class="col-md-3 col-sm-3 control-label" for="admissionTime2">手术时间结束：</LABEL>
+                <div class="col-md-9 col-sm-9">
+                  <input class="form-control" name="endTime" type="date" />
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="form-group">
+                  <c:forEach var="item" items="${totalOptions}">
+                    <label><input style="margin:0px 3px" type="checkbox" class="minimal" name="fields" value="${item.name}" >${item.label}</label>
+                    <i style="margin:0px 10px">|</i>
+                  </c:forEach>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
     

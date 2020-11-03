@@ -41,4 +41,5 @@
         <script src="../resources/plugins/html5shiv.min.js"></script>
         <script src="../resources/plugins/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="../resources/dist/css/Huploadify.css">
   </head>

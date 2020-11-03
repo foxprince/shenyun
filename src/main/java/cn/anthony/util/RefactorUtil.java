@@ -1,40 +1,18 @@
 package cn.anthony.util;
 
-import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import cn.anthony.boot.domain.*;
+import cn.anthony.boot.domain.Somatoscopy.SpecialExamination;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.ListPath;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.ListPath;
-
-import cn.anthony.boot.domain.ExtendObject;
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.domain.QPatient_Diag;
-import cn.anthony.boot.domain.QPatient_OperationDetail;
-import cn.anthony.boot.domain.QPatient_OutDiag;
-import cn.anthony.boot.domain.QPatient_SevereDetail;
-import cn.anthony.boot.domain.QPatient_动眼神经;
-import cn.anthony.boot.domain.QPatient_反射;
-import cn.anthony.boot.domain.QPatient_听力;
-import cn.anthony.boot.domain.QPatient_头部反射;
-import cn.anthony.boot.domain.QPatient_痛触觉;
-import cn.anthony.boot.domain.QPatient_眼底;
-import cn.anthony.boot.domain.QPatient_视力;
-import cn.anthony.boot.domain.QPatient_颅神经;
-import cn.anthony.boot.domain.QPatient_高级皮层功能;
-import cn.anthony.boot.domain.QSomatoscopy_SpecialExamination;
-import cn.anthony.boot.domain.Somatoscopy;
-import cn.anthony.boot.domain.Somatoscopy.SpecialExamination;
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class RefactorUtil {
 	public static Field getFieldByName(Object o, String name) {

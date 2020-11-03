@@ -1,27 +1,17 @@
 package cn.anthony.boot.web;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import cn.anthony.boot.domain.*;
+import cn.anthony.boot.exception.EntityNotFound;
+import cn.anthony.boot.service.CustomeOptionService;
+import cn.anthony.boot.service.FileAssetService;
+import cn.anthony.boot.service.PatientService;
+import cn.anthony.boot.service.SearchModelService;
+import cn.anthony.boot.util.Constant;
+import cn.anthony.boot.util.ControllerUtil;
+import cn.anthony.boot.util.PageUtil;
+import cn.anthony.util.*;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -33,49 +23,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BeanPath;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.ListPath;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
-
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.domain.QPatient;
-import cn.anthony.boot.domain.QPatient_动眼神经;
-import cn.anthony.boot.domain.QPatient_反射;
-import cn.anthony.boot.domain.QPatient_听力;
-import cn.anthony.boot.domain.QPatient_头部反射;
-import cn.anthony.boot.domain.QPatient_痛触觉;
-import cn.anthony.boot.domain.QPatient_眼底;
-import cn.anthony.boot.domain.QPatient_视力;
-import cn.anthony.boot.domain.QPatient_颅神经;
-import cn.anthony.boot.domain.QPatient_高级皮层功能;
-import cn.anthony.boot.domain.QSomatoscopy;
-import cn.anthony.boot.domain.Remark;
-import cn.anthony.boot.domain.SearchModel;
-import cn.anthony.boot.exception.EntityNotFound;
-import cn.anthony.boot.service.CustomeOptionService;
-import cn.anthony.boot.service.FileAssetService;
-import cn.anthony.boot.service.PatientService;
-import cn.anthony.boot.service.SearchModelService;
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.ControllerUtil;
-import cn.anthony.boot.util.PageUtil;
-import cn.anthony.util.DateUtil;
-import cn.anthony.util.ExcelUtil;
-import cn.anthony.util.QueryOption;
-import cn.anthony.util.RefactorUtil;
-import cn.anthony.util.StringTools;
+import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/patient")
@@ -384,6 +343,7 @@ public class PatientController extends GenericController<Patient> {
 	@RequestMapping(value = { "/addRemark" })
 	@ResponseBody
 	public Remark addRemark(String patientId, Remark remark, Model m) {
+		System.out.println(remark.toString());
 		Patient p = service.findById(patientId);
 		remark.setId(UUID.randomUUID().toString());
 		if (p.getRemarks() == null)

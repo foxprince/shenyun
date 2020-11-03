@@ -15,6 +15,10 @@
  */
 package cn.anthony.boot.web;
 
+import cn.anthony.boot.domain.BaseUser;
+import cn.anthony.boot.domain.User;
+import cn.anthony.boot.repository.UserRepository;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -26,12 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.querydsl.core.types.Predicate;
-
-import cn.anthony.boot.domain.BaseUser;
-import cn.anthony.boot.domain.User;
-import cn.anthony.boot.repository.UserRepository;
 
 /**
  * Controller to handle web requests for {@link BaseUser}s.

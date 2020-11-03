@@ -1,14 +1,8 @@
 package cn.anthony.boot.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
+import cn.anthony.util.FileTools;
+import cn.anthony.util.StringTools;
+import cn.anthony.util.http.HTTPUtil;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.Zip64Mode;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -17,9 +11,9 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import cn.anthony.util.FileTools;
-import cn.anthony.util.StringTools;
-import cn.anthony.util.http.HTTPUtil;
+import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class PageUtil {
 	private static final String GENERATE_DIR = "E:\\project\\神云系统\\generate\\";

@@ -1,13 +1,12 @@
 package cn.anthony.boot.domain;
 
+import cn.anthony.util.DateUtil;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import cn.anthony.util.DateUtil;
-import lombok.Data;
 
 @Data
 public class InHospital {
@@ -31,6 +30,8 @@ public class InHospital {
 	public String pastMedicalHistory;/* 既往史 */
 	public String infectiousHistory;/* 传染史 */
 	public String lifeHistory;/* 个人生活史 */
+	public String smokingHistory;/*吸烟史*/
+	public String drinkingHistory;/*饮酒史*/
 	public String familyHistory;/* 家族史 */
 	public Somatoscopy somatoscopy;/* 体格检查 */
 	// 辅助检查
@@ -40,6 +41,7 @@ public class InHospital {
 	public List<Patient.Diag> supplyDiags;
 	public Patient.Diag correctDiag;
 	public String srcFile;
+	public String 住院费用;
 
 	public InHospital() {
 		this.somatoscopy = new Somatoscopy();

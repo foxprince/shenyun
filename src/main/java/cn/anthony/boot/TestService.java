@@ -1,22 +1,5 @@
 package cn.anthony.boot;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.StringPath;
-
 import cn.anthony.boot.domain.Patient;
 import cn.anthony.boot.domain.QInHospital;
 import cn.anthony.boot.domain.QPatient;
@@ -25,10 +8,24 @@ import cn.anthony.boot.service.PatientService;
 import cn.anthony.boot.service.TotalService;
 import cn.anthony.boot.util.PatientUtil;
 import cn.anthony.util.RefactorUtil;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.StringPath;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class TestService implements CommandLineRunner {
-	private static final String srcDir = "/Users/zj/tmp/KYBLSJ201906/";
+	private static final String srcDir = "/Users/zj/tmp/KYBLSJ/";
 	private static final String MOVE_DIR = "/Users/zj/tmp/已处理/";
 	private static final String ERR_DIR = "/Users/zj/tmp/格式错误/";
 	@Autowired
@@ -42,7 +39,7 @@ public class TestService implements CommandLineRunner {
 	public static void main(String[] args) {
 		//System.setProperty("DB.TRACE", "true");
 		//System.setProperty("DEBUG.MONGO", "true");
-		SpringApplication.run(TestService.class, args);
+		//SpringApplication.run(TestService.class, args);
 	}
 
 	@Override

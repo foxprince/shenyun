@@ -1,5 +1,28 @@
 package cn.anthony.boot.web;
 
+import cn.anthony.boot.domain.*;
+import cn.anthony.boot.service.GenericService;
+import cn.anthony.boot.service.ImportService;
+import cn.anthony.boot.service.PatientService;
+import cn.anthony.boot.util.Constant;
+import cn.anthony.boot.util.ControllerUtil;
+import cn.anthony.util.DateUtil;
+import cn.anthony.util.ExcelUtil;
+import cn.anthony.util.StringTools;
+import com.querydsl.core.types.Predicate;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,40 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.querydsl.core.types.Predicate;
-
-import cn.anthony.boot.domain.ExtendObject;
-import cn.anthony.boot.domain.FrontPage;
-import cn.anthony.boot.domain.ImportModel;
-import cn.anthony.boot.domain.Operation;
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.service.GenericService;
-import cn.anthony.boot.service.ImportService;
-import cn.anthony.boot.service.PatientService;
-import cn.anthony.boot.util.Constant;
-import cn.anthony.boot.util.ControllerUtil;
-import cn.anthony.util.DateUtil;
-import cn.anthony.util.ExcelUtil;
-import cn.anthony.util.StringTools;
-import lombok.Data;
 
 @Controller
 @RequestMapping(value = "/import")
@@ -531,7 +520,7 @@ public class ImportController extends GenericController<ImportModel> {
 	}
 
 	@Override
-	GenericService<ImportModel> getService() {
+	GenericService getService() {
 		return this.service;
 	}
 

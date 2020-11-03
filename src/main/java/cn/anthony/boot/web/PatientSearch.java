@@ -1,17 +1,11 @@
 package cn.anthony.boot.web;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import cn.anthony.boot.domain.FrontPage;
-import cn.anthony.boot.domain.InHospital;
-import cn.anthony.boot.domain.Operation;
-import cn.anthony.boot.domain.OutHospital;
-import cn.anthony.boot.domain.Patient;
-import cn.anthony.boot.domain.SearchModel;
+import cn.anthony.boot.domain.*;
 import cn.anthony.util.RefactorUtil;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 public class PatientSearch extends Patient {

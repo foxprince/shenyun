@@ -2,6 +2,8 @@ package cn.anthony.boot.domain;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Somatoscopy {
 	/*
@@ -40,6 +42,14 @@ public class Somatoscopy {
 		this.sExamination = new SpecialExamination();
 	}
 
+	@Data//入院后化验检查
+	public static class LaboratoryExamination {
+		public String 血红蛋白血小板,白细胞纤维蛋白原,部分活化凝血酶原时间国际标准化比值;
+		public String 丙氨酸氨基转移酶天冬氨酸氨基转移酶,血肌酐尿素氮,高密度脂蛋白胆固醇低密度脂蛋白胆固醇;
+		public String 甘油三酯总胆固醇,载脂蛋白A载脂蛋白B,空腹血葡萄糖;
+		public String 糖化血红蛋白,超敏CRP;
+	}
+
 	@Data
 	public static class SpecialExamination {
 		/*
@@ -49,6 +59,7 @@ public class Somatoscopy {
 		 * meningismus; smelling; sight; visionField; eyeGround; eyeMovement;
 		 * diplopia;//复视;
 		 */
+		public List<String> 脑血管病相关危险因素,其他相关疾病病例;
 		public Patient.高级皮层功能 高级皮层功能;
 		public Patient.颅神经 颅神经;
 		public String 运动系统, 共济运动, 感觉系统;

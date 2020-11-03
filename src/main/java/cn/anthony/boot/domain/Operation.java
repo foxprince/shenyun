@@ -1,11 +1,10 @@
 package cn.anthony.boot.domain;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import cn.anthony.util.DateUtil;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 public class Operation {
@@ -44,6 +43,7 @@ public class Operation {
 	public String sign;//
 	public Date recordTime;//
 	public String srcFile;//
+	public String totalFee;//住院费用
 
 	public String getBeginTimeDesc() {
 		return DateUtil.format(beginTime, "yyyy-MM-dd HH:mm");
